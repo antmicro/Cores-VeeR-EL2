@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - uses: chipsalliance/verible-linter-action/trigger-receive@main
-      - uses: chipsalliance/verible-linter-action@main
+      - uses: antmicro/verible-linter-action@rkol/lint-test
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           paths: |
