@@ -24,8 +24,8 @@ from .common import make_clock, Harness
 async def test_add(dut):
     inputs = random.sample(range(0x1, 0x3fffffff), 2)
 
-    clk_gen = make_clock(dut, 1)
     harness = Harness(dut)
+    clk_gen = make_clock(harness.dut, 100)
 
     await harness.reset()
 
@@ -45,8 +45,8 @@ async def test_add(dut):
 async def test_sub(dut):
     inputs = random.sample(range(0x1, 0x3fffffff), 2)
 
-    clk_gen = make_clock(dut, 1)
     harness = Harness(dut)
+    clk_gen = make_clock(harness.dut, 100)
 
     await harness.reset()
 

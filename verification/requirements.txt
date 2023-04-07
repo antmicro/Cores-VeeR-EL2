@@ -1,4 +1,5 @@
 cocotb==1.7.2
 cocotb-test==0.2.4
 pytest-html
-pytest-xdist
+pytest-timeout
+pytest-md

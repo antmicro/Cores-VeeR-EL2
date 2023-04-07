@@ -31,7 +31,7 @@ class Harness(object):
         # test_name = kwargs.get('test_name', inspect.stack()[1][3])
         # tn = cocotb.binary.BinaryValue(value=test_name.encode(), n_bits=4096)
         # self.dut.test_name.value = tn
-    
+
     @cocotb.coroutine
     async def reset(self):
         self.dut.rst_l.value = 1
@@ -40,3 +40,4 @@ class Harness(object):
         await ClockCycles(self.dut.clk, 2)
         self.dut.rst_l.value = 1
         await ClockCycles(self.dut.clk, 2)
+

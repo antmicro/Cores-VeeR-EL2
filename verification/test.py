@@ -28,6 +28,7 @@ def test_exu_alu():
 
     run(
         simulator = "verilator",
+        compile_args = ["-Wno-WIDTH", "-Wno-UNOPTFLAT"],
         verilog_sources = ["{}/{}".format(rv_root, el) for el in verilog_sources],
         includes = ["{}/{}".format(rv_root, el) for el in includes],
         toplevel = "el2_exu_alu_ctl",
