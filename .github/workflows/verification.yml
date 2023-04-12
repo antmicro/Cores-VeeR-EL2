@@ -102,7 +102,7 @@ jobs:
           $RV_ROOT/configs/veer.config
           pytest verification/test.py -v --timeout=480 --html=test.html --html=$GITHUB_STEP_SUMMARY
 
-      - name: Pack artifacts
+      - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v3
         with:
@@ -111,3 +111,58 @@ jobs:
             test.html
             assets/
             sim_build/
+
+  preview:
+    name: Preview results on GitHub Actions
+    runs-on: ubuntu-latest
+    needs: tests
+    concurrency:
+      group: gh-pages
+
+    steps:
+      - name: Get PR metadata
+        uses: 8BitJonny/gh-get-current-pr@2.2.0
+        if: github.event_name == 'pull_request'
+        with:
+          sha: ${{ github.event.pull_request.head.sha }}
+        id: PR
+
+      - name: Downloads results artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: results
+          path: ./results
+
+      - name: Download current release
+        uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+          path: ./public
+
+      - name: Prepare results for publishing
+        run: |
+          rm -r ./results/sim_build
+          mv ./results/test.html ./results/index.html
+          mkdir -p ./public/verification
+          mv ./results/* ./public/verification
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+
+      # prepare metadata and upload artifacts for multi branch deployment
+      - name: Move deployment to the correct preview directory
+        if: github.event_name == 'pull_request'
+        run: |
+          mkdir ./preview
+          mv ./public/verification ./preview/${{ steps.PR.outputs.number }}
+
+      - name: Upload preview artifacts
+        uses: actions/upload-artifact@v3
+        if: github.event_name == 'pull_request'
+        with:
+          name: pr_deployment
+          path: ./preview/

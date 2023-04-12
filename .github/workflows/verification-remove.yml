@@ -1,0 +1,32 @@
+name: Remove closed PR preview
+
+on:
+  pull_request:
+    types:
+      - closed # this should trigger the CI both for merge and close
+
+jobs:
+  remove:
+    name: Remove PR preview
+    runs-on: ubuntu-latest
+    concurrency:
+      group: gh-pages
+
+    steps:
+      - name: Download current deployment
+        uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+          path: ./public
+
+      - name: Remove Preview for the PR that was just closed
+        run: |
+          rm -rf ./public/verification/preview/${{ github.event.number }}
+
+      - name: Redeploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.base_ref == 'main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          commit_message: "Remove the preview of #${{ github.event.number }}"
