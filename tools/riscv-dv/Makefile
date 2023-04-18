@@ -57,7 +57,7 @@ $(WORK_DIR)/verilator/Vtb_top: $(WORK_DIR)/verilator/Vtb_top.mk
 # Code generation, compilation and ISS simulation via RISC-V DV flow
 $(TEST_DIR)/generate.log: | $(TEST_DIR)
 	# Generate
-	PYTHONPATH=$(RISCV_DV_PATH)/pygen python3 $(RISCV_DV_PATH)/run.py --simulator pyflow \
+	PYTHONPATH=$(RISCV_DV_PATH)/pygen python3 $(RISCV_DV_PATH)/run.py --simulator euvm \
 		--test $(RISCV_DV_TEST) --iss $(RISCV_DV_ISS) \
 		--iterations $(RISCV_DV_ITER) --batch_size $(RISCV_DV_BATCH) \
 		--isa rv32imc --mabi ilp32 --steps gen -v -o $(TEST_DIR) 2>&1 | tee $(TEST_DIR)/generate.log
@@ -66,7 +66,7 @@ $(TEST_DIR)/generate.log: | $(TEST_DIR)
 	find $(TEST_DIR)/asm_test -name "*.S" -exec python3 code_fixup.py -i {} -o {} \;
 
 	# Compile, simulate
-	PYTHONPATH=$(RISCV_DV_PATH)/pygen python3 $(RISCV_DV_PATH)/run.py --simulator pyflow \
+	PYTHONPATH=$(RISCV_DV_PATH)/pygen python3 $(RISCV_DV_PATH)/run.py --simulator euvm \
 		--test $(RISCV_DV_TEST) --iss $(RISCV_DV_ISS) \
 		--iterations $(RISCV_DV_ITER) --batch_size $(RISCV_DV_BATCH) \
 		--isa rv32imc --mabi ilp32 --steps gcc_compile,iss_sim -v -o $(TEST_DIR) 2>&1 | tee -a $(TEST_DIR)/generate.log
@@ -103,7 +103,7 @@ run:
 	# Run RISC-V DV
 	$(MAKE) $(TEST_DIR)/generate.log
 	# Run HDL simulation(s) and trace comparison
-	find $(TEST_DIR)/ -name "sim_*.log" | sed 's/sim_/comp_/g' | xargs $(MAKE)
+	find $(TEST_DIR)/$(RISCV_DV_ISS)_sim/ -name "*.log" | sed 's/$(RISCV_DV_ISS)_sim\//comp_/g' | xargs $(MAKE)
 	# Check for errors
 	for F in $(TEST_DIR)/comp_*.log; do grep "\[PASSED\]" $$F; if [ $$? -ne 0 ]; then exit 255; fi; done
 
