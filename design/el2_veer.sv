@@ -37,13 +37,13 @@ import el2_pkg::*;
    output logic                 active_l2clk,
    output logic                 free_l2clk,
 
-   output logic [31:0] trace_rv_i_insn_ip,
-   output logic [31:0] trace_rv_i_address_ip,
-   output logic   trace_rv_i_valid_ip,
-   output logic   trace_rv_i_exception_ip,
-   output logic [4:0]  trace_rv_i_ecause_ip,
-   output logic   trace_rv_i_interrupt_ip,
-   output logic [31:0] trace_rv_i_tval_ip,
+  output logic [31:0] trace_rv_i_insn_ip,
+ output logic [31:0] trace_rv_i_address_ip,
+output logic   trace_rv_i_valid_ip,
+    output logic   trace_rv_i_exception_ip,
+     output logic [4:0]  trace_rv_i_ecause_ip,
+      output logic   trace_rv_i_interrupt_ip,
+       output logic [31:0] trace_rv_i_tval_ip,
 
 
    output logic                 dccm_clk_override,

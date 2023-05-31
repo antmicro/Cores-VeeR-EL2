@@ -302,7 +302,7 @@ import el2_pkg::*;
    input logic [pt.PIC_TOTAL_INT:1]        extintsrc_req,
 
    output logic                            dec_tlu_perfcnt0, // toggles when slot0 perf counter 0 has an event inc
-   output logic                            dec_tlu_perfcnt1,
+   output logic                            dec_tlu_perfcnt1, 
    output logic                            dec_tlu_perfcnt2,
    output logic                            dec_tlu_perfcnt3,
 
@@ -335,7 +335,7 @@ import el2_pkg::*;
 );
 
    logic                             active_l2clk;
-   logic                             free_l2clk;
+   logic                             free_l2clk;                          // Free running clock
 
    // DCCM ports
    logic         dccm_wren;

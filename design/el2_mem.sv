@@ -103,7 +103,8 @@ import el2_pkg::*;
          .clk_override(dccm_clk_override),
          .*
       );
-   end else begin: Gen_dccm_disable
+   end else
+begin: Gen_dccm_disable
       assign dccm_rd_data_lo = '0;
       assign dccm_rd_data_hi = '0;
    end
@@ -113,8 +114,9 @@ if ( pt.ICACHE_ENABLE ) begin: icache
       .clk_override(icm_clk_override),
       .*
    );
-end
-else  begin
+   end
+ else
+begin
    assign   ic_rd_hit[pt.ICACHE_NUM_WAYS-1:0] = '0;
    assign   ic_tag_perr    = '0 ;
    assign   ic_rd_data  = '0 ;
