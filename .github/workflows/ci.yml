@@ -31,6 +31,7 @@ jobs:
     uses: ./.github/workflows/report-pytest.yml
 
   Publish-to-GH-Pages:
+    permissions: write-all
     name: Publish-to-GH-Pages
     needs: [Report-Coverage, Report-Pytest]
     uses: ./.github/workflows/publish-webpage.yml

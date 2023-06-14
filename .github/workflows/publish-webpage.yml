@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DEBIAN_FRONTEND: "noninteractive"
-
+      permissions: write-all
     steps:
       - name: Get PR metadata
         run: |
