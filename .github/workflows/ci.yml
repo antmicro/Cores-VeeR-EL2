@@ -2,8 +2,7 @@ name: VeeR-EL2 CI
 
 on:
   push:
-  # TODO: uncomment before PR is merged
-  # pull_request:
+  pull_request:
 
 jobs:
 

@@ -1,0 +1,62 @@
+name: Publish webpage
+
+on:
+  workflow_call:
+
+jobs:
+
+  Publish-Webpage:
+    name: Publish webpage
+    runs-on: ubuntu-latest
+    env:
+      DEBIAN_FRONTEND: "noninteractive"
+
+    steps:
+      - name: Get PR metadata
+        run: |
+          if [ "${{ github.event.number }}" != "" ]; then
+            PR_NUMBER=${{ github.event.number }}
+            echo "PR=$PR_NUMBER"
+          else
+            PR_NUMBER=0
+            echo "Github Event is not of type pull_request, set PR number to 0."
+          fi
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
+
+      - name: Setup repository
+        uses: actions/checkout@v3
+
+      - name: Download coverage reports
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage_report
+          path: ./coverage_dashboard
+
+      - name: Download verification reports
+        uses: actions/download-artifact@v3
+        with:
+          name: verification_dashboard
+          path: ./verification_dashboard
+
+      - name: Download current webpage
+        uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+          path: ./public
+
+      - name: Update webpage
+        run: |
+          .github/scripts/update_webpage.sh ${{ github.ref_name }} ${{ github.event_name }} $PR_NUMBER
+
+      - name: Deploy webpage
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+
+      - name: Pack webpage as an artifact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: webpage
+          path: ./public
