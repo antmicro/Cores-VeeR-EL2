@@ -1,0 +1,95 @@
+name: Regression tests
+
+on:
+  workflow_call:
+
+jobs:
+
+  regression-tests:
+    name: Regression tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        TEST_NAME: ["hello_world", "hello_world_dccm", "hello_world_iccm", "cmark", "cmark_dccm", "cmark_iccm", "dhry"]
+        COVERAGE: ["branch", "toggle"] #TODO: add functional coverage
+    env:
+      DEBIAN_FRONTEND: "noninteractive"
+      CCACHE_DIR: "/opt/regression/.cache/"
+      VERILATOR_VERSION: v5.010
+
+    steps:
+      - name: Install utils
+        run: |
+          sudo apt -qqy update && sudo apt -qqy --no-install-recommends install \
+            git python3 python3-pip build-essential ninja-build cpanminus ccache \
+            gcc-riscv64-unknown-elf
+          sudo cpanm Bit::Vector
+          pip3 install meson
+
+      - name: Setup Cache Metadata
+        id: cache_metadata
+        run: |
+          cache_date=$(date +"%Y_%m_%d")
+          cache_name=cache_verilator_${{ env.VERILATOR_VERSION }}
+          cache_regression_name=cache_regression
+          echo "Cache date: "$cache_date
+          echo "Cache name: "$cache_name
+          echo "cache_date=$cache_date" >> "$GITHUB_ENV"
+          echo "cache_name=$cache_name" >> "$GITHUB_ENV"
+          echo "cache_regression_name=${cache_regression_name}" >> "$GITHUB_ENV"
+
+      - name: Restore verilator cache
+        id: cache-verilator-restore
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            /opt/verilator
+          key: ${{ env.cache_name }}_${{ env.cache_date }}
+          restore-keys: ${{ env.cache_name }}_
+          fail-on-cache-miss: true
+
+      - name: Setup regression tests cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ env.CCACHE_DIR }}
+          key: ${{ env.cache_regression_name }}_${{ env.cache_date }}
+          restore-keys: ${{ env.cache_regression_name }}_
+
+      - name: Setup repository
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Setup environment
+        run: |
+          echo "/opt/verilator/bin" >> $GITHUB_PATH
+          RV_ROOT=`pwd`
+          echo "RV_ROOT=$RV_ROOT" >> $GITHUB_ENV
+          PYTHONUNBUFFERED=1
+          echo "PYTHONUNBUFFERED=$PYTHONUNBUFFERED" >> $GITHUB_ENV
+          TEST_PATH=$RV_ROOT/test_results
+          echo "TEST_PATH=$TEST_PATH" >> $GITHUB_ENV
+
+      - name: Run tests
+        run: |
+          export PATH=/opt/verilator/bin:$PATH
+          export RV_ROOT=`pwd`
+          .github/scripts/run_regression_test.sh $TEST_PATH ${{ matrix.TEST_NAME}} ${{ matrix.COVERAGE }}
+
+      - name: Prepare coverage data
+        run: |
+          pushd ${{ github.workspace }}
+            mkdir -p coverage_${{ matrix.TEST_NAME }}
+            mv ${TEST_PATH}/coverage.dat coverage_${{ matrix.TEST_NAME }}/
+            echo "Prepared coverage data"
+            .github/scripts/convert_coverage_data.sh ${{ matrix.COVERAGE }} ${{ github.workspace }}/coverage_${{ matrix.TEST_NAME }} ${{ github.workspace }}/results coverage_${{ matrix.TEST_NAME }}
+            echo "convert_coverage_data.sh exited with RET_CODE = "$?
+          popd
+
+      - name: Pack artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: regression_tests_coverage_data
+          path: ./results/*.info

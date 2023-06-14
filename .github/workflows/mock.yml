@@ -1,0 +1,15 @@
+name: mock
+
+on:
+  workflow_call:
+
+jobs:
+
+  mock:
+    name: mock
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: mock
+        run: |
+          echo "mock"
