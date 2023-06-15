@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        TEST_NAME: ["hello_world", "hello_world_dccm", "hello_world_iccm", "cmark", "cmark_dccm", "cmark_iccm", "dhry"]
-        COVERAGE: ["branch", "toggle"] #TODO: add functional coverage
+        test: ["hello_world", "hello_world_dccm", "hello_world_iccm", "cmark", "cmark_dccm", "cmark_iccm", "dhry"]
+        coverage: ["branch", "toggle"] #TODO: add functional coverage
     env:
       DEBIAN_FRONTEND: "noninteractive"
       CCACHE_DIR: "/opt/regression/.cache/"
@@ -29,14 +29,20 @@ jobs:
       - name: Setup Cache Metadata
         id: cache_metadata
         run: |
-          cache_date=$(date +"%Y_%m_%d")
-          cache_name=cache_verilator_${{ env.VERILATOR_VERSION }}
-          cache_regression_name=cache_regression
-          echo "Cache date: "$cache_date
-          echo "Cache name: "$cache_name
-          echo "cache_date=$cache_date" >> "$GITHUB_ENV"
-          echo "cache_name=$cache_name" >> "$GITHUB_ENV"
-          echo "cache_regression_name=${cache_regression_name}" >> "$GITHUB_ENV"
+          date=$(date +"%Y_%m_%d")
+          time=$(date +"%Y%m%d_%H%M%S_%N")
+          cache_verilator_restore_key=cache_verilator_
+          cache_verilator_key=${cache_verilator_restore_key}${{ env.VERILATOR_VERSION }}
+          cache_test_restore_key=${{ matrix.test }}_${{ matrix.coverage }}_
+          cache_test_key=${cache_test_restore_key}${time}
+
+          echo "date=$date" | tee -a "$GITHUB_ENV"
+          echo "time=$time" | tee -a "$GITHUB_ENV"
+          echo "cache_verilator_restore_key=$cache_verilator_restore_key" | tee -a "$GITHUB_ENV"
+          echo "cache_verilator_key=$cache_verilator_key" | tee -a "$GITHUB_ENV"
+          echo "cache_test_restore_key=$cache_test_restore_key" | tee -a "$GITHUB_ENV"
+          echo "cache_test_key=$cache_test_key" | tee -a "$GITHUB_ENV"
+
 
       - name: Restore verilator cache
         id: cache-verilator-restore
@@ -44,17 +50,17 @@ jobs:
         with:
           path: |
             /opt/verilator
-          key: ${{ env.cache_name }}_${{ env.cache_date }}
-          restore-keys: ${{ env.cache_name }}_
-          fail-on-cache-miss: true
+          key: ${{ env.cache_verilator_key }}
+          restore-keys: ${{ env.cache_verilator_restore_key }}
 
-      - name: Setup regression tests cache
+      - name: Setup tests cache
         uses: actions/cache@v3
+        id: cache-test-setup
         with:
           path: |
             ${{ env.CCACHE_DIR }}
-          key: ${{ env.cache_regression_name }}_${{ env.cache_date }}
-          restore-keys: ${{ env.cache_regression_name }}_
+          key: ${{ env.cache_test_key }}
+          restore-keys: ${{ env.cache_test_restore_key }}
 
       - name: Setup repository
         uses: actions/checkout@v3
@@ -75,15 +81,15 @@ jobs:
         run: |
           export PATH=/opt/verilator/bin:$PATH
           export RV_ROOT=`pwd`
-          .github/scripts/run_regression_test.sh $TEST_PATH ${{ matrix.TEST_NAME}} ${{ matrix.COVERAGE }}
+          .github/scripts/run_regression_test.sh $TEST_PATH ${{ matrix.test}} ${{ matrix.coverage }}
 
       - name: Prepare coverage data
         run: |
           pushd ${{ github.workspace }}
-            mkdir -p coverage_${{ matrix.TEST_NAME }}
-            mv ${TEST_PATH}/coverage.dat coverage_${{ matrix.TEST_NAME }}/
+            mkdir -p coverage_${{ matrix.test }}
+            mv ${TEST_PATH}/coverage.dat coverage_${{ matrix.test }}/
             echo "Prepared coverage data"
-            .github/scripts/convert_coverage_data.sh ${{ matrix.COVERAGE }} ${{ github.workspace }}/coverage_${{ matrix.TEST_NAME }} ${{ github.workspace }}/results coverage_${{ matrix.TEST_NAME }}
+            .github/scripts/convert_coverage_data.sh ${{ matrix.coverage }} ${{ github.workspace }}/coverage_${{ matrix.test }} ${{ github.workspace }}/results coverage_${{ matrix.test }}
             echo "convert_coverage_data.sh exited with RET_CODE = "$?
           popd
 
