@@ -2,7 +2,7 @@ name: VeeR-EL2 CI
 
 on:
   push:
-  pull_request:
+  pull_request_target:
 
 jobs:
 
@@ -31,7 +31,9 @@ jobs:
     uses: ./.github/workflows/report-pytest.yml
 
   Publish-to-GH-Pages:
-    permissions: write-all
+    permissions:
+      actions: write
+      contents: write
     name: Publish-to-GH-Pages
     needs: [Report-Coverage, Report-Pytest]
     uses: ./.github/workflows/publish-webpage.yml

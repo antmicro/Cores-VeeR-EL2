@@ -100,19 +100,16 @@ update_webpage(){
     echo -e "${COLOR_WHITE}LOC_GITHUB_EVENT_NAME = ${LOC_GITHUB_EVENT_NAME}"
     echo -e "${COLOR_WHITE}PR_NUMBER             = ${PR_NUMBER}"
 
-
     # Function body
-    # On main, deploy the main page
-    if [ ${LOC_GITHUB_REF_NAME} = 'main' ]; then
+    if [ ${LOC_GITHUB_EVENT_NAME} = 'pull_request_target' ]; then
+        if [ ${LOC_GITHUB_REF_NAME} = 'main' ]; then
         DIR=main
-    # On a PR, deploy to a PR subdirectory
-    elif [ ${LOC_GITHUB_EVENT_NAME} = 'pull_request' ]; then
+        else
         DIR=dev/${PR_NUMBER}
-    # On a push, deploy to a branch subdirectory
+        fi
     elif [ ${LOC_GITHUB_EVENT_NAME}  = 'push' ]; then
         # If ref_name contains slash "/", replace it with underscore "_"
         DIR=dev/${LOC_GITHUB_REF_NAME//\//_}
-    # Unknown
     else
         echo -e "${COLOR_WHITE}Unknown deployment type ${COLOR_RED}FAIL${COLOR_CLEAR}"
         exit -1
