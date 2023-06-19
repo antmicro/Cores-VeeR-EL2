@@ -7,3 +7,6 @@
 [submodule "third_party/cocotb"]
 	path = third_party/cocotb
 	url = https://github.com/cocotb/cocotb
+[submodule "third_party/make-env"]
+	path = third_party/make-env
+	url = https://github.com/SymbiFlow/make-env.git
