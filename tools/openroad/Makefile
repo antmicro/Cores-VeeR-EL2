@@ -3,6 +3,9 @@ ifeq (,$(wildcard ${RV_ROOT}/configs/veer.config))
 $(error env var RV_ROOT does not point to a valid dir! Exiting!)
 endif
 
+DESIGN_NAME ?= counter
+PLATFORM ?= sky130hd
+
 ORFS_SUBMODULE := ${RV_ROOT}/third_party/OpenROAD-flow-scripts
 ORFS := ${ORFS_SUBMODULE}/flow
 YOSYS_SV_SUBMODULE := ${RV_ROOT}/third_party/yosys-systemverilog
@@ -49,6 +52,9 @@ openroad-flow-patch-sv-support: openroad-flow-fixup-time
 
 test-openroad-flow: openroad-flow-fixup-time | $(CONDA_ENV_PYTHON)
 	$(IN_CONDA_ENV) make -C $(ORFS)
+
+test-physical-design-flow: openroad-flow-fixup-time | $(CONDA_ENV_PYTHON)
+	$(IN_CONDA_ENV) make -C $(ORFS) DESIGN_CONFIG=${RV_ROOT}/$(DESIGN_NAME)/$(PLATFORM)/config.mk
 
 synthesis-tools:
 	git submodule update --init ${YOSYS_SV_SUBMODULE} && \
