@@ -2,7 +2,9 @@ name: VeeR-EL2 CI
 
 on:
   push:
-  pull_request_target:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
 
 jobs:
 

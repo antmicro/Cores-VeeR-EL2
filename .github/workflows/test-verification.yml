@@ -48,6 +48,7 @@ jobs:
         with:
           path: |
             /opt/verilator
+            /opt/verilator/.cache
           key: ${{ env.cache_verilator_key }}
           restore-keys: ${{ env.cache_verilator_restore_key }}
 
