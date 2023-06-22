@@ -36,6 +36,13 @@ openroad-flow-fixup-time:
 	git restore . && \
 	sed -i 's,TIME_CMD = \/usr\/bin\/time,TIME_CMD = $(CONDA_ENVS_DIR)\/$(CONDA_ENV_NAME)\/bin\/time,g' Makefile
 
+# Patch OpenROAD-flow-scripts synthesis script for yosys
+# so that it would use systemverilog plugin and would
+# read SV sources of VeeR EL2
+openroad-flow-patch-sv-support: openroad-flow-fixup-time
+	cd $(ORFS) && \
+	git apply ${TOP_DIR}/orfs.patch
+
 test-openroad-flow: openroad-flow-fixup-time | $(CONDA_ENV_PYTHON)
 	$(IN_CONDA_ENV) make -C $(ORFS)
 
