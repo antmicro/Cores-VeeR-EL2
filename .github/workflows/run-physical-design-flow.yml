@@ -1,0 +1,70 @@
+name: Run VeeR EL2 Physical Design Flow
+
+on:
+  workflow_call:
+
+jobs:
+
+  run-physical-design-flow:
+    name: VeeR EL2 Physical Design Flow
+    runs-on: ubuntu-latest
+    env:
+      DEBIAN_FRONTEND: "noninteractive"
+
+    steps:
+      - name: Install utils
+        run: |
+          sudo apt -qqy update && sudo apt -qqy --no-install-recommends install \
+            build-essential cpanminus git python3 python3-pip
+          sudo cpanm Bit::Vector
+
+      - name: Setup repository
+        uses: actions/checkout@v3
+
+      - name: Setup Cache Metadata
+        id: cache_metadata
+        run: |
+          date=$(date +"%Y_%m_%d")
+          time=$(date +"%Y%m%d_%H%M%S_%N")
+          cache_yosys_systemverilog_git_hash=$(git submodule status third_party/yosys-systemverilog | awk '{print $1}')
+          cache_yosys_systemverilog_restore_key=cache_yosys_systemverilog_
+          cache_yosys_systemverilog_key=${cache_yosys_systemverilog_restore_key}_${cache_yosys_systemverilog_git_hash}
+
+          echo "date=$date" | tee -a "$GITHUB_ENV"
+          echo "time=$time" | tee -a "$GITHUB_ENV"
+          echo "cache_yosys_systemverilog_restore_key=$cache_yosys_systemverilog_restore_key" | tee -a "$GITHUB_ENV"
+          echo "cache_yosys_systemverilog_key=$cache_yosys_systemverilog_key" | tee -a "$GITHUB_ENV"
+
+      - name: Restore Yosys SystemVerilog cache
+        id: cache-yosys-systemverilog-restore
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            /opt/yosys-systemverilog
+          key: ${{ env.cache_yosys_systemverilog_key }}
+          restore-keys: ${{ env.cache_yosys_systemverilog_restore_key }}
+
+      - name: Run Physical Design Flow
+        run: |
+          export PATH=/opt/yosys-systemverilog/bin:$PATH
+          export RV_ROOT=`pwd`
+          make -C tools/openroad -j `nproc` run-physical-design-flow
+
+      - name: Pack modified SV sources
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: modified-sv-sources
+          path: |
+            ./tools/openroad/build/src
+            ./tools/openroad/build/inc
+
+      - name: Pack ASIC Flow artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: asic-flow-results
+          path: |
+            ./third_party/OpenROAD-flow-scripts/flow/results
+            ./third_party/OpenROAD-flow-scripts/flow/reports
+            ./third_party/OpenROAD-flow-scripts/flow/logs

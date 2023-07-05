@@ -1,0 +1,18 @@
+name: VeeR-EL2 CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+
+  Build-Yosys-SystemVerilog:
+    name: Build-Yosys-SystemVerilog
+    uses: ./.github/workflows/build-yosys-systemverilog.yml
+
+  Run-Physical-Design-Flow:
+    name: Run-Physical-Design-Flow
+    needs: [Build-Yosys-SystemVerilog]
+    uses: ./.github/workflows/run-physical-design-flow.yml
