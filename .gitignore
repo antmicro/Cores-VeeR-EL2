@@ -15,3 +15,4 @@ venv
 results.xml
 verification/sim
 verilator-cocotb-build
+tools/openroad/env

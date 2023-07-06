@@ -1,0 +1,8 @@
+name: veer_el2_base
+channels:
+  - defaults
+dependencies:
+  - python
+  - pip
+  - pip:
+    - -r requirements.txt
