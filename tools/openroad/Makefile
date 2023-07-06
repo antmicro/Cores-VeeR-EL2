@@ -5,6 +5,7 @@ endif
 
 ORFS_SUBMODULE := ${RV_ROOT}/third_party/OpenROAD-flow-scripts
 ORFS := ${ORFS_SUBMODULE}/flow
+YOSYS_SV_SUBMODULE := ${RV_ROOT}/third_party/yosys-systemverilog
 
 # The top directory where environment will be created.
 TOP_DIR := ${RV_ROOT}/tools/openroad
@@ -21,11 +22,14 @@ ${RV_ROOT}/third_party/make-env/conda.mk:
 include ${RV_ROOT}/third_party/make-env/conda.mk
 
 # Example make target which runs commands inside the conda environment.
-test-command: | $(CONDA_ENV_PYTHON)
+test-command: synthesis-tools | $(CONDA_ENV_PYTHON)
 	@$(IN_CONDA_ENV) echo "Python is $$(which python)"
 	@$(IN_CONDA_ENV) python --version
 	@$(IN_CONDA_ENV) openroad -help
 	@$(IN_CONDA_ENV) klayout -h
+	surelog --version
+	yosys --version
+	yosys -p "plugin -i systemverilog; plugin -l"
 
 # OpenROAD-flow-scripts flow Makefile has hardcoded absolute
 # path to `/usr/bin/time` which does not work in conda env.
@@ -45,6 +49,12 @@ openroad-flow-patch-sv-support: openroad-flow-fixup-time
 
 test-openroad-flow: openroad-flow-fixup-time | $(CONDA_ENV_PYTHON)
 	$(IN_CONDA_ENV) make -C $(ORFS)
+
+synthesis-tools:
+	git submodule update --init ${YOSYS_SV_SUBMODULE} && \
+	cd ${YOSYS_SV_SUBMODULE} && \
+	git submodule update --init --recursive Surelog yosys yosys-f4pga-plugins && \
+	./build_binaries.sh
 
 clean-env:
 	rm -rf ${TOP_DIR}/env
