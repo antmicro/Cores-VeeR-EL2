@@ -1,7 +1,13 @@
 name: veer_el2_base
 channels:
+  - litex-hub
+  - conda-forge
   - defaults
 dependencies:
+  - conda-forge::time
+  - conda-forge::fmt
+  - litex-hub::openroad
+  - litex-hub::klayout
   - python
   - pip
   - pip:
