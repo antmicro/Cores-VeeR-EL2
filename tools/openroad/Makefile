@@ -98,6 +98,8 @@ test-physical-design-flow: openroad-flow-fixup-time | $(CONDA_ENV_PYTHON)
 synthesis-tools:
 	git submodule update --init ${YOSYS_SV_SUBMODULE} && \
 	cd ${YOSYS_SV_SUBMODULE} && \
+	git restore . && \
+	git apply ${TOP_DIR}/yosys_sv.patch && \
 	git submodule update --init --recursive Surelog yosys yosys-f4pga-plugins && \
 	./build_binaries.sh
 

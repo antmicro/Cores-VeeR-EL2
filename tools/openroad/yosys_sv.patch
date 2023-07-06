@@ -1,0 +1,22 @@
+diff --git a/build_binaries.sh b/build_binaries.sh
+index 301215c..f40de8d 100755
+--- a/build_binaries.sh
++++ b/build_binaries.sh
+@@ -37,7 +37,7 @@ cd ..
+ #Yosys
+ if [ "$SKIP_YOSYS" -eq "0" ]; then
+ cd yosys
+-make CONFIG=gcc PREFIX=$INSTALL_PATH install -j $(nproc)
++make CONFIG=gcc PREFIX=$INSTALL_PATH STRIP:=/bin/true SANITIZER:=address ENABLE_DEBUG:=1 install -j $(nproc)
+ cd ..
+ fi
+ #UHDM plugin
+@@ -45,7 +45,7 @@ if [ "$PLUGIN_ASAN" -eq "1" ]; then
+   PLUGIN_LDFLAGS="-fsanitize=address -fcheck-new -fno-omit-frame-pointer -static-libasan"
+ fi
+ export PATH=$INSTALL_PATH/bin:${PATH}
+-UHDM_INSTALL_DIR=$INSTALL_PATH LDFLAGS=$PLUGIN_LDFLAGS make -C $PWD/yosys-f4pga-plugins/ install -j$(nproc)
++UHDM_INSTALL_DIR=$INSTALL_PATH LDFLAGS=$PLUGIN_LDFLAGS make -C $PWD/yosys-f4pga-plugins/ EXTRA_FLAGS:='-g' install -j$(nproc)
+ #sv2v
+ if [ "$BUILD_SV2V" -eq "1" ]; then
+ wget -qO- https://get.haskellstack.org/ | sh -s - -f -d $INSTALL_PATH/bin
