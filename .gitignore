@@ -16,3 +16,4 @@ results.xml
 verification/sim
 verilator-cocotb-build
 tools/openroad/env
+tools/openroad/build
