@@ -3,6 +3,7 @@ ifeq (,$(wildcard ${RV_ROOT}/configs/veer.config))
 $(error env var RV_ROOT does not point to a valid dir! Exiting!)
 endif
 
+VEER_NAME ?= el2_veer_wrapper
 DESIGN_NAME ?= counter
 PLATFORM ?= sky130hd
 CONFIG ?= typical_pd
@@ -100,10 +101,18 @@ synthesis-tools:
 	git submodule update --init --recursive Surelog yosys yosys-f4pga-plugins && \
 	./build_binaries.sh
 
+run-physical-design-flow: clean-physical-design-flow openroad-flow-patch-sv-support $(BUILD_SRC_DIR) $(BUILD_INC_DIR) | $(CONDA_ENV_PYTHON)
+	$(IN_CONDA_ENV) make -C $(ORFS) DESIGN_CONFIG=${TOP_DIR}/configs/$(PLATFORM)/config.mk
+	mkdir -p $(OUT_DIR)/$(PLATFORM)
+	cp -r $(ORFS)/results/$(PLATFORM)/$(VEER_NAME)/base $(OUT_DIR)/$(PLATFORM)/results
+	cp -r $(ORFS)/reports/$(PLATFORM)/$(VEER_NAME)/base $(OUT_DIR)/$(PLATFORM)/reports
+	cp -r $(ORFS)/logs/$(PLATFORM)/$(VEER_NAME)/base $(OUT_DIR)/$(PLATFORM)/logs
+
 clean-env:
 	rm -rf ${TOP_DIR}/env
 
 clean-build-openroad:
+	rm -rf $(ORFS)/slpp_all
 	rm -rf $(ORFS)/results
 	rm -rf $(ORFS)/reports
 	rm -rf $(ORFS)/logs
