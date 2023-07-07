@@ -92,7 +92,7 @@ openroad-flow-patch-sv-support: openroad-flow-fixup-time
 test-openroad-flow: openroad-flow-fixup-time | $(CONDA_ENV_PYTHON)
 	$(IN_CONDA_ENV) make -C $(ORFS)
 
-test-physical-design-flow: openroad-flow-fixup-time | $(CONDA_ENV_PYTHON)
+test-physical-design-flow: openroad-flow-patch-sv-support | $(CONDA_ENV_PYTHON)
 	$(IN_CONDA_ENV) make -C $(ORFS) DESIGN_CONFIG=${RV_ROOT}/$(DESIGN_NAME)/$(PLATFORM)/config.mk
 
 synthesis-tools:
