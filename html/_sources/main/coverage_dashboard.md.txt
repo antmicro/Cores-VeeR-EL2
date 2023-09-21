@@ -2,14 +2,19 @@
 # Coverage dashboard
 
 ## Summary reports (all tests)
- * all coverage (no data)
+ * [all coverage](external:coverage_dashboard/all/index.html)
  * [branch coverage](external:coverage_dashboard/branch/index.html)
  * [toggle coverage](external:coverage_dashboard/toggle/index.html)
  * functional coverage (no data)
 
 ## Individual test reports
 ### all coverage
-no data
+ * [pic_gw_test_gateway](external:coverage_dashboard/all_pic_gw_test_gateway/index.html)
+ * [pic_test_clken](external:coverage_dashboard/all_pic_test_clken/index.html)
+ * [pic_test_config](external:coverage_dashboard/all_pic_test_config/index.html)
+ * [pic_test_prioritization](external:coverage_dashboard/all_pic_test_prioritization/index.html)
+ * [pic_test_reset](external:coverage_dashboard/all_pic_test_reset/index.html)
+ * [pic_test_servicing](external:coverage_dashboard/all_pic_test_servicing/index.html)
 ### branch coverage
  * [cmark](external:coverage_dashboard/branch_cmark/index.html)
  * [cmark_dccm](external:coverage_dashboard/branch_cmark_dccm/index.html)
@@ -18,6 +23,12 @@ no data
  * [hello_world](external:coverage_dashboard/branch_hello_world/index.html)
  * [hello_world_dccm](external:coverage_dashboard/branch_hello_world_dccm/index.html)
  * [hello_world_iccm](external:coverage_dashboard/branch_hello_world_iccm/index.html)
+ * [pic_gw_test_gateway](external:coverage_dashboard/branch_pic_gw_test_gateway/index.html)
+ * [pic_test_clken](external:coverage_dashboard/branch_pic_test_clken/index.html)
+ * [pic_test_config](external:coverage_dashboard/branch_pic_test_config/index.html)
+ * [pic_test_prioritization](external:coverage_dashboard/branch_pic_test_prioritization/index.html)
+ * [pic_test_reset](external:coverage_dashboard/branch_pic_test_reset/index.html)
+ * [pic_test_servicing](external:coverage_dashboard/branch_pic_test_servicing/index.html)
  * [riscof](external:coverage_dashboard/branch_riscof/index.html)
  * [riscv-dv_riscv_arithmetic_basic_test](external:coverage_dashboard/branch_riscv-dv_riscv_arithmetic_basic_test/index.html)
  * [test_pyuvm](external:coverage_dashboard/branch_test_pyuvm/index.html)
@@ -29,6 +40,12 @@ no data
  * [hello_world](external:coverage_dashboard/toggle_hello_world/index.html)
  * [hello_world_dccm](external:coverage_dashboard/toggle_hello_world_dccm/index.html)
  * [hello_world_iccm](external:coverage_dashboard/toggle_hello_world_iccm/index.html)
+ * [pic_gw_test_gateway](external:coverage_dashboard/toggle_pic_gw_test_gateway/index.html)
+ * [pic_test_clken](external:coverage_dashboard/toggle_pic_test_clken/index.html)
+ * [pic_test_config](external:coverage_dashboard/toggle_pic_test_config/index.html)
+ * [pic_test_prioritization](external:coverage_dashboard/toggle_pic_test_prioritization/index.html)
+ * [pic_test_reset](external:coverage_dashboard/toggle_pic_test_reset/index.html)
+ * [pic_test_servicing](external:coverage_dashboard/toggle_pic_test_servicing/index.html)
  * [riscof](external:coverage_dashboard/toggle_riscof/index.html)
  * [riscv-dv_riscv_arithmetic_basic_test](external:coverage_dashboard/toggle_riscv-dv_riscv_arithmetic_basic_test/index.html)
  * [test_pyuvm](external:coverage_dashboard/toggle_test_pyuvm/index.html)
