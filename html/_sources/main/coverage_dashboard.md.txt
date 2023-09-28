@@ -64,6 +64,7 @@
  * [hello_world](external:coverage_dashboard/toggle_hello_world/index.html)
  * [hello_world_dccm](external:coverage_dashboard/toggle_hello_world_dccm/index.html)
  * [hello_world_iccm](external:coverage_dashboard/toggle_hello_world_iccm/index.html)
+ * [ifu_compress_test_compress](external:coverage_dashboard/toggle_ifu_compress_test_compress/index.html)
  * [pic_gw_test_gateway](external:coverage_dashboard/toggle_pic_gw_test_gateway/index.html)
  * [pic_test_clken](external:coverage_dashboard/toggle_pic_test_clken/index.html)
  * [pic_test_config](external:coverage_dashboard/toggle_pic_test_config/index.html)
