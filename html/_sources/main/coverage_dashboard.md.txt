@@ -65,6 +65,7 @@
  * [cmark_dccm](external:coverage_dashboard/toggle_cmark_dccm/index.html)
  * [cmark_iccm](external:coverage_dashboard/toggle_cmark_iccm/index.html)
  * [dccm_test_readwrite](external:coverage_dashboard/toggle_dccm_test_readwrite/index.html)
+ * [dec_tl_test_dec_tl](external:coverage_dashboard/toggle_dec_tl_test_dec_tl/index.html)
  * [dhry](external:coverage_dashboard/toggle_dhry/index.html)
  * [dma_test_address](external:coverage_dashboard/toggle_dma_test_address/index.html)
  * [dma_test_debug_address](external:coverage_dashboard/toggle_dma_test_debug_address/index.html)
