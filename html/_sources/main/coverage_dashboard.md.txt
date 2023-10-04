@@ -9,6 +9,7 @@
 
 ## Individual test reports
 ### all coverage
+ * [dccm_test_readwrite](external:coverage_dashboard/all_dccm_test_readwrite/index.html)
  * [dma_test_address](external:coverage_dashboard/all_dma_test_address/index.html)
  * [dma_test_debug_address](external:coverage_dashboard/all_dma_test_debug_address/index.html)
  * [dma_test_debug_read](external:coverage_dashboard/all_dma_test_debug_read/index.html)
@@ -32,6 +33,7 @@
  * [cmark](external:coverage_dashboard/branch_cmark/index.html)
  * [cmark_dccm](external:coverage_dashboard/branch_cmark_dccm/index.html)
  * [cmark_iccm](external:coverage_dashboard/branch_cmark_iccm/index.html)
+ * [dccm_test_readwrite](external:coverage_dashboard/branch_dccm_test_readwrite/index.html)
  * [dhry](external:coverage_dashboard/branch_dhry/index.html)
  * [dma_test_address](external:coverage_dashboard/branch_dma_test_address/index.html)
  * [dma_test_debug_address](external:coverage_dashboard/branch_dma_test_debug_address/index.html)
@@ -62,6 +64,7 @@
  * [cmark](external:coverage_dashboard/toggle_cmark/index.html)
  * [cmark_dccm](external:coverage_dashboard/toggle_cmark_dccm/index.html)
  * [cmark_iccm](external:coverage_dashboard/toggle_cmark_iccm/index.html)
+ * [dccm_test_readwrite](external:coverage_dashboard/toggle_dccm_test_readwrite/index.html)
  * [dhry](external:coverage_dashboard/toggle_dhry/index.html)
  * [dma_test_address](external:coverage_dashboard/toggle_dma_test_address/index.html)
  * [dma_test_debug_address](external:coverage_dashboard/toggle_dma_test_debug_address/index.html)
