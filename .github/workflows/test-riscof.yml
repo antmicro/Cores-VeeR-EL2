@@ -7,7 +7,7 @@ jobs:
 
   tests:
     name: Run RISCOF tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:

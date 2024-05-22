@@ -7,7 +7,7 @@ jobs:
 
   coverage-report:
     name: Coverage report
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       DEBIAN_FRONTEND: "noninteractive"
 

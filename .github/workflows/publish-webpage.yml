@@ -8,7 +8,7 @@ jobs:
     name: Build and Main Deploy
     concurrency:
       group: gh-pages
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: write
     steps:

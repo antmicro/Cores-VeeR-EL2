@@ -10,7 +10,7 @@ jobs:
 #--------------#
   renode:
     name: Download Renode
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       CCACHE_DIR: "/opt/veer-el2/.cache/"
       DEBIAN_FRONTEND: "noninteractive"
@@ -55,7 +55,7 @@ jobs:
 #--------------#
   veer-iss:
     name: Build VeeR-ISS
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       CCACHE_DIR: "/opt/veer-el2/.cache/"
       DEBIAN_FRONTEND: "noninteractive"
@@ -106,7 +106,7 @@ jobs:
 #--------------#
   generate-config:
     name: Generate configs
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     outputs:
       test-types: ${{ steps.test-types.outputs.tests }}
       test-include-generate: ${{ steps.test-types.outputs.include-generate }}
@@ -192,7 +192,7 @@ jobs:
 
   run-tests:
     name: Run RISC-V DV tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: [ veer-iss, renode, generate-config, generate-code ]
     strategy:
       fail-fast: false
