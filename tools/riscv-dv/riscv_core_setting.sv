@@ -43,7 +43,7 @@ bit support_pmp = 1;
 bit support_epmp = 0;
 
 // Debug mode support
-bit support_debug_mode = 0;
+bit support_debug_mode = 1;
 
 // Support delegate trap to user mode
 // When implementing UCAUSE, UTVEC, UTVAL, UEPC, USCRATCH, USTATUS, UIE, UIP
