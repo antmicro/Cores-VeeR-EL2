@@ -4,4 +4,5 @@
  * {{ branch }}
    * [Coverage]({{ branch }}_coverage_dashboard)
    * [Verification tests]({{ branch }}_verification_dashboard)
+   * [Documentation]({{ branch }}_docs_rendered)
 {%- endfor %}
