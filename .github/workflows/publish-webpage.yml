@@ -23,11 +23,11 @@ jobs:
           run_information="Repository: ${{ github.repository }} Commit SHA:${{ github.sha }} Workflow: ${{ github.workflow }} Run:${{ github.run_id }}"
           echo $run_information
 
-      - name: Download coverage reports
-        uses: actions/download-artifact@v3
-        with:
-          name: coverage_report
-          path: ./coverage_dashboard
+      # - name: Download coverage reports
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: coverage_report
+      #     path: ./coverage_dashboard
 
       - name: Download docs
         uses: actions/download-artifact@v3
@@ -35,17 +35,17 @@ jobs:
           name: docs
           path: ./docs_rendered
 
-      - name: Download verification reports
-        uses: actions/download-artifact@v3
-        with:
-          name: verification_dashboard
-          path: ./verification_dashboard
-
-      - name: Download RISCOF report
-        uses: actions/download-artifact@v3
-        with:
-          name: riscof-report
-          path: ./riscof_dashboard
+      # - name: Download verification reports
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: verification_dashboard
+      #     path: ./verification_dashboard
+      #
+      # - name: Download RISCOF report
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: riscof-report
+      #     path: ./riscof_dashboard
 
       - name: Checkout gh-pages
         uses: actions/checkout@v3
