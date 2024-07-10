@@ -28,12 +28,35 @@ puts ""
 
 riscv set_mem_access sysbus
 
-set addr 0x00020008
-set data 0x12345678
-puts "Write few bytes and read"
-write_memory $addr 32 $data phys
-set actual [read_memory $addr 32 1 phys]
-if {[compare $actual $data] != 0} {
+set addr1 0x00020008
+set addr2 0x00020508
+set data1 0x05050505
+set data2 0x12345678
+
+puts "Write few bytes"
+write_memory $addr1 32 $data1 phys
+
+puts "Write few different bytes at the same address"
+write_memory $addr1 32 $data2 phys
+
+puts "Read few bytes"
+set actual [read_memory $addr1 32 1 phys]
+if {[compare $actual $data2] != 0} {
+    shutdown error
+}
+
+puts "Read few bytes one more time"
+set actual [read_memory $addr1 32 1 phys]
+if {[compare $actual $data2] != 0} {
+    shutdown error
+}
+
+puts "Write few bytes to different address"
+write_memory $addr2 32 $data1 phys
+
+puts "Read few bytes from that address"
+set actual [read_memory $addr2 32 1 phys]
+if {[compare $actual $data1] != 0} {
     shutdown error
 }
 
