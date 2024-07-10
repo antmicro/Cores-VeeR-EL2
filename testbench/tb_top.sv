@@ -196,6 +196,7 @@ module tb_top #(
 `ifdef RV_BUILD_AXI4
    //-------------------------- LSU AXI signals--------------------------
    // AXI Write Channels
+   parameter int                RV_MUX_BUS_TAG = (`RV_LSU_BUS_TAG > `RV_SB_BUS_TAG ? `RV_LSU_BUS_TAG : `RV_SB_BUS_TAG) + 1;
     wire                        lsu_axi_awvalid;
     wire                        lsu_axi_awready;
     wire [`RV_LSU_BUS_TAG-1:0]  lsu_axi_awid;
@@ -391,7 +392,7 @@ module tb_top #(
     wire                        lmem_axi_arready;
 
     wire                        lmem_axi_rvalid;
-    wire [`RV_LSU_BUS_TAG-1:0]  lmem_axi_rid;
+    wire [RV_MUX_BUS_TAG-1:0]   lmem_axi_rid;
     wire [1:0]                  lmem_axi_rresp;
     wire [63:0]                 lmem_axi_rdata;
     wire                        lmem_axi_rlast;
@@ -405,12 +406,12 @@ module tb_top #(
 
     wire [1:0]                  lmem_axi_bresp;
     wire                        lmem_axi_bvalid;
-    wire [`RV_LSU_BUS_TAG-1:0]  lmem_axi_bid;
+    wire [RV_MUX_BUS_TAG-1:0]   lmem_axi_bid;
     wire                        lmem_axi_bready;
 
     wire                        mux_axi_awvalid;
     wire                        mux_axi_awready;
-    wire [`RV_SB_BUS_TAG-1:0]   mux_axi_awid;
+    wire [RV_MUX_BUS_TAG-1:0]   mux_axi_awid;
     wire [31:0]                 mux_axi_awaddr;
     wire [3:0]                  mux_axi_awregion;
     wire [7:0]                  mux_axi_awlen;
@@ -430,12 +431,12 @@ module tb_top #(
     wire                        mux_axi_bvalid;
     wire                        mux_axi_bready;
     wire [1:0]                  mux_axi_bresp;
-    wire [`RV_SB_BUS_TAG-1:0]   mux_axi_bid;
+    wire [RV_MUX_BUS_TAG-1:0]   mux_axi_bid;
 
     // AXI Read Channels
     wire                        mux_axi_arvalid;
     wire                        mux_axi_arready;
-    wire [`RV_SB_BUS_TAG-1:0]   mux_axi_arid;
+    wire [RV_MUX_BUS_TAG-1:0]   mux_axi_arid;
     wire [31:0]                 mux_axi_araddr;
     wire [3:0]                  mux_axi_arregion;
     wire [7:0]                  mux_axi_arlen;
@@ -448,7 +449,7 @@ module tb_top #(
 
     wire                        mux_axi_rvalid;
     wire                        mux_axi_rready;
-    wire [`RV_SB_BUS_TAG-1:0]   mux_axi_rid;
+    wire [RV_MUX_BUS_TAG-1:0]   mux_axi_rid;
     wire [63:0]                 mux_axi_rdata;
     wire [1:0]                  mux_axi_rresp;
     wire                        mux_axi_rlast;
@@ -463,7 +464,8 @@ module tb_top #(
 
    axi_crossbar_wrap_2x1 #(
         .ADDR_WIDTH (32),
-        .DATA_WIDTH (64)
+        .DATA_WIDTH (64),
+        .S_ID_WIDTH(RV_MUX_BUS_TAG - 1)
     ) u_axi_crossbar (
                       .clk(core_clk),
                       .rst(!rst_l),
@@ -703,7 +705,6 @@ module tb_top #(
             $finish;
         end
     end
-
 
     // trace monitor
     always @(posedge core_clk) begin
@@ -1229,7 +1230,7 @@ axi_slv #(.TAGW(`RV_IFU_BUS_TAG)) imem(
     .bid()
 );
 
-defparam lmem.TAGW =`RV_LSU_BUS_TAG;
+defparam lmem.TAGW = RV_MUX_BUS_TAG;
 
 //axi_slv #(.TAGW(`RV_LSU_BUS_TAG)) lmem(
 axi_slv  lmem(
@@ -1269,7 +1270,7 @@ axi_slv  lmem(
     .bid(lmem_axi_bid)
 );
 
-axi_lsu_dma_bridge # (`RV_LSU_BUS_TAG,`RV_LSU_BUS_TAG ) bridge(
+axi_lsu_dma_bridge # (RV_MUX_BUS_TAG, RV_MUX_BUS_TAG) bridge(
     .clk(core_clk),
     .reset_l(rst_l),
 
