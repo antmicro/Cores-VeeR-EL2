@@ -61,5 +61,7 @@ if {[compare $actual $data1] != 0} {
     shutdown error
 }
 
-# Success
+# Send signal to call $finish
+write_memory 0xd0580000 8 0xFF phys
+
 shutdown
