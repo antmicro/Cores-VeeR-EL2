@@ -35,45 +35,6 @@ _start:
     csrw 0x7c0, x1
     li  x3, 4
     csrw    mfdc, x3        // disable store merging
-    li  x3, RV_ICCM_SADR
-    la  x4, printf_start
-    la  x5, printf_end
-
-
-load:
-    lw  x6, 0 (x4)
-    sw  x6, 0 (x3)
-    addi    x4,x4,4
-    addi    x3,x3,4
-    bltu x4, x5, load
-
-    fence.i
-    call printf
-
-// Write 0xff to STDOUT for TB to termiate test.
-_finish:
-    li x3, STDOUT
-    addi x5, x0, 0xff
-    sb x5, 0(x3)
-    beq x0, x0, _finish
-.rept 100
-    nop
-.endr
-
-.data
-hw_data:
-.ascii "------------------------------\n"
-.ascii "Hello World from VeeR EL2 ICCM\n"
-.ascii "------------------------------\n"
-.byte 0
-
-.section .data_text, "ax"
-    // Load string from hw_data
-    // and write to stdout address
-
-printf:
-    li x3, STDOUT
-    la x4, hw_data
 
     // Simple infinite loop program with inner and outer loop
     li      t3,  0
