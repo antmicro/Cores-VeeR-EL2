@@ -465,7 +465,8 @@ module tb_top #(
    axi_crossbar_wrap_2x1 #(
         .ADDR_WIDTH (32),
         .DATA_WIDTH (64),
-        .S_ID_WIDTH(RV_MUX_BUS_TAG - 1)
+        .S_ID_WIDTH(RV_MUX_BUS_TAG - 1),
+        .M00_ADDR_WIDTH(32)
     ) u_axi_crossbar (
                       .clk(core_clk),
                       .rst(!rst_l),
