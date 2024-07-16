@@ -30,7 +30,7 @@ else ifneq ("$(COVERAGE)", "")
 endif
 
 VERILATOR       = verilator
-VERILATOR_CFLAGS= "-std=c++14"
+VERILATOR_CFLAGS = -std=c++14
 VERILATOR_INC   = -I$(WORK_DIR) -I$(RV_ROOT)/testbench -I$(RV_ROOT)/testbench/axi4_mux
 VERILATOR_EXE   = $(RV_ROOT)/testbench/test_tb_top.cpp
 
@@ -75,7 +75,7 @@ $(WORK_DIR)/defines.h: | $(WORK_DIR)
 
 # Verilated testbench rules
 $(WORK_DIR)/verilator/Vtb_top.mk: $(WORK_DIR)/defines.h
-	$(VERILATOR) --cc -CFLAGS $(VERILATOR_CFLAGS) $(VERILATOR_INC) \
+	$(VERILATOR) --cc -CFLAGS "$(VERILATOR_CFLAGS)" $(VERILATOR_INC) \
         $(HDL_FILES) -f $(RV_ROOT)/testbench/flist --top-module tb_top \
 		-exe $(VERILATOR_EXE) -Wno-WIDTH -Wno-UNOPTFLAT -Wno-IMPLICITSTATIC --autoflush \
 		$(VERILATOR_COVERAGE) \
