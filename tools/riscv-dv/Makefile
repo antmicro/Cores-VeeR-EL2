@@ -31,14 +31,16 @@ endif
 
 VERILATOR       = verilator
 VERILATOR_CFLAGS= "-std=c++14"
-VERILATOR_INC   = -I$(WORK_DIR) -I$(RV_ROOT)/testbench 
+VERILATOR_INC   = -I$(WORK_DIR) -I$(RV_ROOT)/testbench -I$(RV_ROOT)/testbench/axi4_mux
 VERILATOR_EXE   = $(RV_ROOT)/testbench/test_tb_top.cpp
 
 HDL_FILES = $(WORK_DIR)/common_defines.vh \
             $(WORK_DIR)/el2_pdef.vh \
             $(RV_ROOT)/testbench/tb_top.sv \
             $(RV_ROOT)/testbench/ahb_sif.sv \
-            $(RV_ROOT)/design/include/el2_def.sv
+            $(RV_ROOT)/design/include/el2_def.sv \
+            $(RV_ROOT)/testbench/jtagdpi/jtagdpi.sv \
+            $(RV_ROOT)/testbench/ahb_lite_2to1_mux.sv
 
 # riscv-dv args
 RISCV_DV_ARGS = \
