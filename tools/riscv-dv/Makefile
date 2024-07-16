@@ -42,6 +42,14 @@ HDL_FILES = $(WORK_DIR)/common_defines.vh \
             $(RV_ROOT)/testbench/jtagdpi/jtagdpi.sv \
             $(RV_ROOT)/testbench/ahb_lite_2to1_mux.sv
 
+# Testbench DPI sources
+TB_DPI_SRCS = jtagdpi/jtagdpi.c \
+              tcp_server/tcp_server.c
+
+TB_DPI_INCS := $(addprefix -I$(RV_ROOT)/testbench/,$(dir $(TB_DPI_SRCS)))
+# Add testbench include paths
+VERILATOR_CFLAGS += $(TB_DPI_INCS)
+
 # riscv-dv args
 RISCV_DV_ARGS = \
     --simulator $(RISCV_DV_SIM) \
