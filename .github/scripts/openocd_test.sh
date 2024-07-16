@@ -68,12 +68,6 @@ else
     echo -e "${COLOR_RED}[FAILED]${COLOR_OFF}"
 fi
 
-sleep 1s
-
-# Terminate
-echo -e "${COLOR_WHITE}Terminating...${COLOR_OFF}"
-terminate ${SIM_PID}
-
 # Display logs
 print_logs
 
