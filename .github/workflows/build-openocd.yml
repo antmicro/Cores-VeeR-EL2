@@ -38,7 +38,7 @@ jobs:
       - name: Install prerequisities
         if: ${{ steps.cache.outputs.cache-hit != 'true' }}
         run: |
-          apt -qqy update && apt -qqy --no-install-recommends install \
+          sudo apt -qqy update && sudo apt -qqy --no-install-recommends install \
           make libtool pkg-config autoconf automake texinfo
 
       - name: Build and install OpenOCD
@@ -50,5 +50,5 @@ jobs:
             ./configure --prefix=/opt/openocd --enable-remote-bitbang \
             CFLAGS="-Wno-error=misleading-indentation -Wno-error=stringop-overflow"
             make -j`nproc`
-            make install
+            sudo make install
           popd
