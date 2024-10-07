@@ -127,7 +127,7 @@ $(WORK_DIR)/verilator/Vtb_top: $(WORK_DIR)/verilator/Vtb_top.mk
 # Code generation
 $(TEST_DIR)/generate.log: | $(TEST_DIR)
 	PYTHONPATH=$(RISCV_DV_PATH)/pygen python3 $(RISCV_DV_PATH)/run.py $(RISCV_DV_ARGS) \
-    --steps gen
+    --steps gen --simulator=verilator
 	@touch $@
 
 # Code patching & compilation
