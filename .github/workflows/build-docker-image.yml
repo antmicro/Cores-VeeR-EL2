@@ -40,7 +40,7 @@ jobs:
       with:
         context: context
         push: false # TODO change to true
-        tags: cores-veer-el2:${{ env.VERILATOR_VERSION }}_${{ env.VERILATOR_UVM_VERSION }}_${{ env.OPENOCD_VERSION }}__${{ env.RENODE_VERSION }}_${{ env.SPIKE_VERSION }}
+        tags: cores-veer-el2
         file: .github/Dockerfile
         build-args: |
           VERILATOR_VERSION=${{ env.VERILATOR_VERSION }}
