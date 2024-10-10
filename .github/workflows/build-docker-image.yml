@@ -40,7 +40,7 @@ jobs:
       with:
         context: context
         push: true
-        tags: cores-veer-el2:latest
+        tags: ghcr.io/chipsalliance/cores-veer-el2:latest
         file: .github/Dockerfile
         build-args: |
           VERILATOR_VERSION=${{ env.VERILATOR_VERSION }}
