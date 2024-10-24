@@ -30,6 +30,29 @@ jobs:
         run: |
           echo "files-hash=$(.github/scripts/get_code_hash.sh)" | tee -a $GITHUB_OUTPUT
 
+  fetch-code:
+    name: Fetch generated testcase code from cache
+    runs-on: [ self-hosted, Linux, X64, gcp-custom-runners ]
+    outputs:
+      cache-hit: ${{ steps.test-cache.outputs.cache-hit }}
+    container: centos:8  # TODO: use something newer
+    needs: generate-config
+    env:
+      CACHE_HASH: ${{ needs.generate-config.outputs.hash }}
+    steps:
+      - uses: actions/checkout@v3  # The job is just cache interaction, is this really needed here?
+        with:
+          submodules: recursive
+
+      - name: Cache Code
+        uses: actions/cache@v3
+        id: cache-code
+        timeout-minutes: 60
+        with:
+          path: tools/riscv-dv/work/test_${{ matrix.test }}/asm_test
+          key: cache_${{ matrix.test }}_${{ matrix.version }}_${{ env.CACHE_HASH }}
+
+
   generate-code:
     name: Generate code for tests
     runs-on: [ self-hosted, Linux, X64, gcp-custom-runners ]
