@@ -84,9 +84,7 @@ jobs:
 
       - name: Use fallback code
         if: steps.cache-code.outputs.cache-hit != 'true' && steps.riscv_dv_test.outcome != 'success'
-        run: |
-          mkdir -p tools/riscv-dv/work/
-          cp -r .github/assets/riscv_dv/${{ matrix.version  }}/* tools/riscv-dv/work/
+        run: false
 
       - name: Pack artifacts
         if: always()
