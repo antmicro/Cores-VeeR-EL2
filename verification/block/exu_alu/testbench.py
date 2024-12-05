@@ -86,6 +86,8 @@ class AluDriver(uvm_driver):
                 # Zbp
                 self.dut.ap_pack.value = it.op in ["pack"]
                 self.dut.ap_packh.value = it.op in ["packh"]
+                self.dut.ap_shfl.value = it.op in ["shfl"]
+                self.dut.ap_unshfl.value = it.op in ["unshfl"]
 
                 # Zba
                 self.dut.ap_sh1add.value = it.op in ["sh1add"]
@@ -179,6 +181,10 @@ class AluInputMonitor(uvm_component):
                     op = "pack"
                 elif int(self.dut.ap_packh.value):
                     op = "packh"
+                elif int(self.dut.ap_shfl.value):
+                    op = "shfl"
+                elif int(self.dut.ap_unshfl.value):
+                    op = "unshfl"
                 elif int(self.dut.ap_sh1add.value):
                     op = "sh1add"
                 elif int(self.dut.ap_sh2add.value):
@@ -231,6 +237,40 @@ class AluScoreboard(uvm_component):
     """
     Generic ALU scoreboard
     """
+
+    @staticmethod
+    def shuffle32_stage (src, maskL, maskR, N):
+        x  = src & ~(maskL | maskR)
+        x |= ((src << N) & maskL) | ((src >> N) & maskR)
+        return x
+
+    @staticmethod
+    def shfl32(rs1, rs2):
+        x = rs1
+        shamt = rs2 & 15
+        if shamt & 8:
+            x = AluScoreboard.shuffle32_stage(x, 0x00ff0000, 0x0000ff00, 8)
+        if shamt & 4:
+            x = AluScoreboard.shuffle32_stage(x, 0x0f000f00, 0x00f000f0, 4)
+        if shamt & 2:
+            x = AluScoreboard.shuffle32_stage(x, 0x30303030, 0xc0c0c0c0, 2)
+        if shamt & 1:
+            x = AluScoreboard.shuffle32_stage(x, 0x44444444, 0x22222222, 1)
+        return x
+
+    @staticmethod
+    def unshfl32(rs1, rs2):
+        x = rs1
+        shamt = rs2 & 15
+        if shamt & 1:
+            x = AluScoreboard.shuffle32_stage(x, 0x44444444, 0x22222222, 1)
+        if shamt & 2:
+            x = AluScoreboard.shuffle32_stage(x, 0x30303030, 0xc0c0c0c0, 2)
+        if shamt & 4:
+            x = AluScoreboard.shuffle32_stage(x, 0x0f000f00, 0x00f000f0, 4)
+        if shamt & 8:
+            x = AluScoreboard.shuffle32_stage(x, 0x00ff0000, 0x0000ff00, 8)
+        return x
 
     def __init__(self, name, parent):
         super().__init__(name, parent)
@@ -315,6 +355,10 @@ class AluScoreboard(uvm_component):
                 result = (((item_inp.a << 16) & INT_MASK) >> 16) | (item_inp.b << 16) & INT_MASK
             elif item_inp.op == "packh":
                 result = (item_inp.a & 0xFF) | ((item_inp.b & 0xFF) << 8)
+            elif item_inp.op == "shfl":
+                result = AluScoreboard.shfl32(item_inp.a, item_inp.b)
+            elif item_inp.op == "unshfl":
+                result = AluScoreboard.unshfl32(item_inp.a, item_inp.b)
             elif item_inp.op in ["sh1add", "sh2add", "sh3add"]:
                 shift = int(item_inp.op[2])
                 result = ((item_inp.a << shift) + item_inp.b) & INT_MASK

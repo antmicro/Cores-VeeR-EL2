@@ -29,12 +29,30 @@ class TestPackh(BaseTest):
     async def run(self):
         await self.seq.start(self.env.alu_seqr)
 
+@pyuvm.test()
+class TestPack(BaseTest):
+    def end_of_elaboration_phase(self):
+        super().end_of_elaboration_phase()
+        self.seq = BaseSequence("stimulus", ["shfl"])
+
+    async def run(self):
+        await self.seq.start(self.env.alu_seqr)
+
+
+@pyuvm.test()
+class TestPackh(BaseTest):
+    def end_of_elaboration_phase(self):
+        super().end_of_elaboration_phase()
+        self.seq = BaseSequence("stimulus", ["unshfl"])
+
+    async def run(self):
+        await self.seq.start(self.env.alu_seqr)
 
 @pyuvm.test()
 class TestAll(BaseTest):
     def end_of_elaboration_phase(self):
         super().end_of_elaboration_phase()
-        self.seq = BaseSequence("stimulus", ["pack", "packh"])
+        self.seq = BaseSequence("stimulus", ["pack", "packh", "shfl", "unshfl"])
 
     async def run(self):
         await self.seq.start(self.env.alu_seqr)
