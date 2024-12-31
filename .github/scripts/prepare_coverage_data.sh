@@ -127,6 +127,17 @@ cp _coverage_toggle.info coverage_toggle_verilator.info
 
 export BRANCH=$GITHUB_HEAD_REF
 export COMMIT=$GITHUB_SHA
+{
+        while read file
+                do
+                        if [ -f $file ]; then
+                                echo "### FILE: $file"
+                                cat "$file"
+                        else
+                                echo "### SKIPPING: $file"
+                        fi
+                done
+} < files.txt > sources.txt
 
 mkdir test_data
 cp coverage_line_*.info coverage_toggle_*.info coverage_branch_* sources.txt test_data
