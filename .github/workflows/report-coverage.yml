@@ -181,6 +181,11 @@ jobs:
           path: |
             coverage_toggle_verilator.info
             coverage_line_verilator.info
+
+      - name: Pack artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
           name: coverview_data
           path: |
             data.zip
