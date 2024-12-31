@@ -76,11 +76,34 @@ jobs:
           name: openocd_coverage_data
           path: ./
 
+      - name: Download coverage reports
+        uses: actions/download-artifact@v3
+        with:
+          name: coverview_data
+          path: ./
+
       - name: Generate reports
         shell: bash
         run: |
           export PATH=${{ env.LCOV_PATH }}:${PATH}
           sis -d reports . --report-dir report --src-pattern \*design\*
+          mv report sis
+          mkdir report
+          mv sis report/
+
+          # generate coverview report
+          git clone https://github.com/antmicro/coverview
+          cd coverview
+          npm install
+          npm run build
+
+          mkdir coverage_data
+          unzip ../data.zip -d coverage_data
+          ./embed.py --inject-data coverage_data
+          cp -a dist/* ../report
+
+          cd ..
+
           cat *_toggle.info > coverage.toggle.info
           cat *_branch.info > coverage.branch.info
 
@@ -158,6 +181,8 @@ jobs:
           path: |
             coverage_toggle_verilator.info
             coverage_line_verilator.info
+          name: coverview_data
+          path: |
             data.zip
 
   custom-coverage-report:
