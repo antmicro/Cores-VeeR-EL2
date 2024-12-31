@@ -9,6 +9,8 @@ jobs:
     name: Merge Verilator info data
     runs-on: ubuntu-latest
     container: ghcr.io/antmicro/cores-veer-el2:20241230
+    env:
+      DEBIAN_FRONTEND: "noninteractive"
     steps:
       - uses: actions/checkout@v3
         with:
@@ -53,6 +55,8 @@ jobs:
       - name: Merge data
         shell: bash
         run: |
+          sudo apt update
+          sudo apt install -y zip unzip
           .github/scripts/prepare_coverage_data.sh
 
       - name: Pack artifacts
@@ -153,6 +157,8 @@ jobs:
       - name: Generate reports
         shell: bash
         run: |
+          sudo apt update
+          sudo apt install zip unzip nodejs npm
           export PATH=${{ env.LCOV_PATH }}:${PATH}
           sis -d reports . --report-dir report --src-pattern \*design\*
           mv report sis
