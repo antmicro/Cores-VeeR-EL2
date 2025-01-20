@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-20.04
     env:
       VERILATOR_VERSION: dont-skip-genblocks
-      VERILATOR_UVM_VERSION: 7ca2d6470a
       OPENOCD_VERSION: riscv-nohalt-rebase
       RENODE_VERSION: 1.15.3+20240924gitc7bc336bb
       SPIKE_VERSION: d70ea67d
@@ -48,7 +47,6 @@ jobs:
         file: .github/Dockerfile
         build-args: |
           VERILATOR_VERSION=${{ env.VERILATOR_VERSION }}
-          VERILATOR_UVM_VERSION=${{ env.VERILATOR_UVM_VERSION }}
           OPENOCD_VERSION=${{ env.OPENOCD_VERSION }}
           RENODE_VERSION=${{ env.RENODE_VERSION }}
           SPIKE_VERSION=${{ env.SPIKE_VERSION }}

@@ -1,20 +1,17 @@
 FROM ubuntu:22.04
 
 ARG VERILATOR_VERSION
-ARG VERILATOR_UVM_VERSION
 ARG OPENOCD_VERSION
 ARG RENODE_VERSION
 ARG SPIKE_VERSION
 
 ENV VERILATOR_VERSION=$VERILATOR_VERSION
-ENV VERILATOR_UVM_VERSION=$VERILATOR_UVM_VERSION
 ENV OPENOCD_VERSION=$OPENOCD_VERSION
 ENV RENODE_VERSION=$RENODE_VERSION
 ENV SPIKE_VERSION=$SPIKE_VERSION
 
 # All versions shall be stated explicitly
 RUN : "${VERILATOR_VERSION:?Environment variable VERILATOR_VERSION is not set or empty}" && \
-    : "${VERILATOR_UVM_VERSION:?Environment variable VERILATOR_UVM_VERSION is not set or empty}" && \
     : "${OPENOCD_VERSION:?Environment variable OPENOCD_VERSION is not set or empty}" && \
     : "${RENODE_VERSION:?Environment variable RENODE_VERSION is not set or empty}" && \
     : "${SPIKE_VERSION:?Environment variable SPIKE_VERSION is not set or empty}"
@@ -72,20 +69,6 @@ RUN git clone https://github.com/antmicro/verilator verilator && \
     cd .. && \
     rm -rf verilator
 
-# TODO We're using a separate version of verilator for uvm tests.
-# TODO Handle this properly.
-# TODO We may use docker compose or at least clean the previous tree and rebuild instead of cloning again.
-# Clone and build Verilator (UVM)
-RUN git clone https://github.com/verilator/verilator verilator && \
-    cd verilator && \
-    git checkout ${VERILATOR_UVM_VERSION} && \
-    autoconf && \
-    ./configure --prefix=/opt/verilator_uvm && \
-    make -j $(nproc) && \
-    make install && \
-    cd .. && \
-    rm -rf verilator
-
 # Clone and build OpenOCD
 RUN git clone https://github.com/antmicro/openocd openocd && \
     cd openocd && \
@@ -130,7 +113,6 @@ RUN git clone https://github.com/riscv-software-src/riscv-isa-sim spike && \
 ENV PATH="$PATH:/opt/renode:/opt/verilator/bin:/opt/openocd/bin:/opt/spike/bin"
 
 RUN verilator --version
-RUN /opt/verilator_uvm/bin/verilator --version
 RUN openocd --version
 RUN renode --version
 RUN spike 2>&1 | head -n1
