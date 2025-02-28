@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     env:
-      VERILATOR_VERSION: dont-skip-genblocks
+      VERILATOR_VERSION: cond-coverage
       OPENOCD_VERSION: riscv-nohalt-rebase
       RENODE_VERSION: 1.15.3+20240924gitc7bc336bb
       SPIKE_VERSION: d70ea67d
