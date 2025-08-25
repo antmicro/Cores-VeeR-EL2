@@ -12,7 +12,7 @@ jobs:
     env:
       VERILATOR_VERSION: cond-coverage
       OPENOCD_VERSION: riscv-nohalt-rebase
-      RENODE_VERSION: 1.15.3+20240924gitc7bc336bb
+      RENODE_VERSION: 1.16.0+20250823git5560fca43
       SPIKE_VERSION: d70ea67d
       DEBIAN_FRONTEND: "noninteractive"
 
