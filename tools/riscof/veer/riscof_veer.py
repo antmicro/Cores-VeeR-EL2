@@ -148,7 +148,7 @@ class veer(pluginTemplate):
 
           # substitute all variables in the commands that we created in the initialize
           # function
-          isa  = testentry['isa'].lower()
+          isa  = testentry['isa'].lower() + "_zicsr"
           cmds = [
             self.compile_cmd.format(isa, self.xlen, test, elf, compile_macros),
             self.convert_cmd.format(isa, self.xlen, test, elf),
@@ -169,8 +169,8 @@ class veer(pluginTemplate):
             ]
 
           # concatenate all commands that need to be executed within a make-target.
-          execute  = 'cd ' + testentry['work_dir'] + '; '
-          execute += '; '.join(cmds + simcmd)
+          execute  = 'cd ' + testentry['work_dir'] + '&& '
+          execute += '&& '.join(cmds + simcmd)
 
           # create a target. The makeutil will create a target with the name "TARGET<num>" where num
           # starts from 0 and increments automatically for each new target that is added
