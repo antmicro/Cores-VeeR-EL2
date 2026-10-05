@@ -186,6 +186,10 @@ CFLAGS += -std=c++14
 # compiles), or -O for balance.
 VERILATOR_MAKE_FLAGS = OPT_FAST="-Os"
 
+ifdef SYNTH_BUILD
+include $(RV_ROOT)/tools/synth.mk
+endif
+
 # Targets
 all: clean verilator
 
