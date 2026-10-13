@@ -54,9 +54,8 @@ jobs:
       - name: Verify OpenRoad
         run: |
           pushd bazel-orfs
-          OR_BIN=$(bazelisk cquery -c opt --output=files @openroad//:openroad)
-          echo "$OR_BIN"
-          "$PWD/$OR_BIN" -version
+          echo "$(pwd)"
+          bazel-out/k8-opt/bin/external/openroad+/openroad -version
           popd
 
       - name: Cache Yosys
