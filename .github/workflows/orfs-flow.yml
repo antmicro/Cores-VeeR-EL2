@@ -1,0 +1,87 @@
+name: VeeR-EL2 ORFS Flow
+
+on:
+  workflow_call:
+  push:
+    branches: [106526-setup-orfs-ci-flow]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  setup-orfs:
+    name: Setup ORFS
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+    env:
+      DEBIAN_FRONTEND: "noninteractive"
+
+    steps:
+      - name: Install Bazelisk
+        run: |
+          apt -qqy --no-install-recommends install ca-certificates python3 build-essential clang git file zip wget tree &> /dev/null && \
+          wget -q -nv https://github.com/bazelbuild/bazelisk/releases/download/v1.20.0/bazelisk-linux-amd64 -O /usr/local/bin/bazelisk && \
+          chmod +x /usr/local/bin/bazelisk
+
+      - name: Verify Bazelisk
+        run: /usr/local/bin/bazelisk --version
+
+      - name: Install Bazel ORFS
+        run: |
+          git clone git@github.com:The-OpenROAD-Project/bazel-orfs.git
+          pushd bazel-orfs
+          git checkout main
+          popd
+
+      - name: Cache OpenRoad
+        id: openroad-cache
+        uses: actions/cache@v6
+        with:
+          path: /opt/openroad
+          key: openroad-${{ runner.os }}
+
+      - name: Install OpenRoad
+        if: steps.openroad-cache.outputs.cache-hit != 'true'
+        run: |
+          pushd bazel-orfs
+          bazelisk build :openroad -c opt
+          popd
+
+      - name: Verify OpenRoad
+        run: /opt/openroad/bin/openroad --version
+
+      - name: Cache Yosys
+        id: yosys-cache
+        uses: actions/cache@v6
+        with:
+          path: /opt/yosys
+          key: yosys-${{ runner.os }}
+
+      - name: Install Yosys
+        if: steps.yosys-cache.outputs.cache-hit != 'true'
+        run: |
+          pushd bazel-orfs
+          bazelisk build //mock/yosys/src/bin:yosys -c opt
+          popd
+
+      - name: Verify Yosys
+        run: /opt/yosys/bin/yosys --version
+
+  synthesis:
+    name: Run ORFS flow
+    needs: setup-orfs
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+
+    env:
+      DEBIAN_FRONTEND: "noninteractive"
+
+    steps:
+      - name: Run GCD Synthesis
+        run: |
+          pushd bazel-orfs
+          bazelisk run @orfs//flow/designs/asap7/gcd:gcd_synth
+          popd
