@@ -3,7 +3,7 @@ name: VeeR-EL2 ORFS Flow
 on:
   workflow_call:
   push:
-    branches: [106526-setup-orfs-ci-flow]
+    branches: [106526-setup-orfs-ci-flow] # TODO: remove after testing
 
 defaults:
   run:
@@ -21,9 +21,11 @@ jobs:
     steps:
       - name: Install Bazelisk
         run: |
-          apt -qqy --no-install-recommends install ca-certificates python3 build-essential clang git file zip wget tree &> /dev/null && \
-          wget -q -nv https://github.com/bazelbuild/bazelisk/releases/download/v1.20.0/bazelisk-linux-amd64 -O /usr/local/bin/bazelisk && \
-          chmod +x /usr/local/bin/bazelisk
+          sudo apt -qqy update
+          sudo apt -qqy install --no-install-recommends ca-certificates python3 build-essential clang git file zip wget tree &> /dev/null
+          sudo wget -q -nv https://github.com/bazelbuild/bazelisk/releases/download/v1.20.0/bazelisk-linux-amd64 \
+            -O /usr/local/bin/bazelisk
+          sudo chmod +x /usr/local/bin/bazelisk
 
       - name: Verify Bazelisk
         run: /usr/local/bin/bazelisk --version
