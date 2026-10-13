@@ -48,11 +48,14 @@ jobs:
         if: steps.openroad-cache.outputs.cache-hit != 'true'
         run: |
           pushd bazel-orfs
-          bazelisk build :openroad -c opt
+          bazelisk build :openroad -c opt &> /dev/null
           popd
 
       - name: Verify OpenRoad
-        run: /opt/openroad/bin/openroad --version
+        run: |
+          pushd bazel-orfs
+          bazel-out/k8-opt-exec/bin/external/openroad+/openroad -version
+          popd
 
       - name: Cache Yosys
         id: yosys-cache
@@ -69,7 +72,10 @@ jobs:
           popd
 
       - name: Verify Yosys
-        run: /opt/yosys/bin/yosys --version
+        run: |
+          pushd bazel-orfs
+          bazel-out/k8-opt/bin/mock/yosys/src/bin/yosys -V
+          popd
 
   synthesis:
     name: Run ORFS flow
