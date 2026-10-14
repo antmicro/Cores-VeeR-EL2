@@ -63,7 +63,6 @@ jobs:
 
       - name: Configure Bazel
         if: steps.orfs-cache.outputs.cache-hit != 'true'
-        working-directory: bazel-orfs
         run: |
           mkdir -p /tmp/distdir
           for url in \
@@ -85,7 +84,6 @@ jobs:
 
       - name: Build Yosys
         if: steps.orfs-cache.outputs.cache-hit != 'true'
-        working-directory: bazel-orfs
         run: |
           git clone https://github.com/YosysHQ/yosys.git
           pushd yosys
@@ -162,8 +160,13 @@ jobs:
           openroad -version
           yosys -V
 
-      - name: Run synthesis
+      - name: Check out bazel-orfs
+        if: steps.orfs-cache.outputs.cache-hit != 'true'
         run: |
-          pushd bazel-orfs
+          git clone https://github.com/The-OpenROAD-Project/bazel-orfs.git bazel-orfs
+          git -C bazel-orfs checkout "$BAZEL_ORFS_BRANCH"
+
+      - name: Run synthesis
+        working-directory: bazel-orfs
+        run: |
           bazelisk run @orfs//flow/designs/asap7/gcd:gcd_synth
-          popd
