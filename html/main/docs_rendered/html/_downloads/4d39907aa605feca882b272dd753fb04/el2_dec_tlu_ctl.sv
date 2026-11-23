@@ -38,6 +38,8 @@ import el2_pkg::*;
    input logic scan_mode,
    /*pragma coverage on*/
 
+   output logic reset_delayed, // Reset detection
+
    //rst_vec is supposed to be connected to constant in the top level
    /*pragma coverage off*/
    input logic [31:1] rst_vec, // reset vector, from core pins
@@ -174,18 +176,22 @@ import el2_pkg::*;
    output logic o_cpu_halt_ack, // halt req ack
    output logic o_cpu_run_ack, // run req ack
    output logic o_debug_mode_status, // Core to the PMU that core is in debug mode. When core is in debug mode, the PMU should refrain from sendng a halt or run request
+   output logic resume_halt,        // Exit PMU/FW halt
 
    /*pragma coverage off*/
    input logic [31:4] core_id, // Core ID
    /*pragma coverage on*/
 
    // external MPC halt/run interface
-   input logic mpc_debug_halt_req, // Async halt request
-   input logic mpc_debug_run_req, // Async run request
-   input logic mpc_reset_run_req, // Run/halt after reset
+   input logic mpc_debug_halt_req,  // Async halt request
+   input logic mpc_debug_run_req,   // Async run request
+   input logic mpc_reset_run_req,   // Run/halt after reset
    output logic mpc_debug_halt_ack, // Halt ack
-   output logic mpc_debug_run_ack, // Run ack
+   output logic mpc_debug_run_ack,  // Run ack
    output logic debug_brkpt_status, // debug breakpoint
+
+   output logic take_halt,          // Enter halt state
+   output logic resume_debug_halt,  // Exit debug halt
 
    output logic [3:0] dec_tlu_meicurpl, // to PIC
    output logic [3:0] dec_tlu_meipt, // to PIC
@@ -265,6 +271,30 @@ import el2_pkg::*;
 
 `endif
 
+`ifdef RV_TRIPLE_MODULAR_REDUNDANCY_ENABLE
+   output logic [31:1] dec_tlu_npc,   // Next state of the PC register
+
+   output logic        dec_csr_wen_r_mod_tmr,  // csr write enable at wb
+   output logic [11:0] dec_csr_wraddr_r_tmr,   // write address for csr
+   output logic [31:0] dec_csr_wrdata_r_tmr,   // csr write data at wb
+
+   output logic csr_mitctl0_tmr,
+   output logic csr_mitctl1_tmr,
+   output logic csr_mitb0_tmr,
+   output logic csr_mitb1_tmr,
+   output logic csr_mitcnt0_tmr,
+   output logic csr_mitcnt1_tmr,
+
+   output logic dec_pause_state_tmr,          // Paused
+   output logic dec_tlu_pmu_fw_halted_tmr,    // pmu/fw halted
+   output logic internal_dbg_halt_timers_tmr, // debug halted
+
+   input  logic [31:0] dec_timer_rddata_d_tmr, // timer CSR read data
+   input  logic        dec_timer_read_d_tmr,   // timer CSR address match
+   input  logic        dec_timer_t0_pulse_tmr, // timer0 int
+   input  logic        dec_timer_t1_pulse_tmr, // timer1 int
+`endif
+
    // pmp
    output el2_pmp_cfg_pkt_t pmp_pmpcfg  [pt.PMP_ENTRIES],
    output logic [31:0]      pmp_pmpaddr [pt.PMP_ENTRIES]
@@ -277,7 +307,7 @@ import el2_pkg::*;
                  tdata_kill_write;
 
 
-   logic reset_delayed, reset_detect, reset_detected;
+   logic reset_detect, reset_detected;
    logic wr_mstatus_r, wr_mtvec_r, wr_mcyclel_r, wr_mcycleh_r,
          wr_minstretl_r, wr_minstreth_r, wr_mscratch_r, wr_mepc_r, wr_mcause_r, wr_mscause_r, wr_mtval_r,
          wr_mrac_r, wr_meihap_r, wr_meicurpl_r, wr_meipt_r, wr_dcsr_r,
@@ -374,7 +404,7 @@ import el2_pkg::*;
    logic i0_trigger_eval_r;
 
    logic request_debug_mode_r, request_debug_mode_r_d1, request_debug_mode_done, request_debug_mode_done_f;
-   logic take_halt, halt_taken, halt_taken_f, internal_dbg_halt_mode, dbg_tlu_halted_f, take_reset,
+   logic halt_taken, halt_taken_f, internal_dbg_halt_mode, dbg_tlu_halted_f, take_reset,
          dbg_tlu_halted, core_empty, lsu_idle_any_f, ifu_miss_state_idle_f, resume_ack_ns,
          debug_halt_req_f, debug_resume_req_f_raw, debug_resume_req_f, enter_debug_halt_req, dcsr_single_step_done, dcsr_single_step_done_f,
          debug_halt_req_d1, debug_halt_req_ns, dcsr_single_step_running, dcsr_single_step_running_f, internal_dbg_halt_timers;
@@ -416,6 +446,7 @@ import el2_pkg::*;
    // PMP unit, isolated for size reasons
    logic [31:0] dec_pmp_rddata_d;
    logic dec_pmp_read_d;
+   logic dec_pmp_out_of_range;
 
    logic nmi_int_sync, timer_int_sync, soft_int_sync, i_cpu_halt_req_sync, i_cpu_run_req_sync, mpc_debug_halt_req_sync, mpc_debug_run_req_sync, mpc_debug_halt_req_sync_raw;
    logic csr_wr_clk;
@@ -506,7 +537,29 @@ import el2_pkg::*;
 
 `endif
 
+`ifdef RV_TRIPLE_MODULAR_REDUNDANCY_ENABLE
+   assign dec_csr_wen_r_mod_tmr = dec_csr_wen_r_mod;
+   assign dec_csr_wraddr_r_tmr = dec_csr_wraddr_r;
+   assign dec_csr_wrdata_r_tmr = dec_csr_wrdata_r;
+
+   assign csr_mitctl0_tmr = csr_mitctl0;
+   assign csr_mitctl1_tmr = csr_mitctl1;
+   assign csr_mitb0_tmr = csr_mitb0;
+   assign csr_mitb1_tmr = csr_mitb1;
+   assign csr_mitcnt0_tmr = csr_mitcnt0;
+   assign csr_mitcnt1_tmr = csr_mitcnt1;
+
+   assign dec_pause_state_tmr = dec_pause_state;
+   assign dec_tlu_pmu_fw_halted_tmr = dec_tlu_pmu_fw_halted;
+   assign internal_dbg_halt_timers_tmr = internal_dbg_halt_timers;
+
+   assign dec_timer_rddata_d = dec_timer_rddata_d_tmr;
+   assign dec_timer_read_d = dec_timer_read_d_tmr;
+   assign dec_timer_t0_pulse = dec_timer_t0_pulse_tmr;
+   assign dec_timer_t1_pulse = dec_timer_t1_pulse_tmr;
+`else
    el2_dec_timer_ctl  #(.pt(pt)) int_timers(.*);
+`endif
    // end of internal timers
 
    el2_dec_pmp_ctl  #(.pt(pt)) pmp(.*);
@@ -1096,6 +1149,7 @@ localparam MSECCFG_MML   = 0;
 
    // MPC run collides with DBG halt, fix it here
    assign debug_resume_req_f = debug_resume_req_f_raw & ~dbg_halt_req;
+   assign resume_debug_halt = debug_resume_req_f;
 
    assign dec_tlu_debug_stall = debug_halt_req_f;
    assign dec_tlu_dbg_halted = dbg_tlu_halted_f;
@@ -1558,7 +1612,8 @@ end
    assign interrupt_path[31:1] = take_nmi ? nmi_vec[31:1] : ((mtvec[0] == 1'b1) ? vectored_path[31:1] : {mtvec[30:1], 1'b0});
 
    assign sel_npc_r  = lsu_i0_rfnpc_r | fence_i_r | iccm_repair_state_rfnpc | (i_cpu_run_req_d1 & ~interrupt_valid_r) | (rfpc_i0_r & ~dec_tlu_i0_valid_r);
-   assign sel_npc_resume = (i_cpu_run_req_d1 & pmu_fw_tlu_halted_f) | pause_expired_r;
+   assign resume_halt = i_cpu_run_req_d1 & pmu_fw_tlu_halted_f;
+   assign sel_npc_resume = resume_halt | pause_expired_r;
 
    assign sel_fir_addr = take_ext_int_start_d3 & ~|lsu_fir_error[1:0];
 
@@ -1728,7 +1783,11 @@ end
 
    assign wr_mcyclel_r = dec_csr_wen_r_mod & (dec_csr_wraddr_r[11:0] == MCYCLEL);
 
-   assign mcyclel_cout_in = ~(kill_ebreak_count_r | (dec_tlu_dbg_halted & dcsr[DCSR_STOPC]) | dec_tlu_pmu_fw_halted | mcountinhibit[0]);
+   assign mcyclel_cout_in = ~(kill_ebreak_count_r |
+                              (dec_tlu_dbg_halted & dcsr[DCSR_STOPC]) |
+                              dec_tlu_pmu_fw_halted | mcountinhibit[0] |
+                              (pt.MCYCLE_STOP_MPC_DEBUG_HALT & (dbg_tlu_halted_f | ~reset_detect))
+                            );
 
    // split for power
    assign {mcyclela_cout, mcyclel_inc[7:0]}  = mcyclel[7:0] +  {7'b0, 1'b1};
@@ -1825,6 +1884,10 @@ end
                           ({31{~pc0_valid_r}} & pc_r_d1[31:1]));
 
    rvdffpcie #(31)  pwbc_ff (.*, .en(pc0_valid_r), .din(pc_r[31:1]), .dout(pc_r_d1[31:1]));
+
+`ifdef RV_TRIPLE_MODULAR_REDUNDANCY_ENABLE
+   assign dec_tlu_npc = npc_r;
+`endif
 
    assign wr_mepc_r = dec_csr_wen_r_mod & (dec_csr_wraddr_r[11:0] == MEPC);
 
@@ -2914,11 +2977,11 @@ assign dec_tlu_postsync_d = postsync & dec_csr_any_unq_d;
 assign conditionally_illegal = ((csr_mitcnt0 | csr_mitcnt1 | csr_mitb0 | csr_mitb1 | csr_mitctl0 | csr_mitctl1) & ~|pt.TIMER_LEGAL_EN);
 
 assign valid_csr = ( legal & (~(csr_dcsr | csr_dpc | csr_dmst | csr_dicawics | csr_dicad0 | csr_dicad0h | csr_dicad1 | csr_dicago) | dbg_tlu_halted_f)
-                     & ~fast_int_meicpct & ~conditionally_illegal);
+                     & ~fast_int_meicpct & ~dec_pmp_out_of_range & ~conditionally_illegal);
 
 assign dec_csr_legal_d = ( dec_csr_any_unq_d &
                            valid_csr &          // of a valid CSR
-                           ~(dec_csr_wen_unq_d & (csr_mvendorid | csr_marchid | csr_mimpid | csr_mhartid | csr_mdseac | csr_meihap)) // that's not a write to a RO CSR
+                           ~(dec_csr_wen_unq_d & (dec_csr_rdaddr_d[11:10] == 2'b11)) // that's not a write to a read-only (RO) CSR
                            );
    // CSR read mux
 logic [31:0] mstatus_rf, mie_rf, mtvec_rf, mscratch_rf, mepc_rf, mcause_rf, mtval_rf, mip_rf, mcyclel_rf, mcycleh_rf, minstretl_rf, minstreth_rf, mrac_rf;

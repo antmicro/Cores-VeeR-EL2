@@ -13,7 +13,7 @@
     
     
       
-        <title>11. Debug Support - RISC-V VeeR EL2 Programmer's Reference Manual  documentation</title>
+        <title>12. Debug Support - RISC-V VeeR EL2 Programmer's Reference Manual  documentation</title>
       
     
     
@@ -88,7 +88,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              11. Debug Support
+              12. Debug Support
             
           </span>
         </div>
@@ -289,6 +289,22 @@
     <li class="md-nav__item">
       <a href="dual-core-lock-step.html" class="md-nav__link">
         <span class="md-ellipsis">Dual-<wbr>Core Lockstep <wbr>(DCLS)</span>
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="triple-modular-redundancy.html" class="md-nav__link">
+        <span class="md-ellipsis">Triple Modular Redundancy <wbr>(TMR)</span>
       </a>
     </li>
   
@@ -896,11 +912,11 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
-<h1 id="debug-support"><span class="section-number">11. </span>Debug Support<a class="headerlink" href="#debug-support" title="Link to this heading">¶</a></h1>
+<h1 id="debug-support"><span class="section-number">12. </span>Debug Support<a class="headerlink" href="#debug-support" title="Link to this heading">¶</a></h1>
 <p>The VeeR EL2 core conforms to the “RISC-V Debug Specification 0.13.2, with JTAG DTM” document <a class="reference internal" href="intro.html#ref-3"><span class="std std-ref">[3]</span></a>.
 This chapter provides a description of the implemented debug-related control and status register definitions.
 For a RISC-V debug overview and detailed feature descriptions, refer to corresponding sections in <a class="reference internal" href="intro.html#ref-3"><span class="std std-ref">[3]</span></a>.</p>
-<h2 id="control-status-registers"><span class="section-number">11.1. </span>Control/Status Registers<a class="headerlink" href="#control-status-registers" title="Link to this heading">¶</a></h2>
+<h2 id="control-status-registers"><span id="controlstatus-registers"></span><span class="section-number">12.1. </span>Control/Status Registers<a class="headerlink" href="#control-status-registers" title="Link to this heading">¶</a></h2>
 <p>The RISC-V Debug architecture defines three separate address spaces: JTAG, Debug Module Interface, and RISC-V CSR.
 The registers associated with these three address spaces are described in the following sections:</p>
 <ul class="simple">
@@ -908,8 +924,8 @@ The registers associated with these three address spaces are described in the fo
 <li><p><a class="reference internal" href="#control-status-registers-in-debug-module-interface-address-space"><span class="std std-ref">Control/Status Registers in Debug Module Interface Address Space</span></a></p></li>
 <li><p><a class="reference internal" href="#control-status-registers-in-risc-v-csr-address-space"><span class="std std-ref">Control/Status Registers in RISC-V CSR Address Space</span></a></p></li>
 </ul>
-<h3 id="control-status-registers-in-jtag-address-space"><span class="section-number">11.1.1. </span>Control/Status Registers in JTAG Address Space<a class="headerlink" href="#control-status-registers-in-jtag-address-space" title="Link to this heading">¶</a></h3>
-<p><a class="reference internal" href="#tab-registers-jtag"><span class="std std-numref">Table 11.1</span></a> summarizes the control/status registers in the JTAG Debug Transport Module address space.</p>
+<h3 id="control-status-registers-in-jtag-address-space"><span id="controlstatus-registers-in-jtag-address-space"></span><span class="section-number">12.1.1. </span>Control/Status Registers in JTAG Address Space<a class="headerlink" href="#control-status-registers-in-jtag-address-space" title="Link to this heading">¶</a></h3>
+<p><a class="reference internal" href="#tab-registers-jtag"><span class="std std-numref">Table 12.1</span></a> summarizes the control/status registers in the JTAG Debug Transport Module address space.</p>
 <p>Addresses shown below are in the 5-bit JTAG address space.
 A control/status register is addressed by setting the 5bit JTAG IR register.</p>
 <div class="admonition note">
@@ -917,7 +933,7 @@ A control/status register is addressed by setting the 5bit JTAG IR register.</p>
 <p>The core complex clock (<code class="docutils literal notranslate"><span class="pre">clk</span></code>) frequency must be at least twice the JTAG clock (<code class="docutils literal notranslate"><span class="pre">jtag_tck</span></code>) frequency for the JTAG data to pass correctly through the clock domain crossing synchronizers.</p>
 </div>
 <table class="docutils data align-default" id="tab-registers-jtag">
-<caption><span class="caption-number">Table 11.1 </span><span class="caption-text">Registers in JTAG Debug Transport Module Address Space</span><a class="headerlink" href="#tab-registers-jtag" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.1 </span><span class="caption-text">Registers in JTAG Debug Transport Module Address Space</span><a class="headerlink" href="#tab-registers-jtag" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>JTAG DTM Address</strong></p></th>
 <th class="head"><p><strong>Name</strong></p></th>
@@ -948,14 +964,14 @@ A control/status register is addressed by setting the 5bit JTAG IR register.</p>
 </tr>
 </tbody>
 </table>
-<h4 id="idcode-register-idcode"><span class="section-number">11.1.1.1. </span>IDCODE Register (IDCODE)<a class="headerlink" href="#idcode-register-idcode" title="Link to this heading">¶</a></h4>
+<h4 id="idcode-register-idcode"><span class="section-number">12.1.1.1. </span>IDCODE Register (IDCODE)<a class="headerlink" href="#idcode-register-idcode" title="Link to this heading">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">IDCODE</span></code> register is a standard JTAG register.
 It is selected in the JTAG TAP controller’s IR register when the TAP state machine is reset.
 The <code class="docutils literal notranslate"><span class="pre">IDCODE</span></code> register’s definition is exactly as defined in IEEE Std 1149.1-2013.</p>
 <p>This register is read-only.</p>
 <p>This register is mapped to the 5-bit JTAG address space.</p>
 <table class="docutils data align-default" id="tab-idcode-registers">
-<caption><span class="caption-number">Table 11.2 </span><span class="caption-text">IDCODE Register (IDCODE, at JTAG 0x01)</span><a class="headerlink" href="#tab-idcode-registers" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.2 </span><span class="caption-text">IDCODE Register (IDCODE, at JTAG 0x01)</span><a class="headerlink" href="#tab-idcode-registers" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -997,11 +1013,11 @@ The <code class="docutils literal notranslate"><span class="pre">IDCODE</span></
 </tr>
 </tbody>
 </table>
-<h4 id="dtm-control-and-status-register-dtmcs"><span class="section-number">11.1.1.2. </span>DTM Control and Status Register (dtmcs)<a class="headerlink" href="#dtm-control-and-status-register-dtmcs" title="Link to this heading">¶</a></h4>
+<h4 id="dtm-control-and-status-register-dtmcs"><span class="section-number">12.1.1.2. </span>DTM Control and Status Register (dtmcs)<a class="headerlink" href="#dtm-control-and-status-register-dtmcs" title="Link to this heading">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">dtmcs</span></code> register controls and provides status of the Debug Transport Module (DTM).</p>
 <p>This register is mapped to the 5-bit JTAG address space.</p>
 <table class="docutils data align-default" id="tab-dtmcs">
-<caption><span class="caption-number">Table 11.3 </span><span class="caption-text">DTM Control and Status Register (dtmcs, at JTAG 0x10)</span><a class="headerlink" href="#tab-dtmcs" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.3 </span><span class="caption-text">DTM Control and Status Register (dtmcs, at JTAG 0x10)</span><a class="headerlink" href="#tab-dtmcs" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -1064,7 +1080,7 @@ The <code class="docutils literal notranslate"><span class="pre">IDCODE</span></
 </tr>
 <tr class="row-even"><td><p>abits</p></td>
 <td><p>9:4</p></td>
-<td><p>Size of address field in <code class="docutils literal notranslate"><span class="pre">dmi</span></code> register (see <a class="reference internal" href="#tab-dmi"><span class="std std-numref">Table 11.4</span></a>)</p></td>
+<td><p>Size of address field in <code class="docutils literal notranslate"><span class="pre">dmi</span></code> register (see <a class="reference internal" href="#tab-dmi"><span class="std std-numref">Table 12.4</span></a>)</p></td>
 <td><p>R</p></td>
 <td><p>7</p></td>
 </tr>
@@ -1076,7 +1092,7 @@ The <code class="docutils literal notranslate"><span class="pre">IDCODE</span></
 </tr>
 </tbody>
 </table>
-<h4 id="debug-module-interface-access-register-dmi"><span class="section-number">11.1.1.3. </span>Debug Module Interface Access Register (dmi)<a class="headerlink" href="#debug-module-interface-access-register-dmi" title="Link to this heading">¶</a></h4>
+<h4 id="debug-module-interface-access-register-dmi"><span class="section-number">12.1.1.3. </span>Debug Module Interface Access Register (dmi)<a class="headerlink" href="#debug-module-interface-access-register-dmi" title="Link to this heading">¶</a></h4>
 <p>The dmi register allows access to the Debug Module Interface (DMI).
 In the JTAG TAP controller’s Update-DR state, the DTM starts the operation specified in the <em>op</em> field.
 In the JTAG TAP controller’s Capture-DR state, the DTM updates the <em>data</em> field with the result from that operation.</p>
@@ -1086,7 +1102,7 @@ In the JTAG TAP controller’s Capture-DR state, the DTM updates the <em>data</e
 </div>
 <p>This register is mapped to the 5-bit JTAG address space.</p>
 <table class="docutils data align-default" id="tab-dmi">
-<caption><span class="caption-number">Table 11.4 </span><span class="caption-text">Debug Module Interface Access Register (dmi, at JTAG 0x11)</span><a class="headerlink" href="#tab-dmi" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.4 </span><span class="caption-text">Debug Module Interface Access Register (dmi, at JTAG 0x11)</span><a class="headerlink" href="#tab-dmi" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -1128,7 +1144,7 @@ In the JTAG TAP controller’s Capture-DR state, the DTM updates the <em>data</e
 </tr>
 </tbody>
 </table>
-<h4 id="bypass-register-bypass"><span class="section-number">11.1.1.4. </span>BYPASS Register (BYPASS)<a class="headerlink" href="#bypass-register-bypass" title="Link to this heading">¶</a></h4>
+<h4 id="bypass-register-bypass"><span class="section-number">12.1.1.4. </span>BYPASS Register (BYPASS)<a class="headerlink" href="#bypass-register-bypass" title="Link to this heading">¶</a></h4>
 <p>The BYPASS register is a standard JTAG register.
 It is implemented as a 1-bit register which has no functional effect, except adding a 1-bit delay.
 It allows a debugger to not communicate with this TAP (i.e., bypass it).</p>
@@ -1138,7 +1154,7 @@ It allows a debugger to not communicate with this TAP (i.e., bypass it).</p>
 </div>
 <p>This register is mapped to the 5-bit JTAG address space.</p>
 <table class="docutils data align-default" id="tab-bypass">
-<caption><span class="caption-number">Table 11.5 </span><span class="caption-text">BYPASS Register (BYPASS, at JTAG 0x1F)</span><a class="headerlink" href="#tab-bypass" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.5 </span><span class="caption-text">BYPASS Register (BYPASS, at JTAG 0x1F)</span><a class="headerlink" href="#tab-bypass" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -1156,13 +1172,13 @@ It allows a debugger to not communicate with this TAP (i.e., bypass it).</p>
 </tr>
 </tbody>
 </table>
-<h3 id="control-status-registers-in-debug-module-interface-address-space"><span class="section-number">11.1.2. </span>Control/Status Registers in Debug Module Interface Address Space<a class="headerlink" href="#control-status-registers-in-debug-module-interface-address-space" title="Link to this heading">¶</a></h3>
-<p><a class="reference internal" href="#tab-registers-dmi"><span class="std std-numref">Table 11.6</span></a> Summarizes The Control/Status Registers In The Debug Module Interface Address Space.</p>
+<h3 id="control-status-registers-in-debug-module-interface-address-space"><span id="controlstatus-registers-in-debug-module-interface-address-space"></span><span class="section-number">12.1.2. </span>Control/Status Registers in Debug Module Interface Address Space<a class="headerlink" href="#control-status-registers-in-debug-module-interface-address-space" title="Link to this heading">¶</a></h3>
+<p><a class="reference internal" href="#tab-registers-dmi"><span class="std std-numref">Table 12.6</span></a> Summarizes The Control/Status Registers In The Debug Module Interface Address Space.</p>
 <p>Registers in the Debug Module Interface address space are accessed through the <code class="docutils literal notranslate"><span class="pre">dmi</span></code> register in the JTAG address space (see <a class="reference internal" href="#debug-module-interface-access-register-dmi"><span class="std std-ref">Debug Module Interface Access Register (dmi)</span></a>).
 The <em>address</em> field of the <code class="docutils literal notranslate"><span class="pre">dmi</span></code> register selects the Debug Module Interface register to be accessed, the <em>data</em> field either provides the value to be written to the selected register or captures that register’s value, and the <em>op</em> field selects the operation to be performed.</p>
 <p>Addresses shown below are offsets relative to the Debug Module base address. VeeR EL2 supports a single Debug Module with a base address of 0x00.</p>
 <table class="docutils data align-default" id="tab-registers-dmi">
-<caption><span class="caption-number">Table 11.6 </span><span class="caption-text">Registers in Debug Module Interface Address Space</span><a class="headerlink" href="#tab-registers-dmi" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.6 </span><span class="caption-text">Registers in Debug Module Interface Address Space</span><a class="headerlink" href="#tab-registers-dmi" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>DMI Address</strong></p></th>
 <th class="head"><p><strong>Name</strong></p></th>
@@ -1252,7 +1268,7 @@ The <em>address</em> field of the <code class="docutils literal notranslate"><sp
 <p class="admonition-title">Note</p>
 <p>ICCM, DCCM, and PIC memory ranges are only accessible using the access memory abstract command.</p>
 </div>
-<h3 id="debug-module-control-register-dmcontrol"><span class="section-number">11.1.3. </span>Debug Module Control Register (dmcontrol)<a class="headerlink" href="#debug-module-control-register-dmcontrol" title="Link to this heading">¶</a></h3>
+<h3 id="debug-module-control-register-dmcontrol"><span class="section-number">12.1.3. </span>Debug Module Control Register (dmcontrol)<a class="headerlink" href="#debug-module-control-register-dmcontrol" title="Link to this heading">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">dmcontrol</span></code> register controls the overall Debug Module as well as the hart.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1260,7 +1276,7 @@ The <em>address</em> field of the <code class="docutils literal notranslate"><sp
 </div>
 <p>This register is mapped to the Debug Module Interface address space.</p>
 <table class="docutils data align-default" id="tab-dmcontrol">
-<caption><span class="caption-number">Table 11.7 </span><span class="caption-text">Debug Module Control Register (dmcontrol, at Debug Module Offset 0x10)</span><a class="headerlink" href="#tab-dmcontrol" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.7 </span><span class="caption-text">Debug Module Control Register (dmcontrol, at Debug Module Offset 0x10)</span><a class="headerlink" href="#tab-dmcontrol" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -1352,7 +1368,7 @@ The <em>address</em> field of the <code class="docutils literal notranslate"><sp
 <tr class="row-odd"><td><p>setresethaltreq</p></td>
 <td><p>3</p></td>
 <td><p>Not implemented</p>
-<p><strong>Note</strong>: <em>hasresethaltreq</em> bit in <code class="docutils literal notranslate"><span class="pre">dmstatus</span></code> register (<a class="reference internal" href="#tab-dmstatus"><span class="std std-numref">Table 11.8</span></a>) is ‘0’.</p>
+<p><strong>Note</strong>: <em>hasresethaltreq</em> bit in <code class="docutils literal notranslate"><span class="pre">dmstatus</span></code> register (<a class="reference internal" href="#tab-dmstatus"><span class="std std-numref">Table 12.8</span></a>) is ‘0’.</p>
 </td>
 <td><p>R</p></td>
 <td><p>0</p></td>
@@ -1360,7 +1376,7 @@ The <em>address</em> field of the <code class="docutils literal notranslate"><sp
 <tr class="row-even"><td><p>clrresethaltreq</p></td>
 <td><p>2</p></td>
 <td><p>Not implemented</p>
-<p><strong>Note</strong>: <em>hasresethaltreq</em> bit in <code class="docutils literal notranslate"><span class="pre">dmstatus</span></code> register (<a class="reference internal" href="#tab-dmstatus"><span class="std std-numref">Table 11.8</span></a>) is ‘0’.</p>
+<p><strong>Note</strong>: <em>hasresethaltreq</em> bit in <code class="docutils literal notranslate"><span class="pre">dmstatus</span></code> register (<a class="reference internal" href="#tab-dmstatus"><span class="std std-numref">Table 12.8</span></a>) is ‘0’.</p>
 </td>
 <td><p>R</p></td>
 <td><p>0</p></td>
@@ -1389,12 +1405,12 @@ The <em>address</em> field of the <code class="docutils literal notranslate"><sp
 </tr>
 </tbody>
 </table>
-<h4 id="debug-module-status-register-dmstatus"><span class="section-number">11.1.3.1. </span>Debug Module Status Register (dmstatus)<a class="headerlink" href="#debug-module-status-register-dmstatus" title="Link to this heading">¶</a></h4>
+<h4 id="debug-module-status-register-dmstatus"><span class="section-number">12.1.3.1. </span>Debug Module Status Register (dmstatus)<a class="headerlink" href="#debug-module-status-register-dmstatus" title="Link to this heading">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">dmstatus</span></code> register reports status for the overall Debug Module as well as the hart.</p>
 <p>This register is read-only.</p>
 <p>This register is mapped to the Debug Module Interface address space.</p>
 <table class="docutils data align-default" id="tab-dmstatus">
-<caption><span class="caption-number">Table 11.8 </span><span class="caption-text">Debug Module Status Register (dmstatus, at Debug Module Offset 0x11)</span><a class="headerlink" href="#tab-dmstatus" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.8 </span><span class="caption-text">Debug Module Status Register (dmstatus, at Debug Module Offset 0x11)</span><a class="headerlink" href="#tab-dmstatus" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -1532,7 +1548,7 @@ The <em>address</em> field of the <code class="docutils literal notranslate"><sp
 </tr>
 </tbody>
 </table>
-<h4 id="halt-summary-0-register-haltsum0"><span class="section-number">11.1.3.2. </span>Halt Summary 0 Register (haltsum0)<a class="headerlink" href="#halt-summary-0-register-haltsum0" title="Link to this heading">¶</a></h4>
+<h4 id="halt-summary-0-register-haltsum0"><span class="section-number">12.1.3.2. </span>Halt Summary 0 Register (haltsum0)<a class="headerlink" href="#halt-summary-0-register-haltsum0" title="Link to this heading">¶</a></h4>
 <p>Each bit in the <code class="docutils literal notranslate"><span class="pre">haltsum0</span></code> register indicates whether a specific hart is halted or not.
 Since VeeR EL2 is singlethreaded, only one bit is implemented.</p>
 <div class="admonition note">
@@ -1542,7 +1558,7 @@ Since VeeR EL2 is singlethreaded, only one bit is implemented.</p>
 <p>This register is read-only.</p>
 <p>This register is mapped to the Debug Module Interface address space.</p>
 <table class="docutils data align-default" id="tab-haltsum0">
-<caption><span class="caption-number">Table 11.9 </span><span class="caption-text">Halt Summary 0 Register (haltsum0, at Debug Module Offset 0x40)</span><a class="headerlink" href="#tab-haltsum0" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.9 </span><span class="caption-text">Halt Summary 0 Register (haltsum0, at Debug Module Offset 0x40)</span><a class="headerlink" href="#tab-haltsum0" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -1566,7 +1582,7 @@ Since VeeR EL2 is singlethreaded, only one bit is implemented.</p>
 </tr>
 </tbody>
 </table>
-<h4 id="abstract-control-and-status-register-abstractcs"><span class="section-number">11.1.3.3. </span>Abstract Control and Status Register (abstractcs)<a class="headerlink" href="#abstract-control-and-status-register-abstractcs" title="Link to this heading">¶</a></h4>
+<h4 id="abstract-control-and-status-register-abstractcs"><span class="section-number">12.1.3.3. </span>Abstract Control and Status Register (abstractcs)<a class="headerlink" href="#abstract-control-and-status-register-abstractcs" title="Link to this heading">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">abstractcs</span></code> register provides status information of the abstract command interface and enables clearing of detected command errors.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1574,7 +1590,7 @@ Since VeeR EL2 is singlethreaded, only one bit is implemented.</p>
 </div>
 <p>This register is mapped to the Debug Module Interface address space.</p>
 <table class="docutils data align-default" id="tab-abstractcs">
-<caption><span class="caption-number">Table 11.10 </span><span class="caption-text">Abstract Control and Status Register (abstractcs, at Debug Module Offset 0x16)</span><a class="headerlink" href="#tab-abstractcs" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.10 </span><span class="caption-text">Abstract Control and Status Register (abstractcs, at Debug Module Offset 0x16)</span><a class="headerlink" href="#tab-abstractcs" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -1657,7 +1673,7 @@ Since VeeR EL2 is singlethreaded, only one bit is implemented.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="abstract-command-register-command"><span class="section-number">11.1.4. </span>Abstract Command Register (command)<a class="headerlink" href="#abstract-command-register-command" title="Link to this heading">¶</a></h3>
+<h3 id="abstract-command-register-command"><span class="section-number">12.1.4. </span>Abstract Command Register (command)<a class="headerlink" href="#abstract-command-register-command" title="Link to this heading">¶</a></h3>
 <p>Writes to the command register <code class="docutils literal notranslate"><span class="pre">cause</span></code> the corresponding abstract command to be executed.</p>
 <p>Writing this register while an abstract command is executing causes the <em>cmderr</em> field in the abstractcs register (see <a class="reference internal" href="#abstract-control-and-status-register-abstractcs"><span class="std std-ref">Abstract Control and Status Register (abstractcs)</span></a>) to be set to ‘1’ (i.e., ‘busy’), if it is ‘0’.
 If the <em>cmderr</em> field is non-zero, writes to the command register are ignored.</p>
@@ -1675,7 +1691,7 @@ If the <em>cmderr</em> field is non-zero, writes to the command register are ign
 </div>
 <p>This register is mapped to the Debug Module Interface address space.</p>
 <table class="docutils data align-default" id="tab-command">
-<caption><span class="caption-number">Table 11.11 </span><span class="caption-text">Abstract Command Register (command, at Debug Module Offset 0x17)</span><a class="headerlink" href="#tab-command" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.11 </span><span class="caption-text">Abstract Command Register (command, at Debug Module Offset 0x17)</span><a class="headerlink" href="#tab-command" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -1850,13 +1866,13 @@ If the <em>cmderr</em> field is non-zero, writes to the command register are ign
 </tr>
 </tbody>
 </table>
-<h4 id="abstract-command-autoexec-register-abstractauto"><span class="section-number">11.1.4.1. </span>Abstract Command Autoexec Register (abstractauto)<a class="headerlink" href="#abstract-command-autoexec-register-abstractauto" title="Link to this heading">¶</a></h4>
+<h4 id="abstract-command-autoexec-register-abstractauto"><span class="section-number">12.1.4.1. </span>Abstract Command Autoexec Register (abstractauto)<a class="headerlink" href="#abstract-command-autoexec-register-abstractauto" title="Link to this heading">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">abstractauto</span></code> register controls if reading or writing the <code class="docutils literal notranslate"><span class="pre">data0/1</span></code> registers (see <a class="reference internal" href="#abstract-data-0-1-registers-data0-1"><span class="std std-ref">Abstract Data 0 / 1 Registers (data0/1)</span></a>) automatically triggers the next execution of the abstract command in the <code class="docutils literal notranslate"><span class="pre">command</span></code> register (see <a class="reference internal" href="#abstract-command-register-command"><span class="std std-ref">Abstract Command Register (command)</span></a>).
 This feature allows more efficient burst accesses.</p>
 <p>Writing this register while an abstract command is executing causes the <em>cmderr</em> field in the abstractcs register (see <a class="reference internal" href="#abstract-control-and-status-register-abstractcs"><span class="std std-ref">Abstract Control and Status Register (abstractcs)</span></a>) to be set to ‘1’ (i.e., ‘busy’), if it is ‘0’.</p>
 <p>This register is mapped to the Debug Module Interface address space.</p>
 <table class="docutils data align-default" id="tab-abstractauto">
-<caption><span class="caption-number">Table 11.12 </span><span class="caption-text">Abstract Command Autoexec Register (abstractauto, at Debug Module Offset 0x18)</span><a class="headerlink" href="#tab-abstractauto" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.12 </span><span class="caption-text">Abstract Command Autoexec Register (abstractauto, at Debug Module Offset 0x18)</span><a class="headerlink" href="#tab-abstractauto" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -1896,11 +1912,11 @@ This feature allows more efficient burst accesses.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="abstract-data-0-1-registers-data0-1"><span class="section-number">11.1.5. </span>Abstract Data 0 / 1 Registers (data0/1)<a class="headerlink" href="#abstract-data-0-1-registers-data0-1" title="Link to this heading">¶</a></h3>
+<h3 id="abstract-data-0-1-registers-data0-1"><span id="abstract-data-0--1-registers-data01"></span><span class="section-number">12.1.5. </span>Abstract Data 0 / 1 Registers (data0/1)<a class="headerlink" href="#abstract-data-0-1-registers-data0-1" title="Link to this heading">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">data0/1</span></code> registers are basic read/write registers which may be read or changed by abstract commands.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <em>datacount</em> field of the <code class="docutils literal notranslate"><span class="pre">abstractcs</span></code> register (see <a class="reference internal" href="#tab-abstractcs"><span class="std std-numref">Table 11.10</span></a>) indicates that 2 (out of possible 12) registers are implemented in VeeR EL2.</p>
+<p>The <em>datacount</em> field of the <code class="docutils literal notranslate"><span class="pre">abstractcs</span></code> register (see <a class="reference internal" href="#tab-abstractcs"><span class="std std-numref">Table 12.10</span></a>) indicates that 2 (out of possible 12) registers are implemented in VeeR EL2.</p>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">data0</span></code> register sources the value for and provides the return value of an abstract command.
 The <code class="docutils literal notranslate"><span class="pre">data1</span></code> register provides the address for an access memory abstract command.</p>
@@ -1908,14 +1924,14 @@ The <code class="docutils literal notranslate"><span class="pre">data1</span></c
 <p class="admonition-title">Note</p>
 <p>Selecting an address outside of the ICCM, DCCM, or PIC memory range but in one of the core-internal memory regions causes the abstract command to fail and the <em>cmderr</em> field of the <code class="docutils literal notranslate"><span class="pre">abstractcs</span></code> register to be set to ‘3’. Similarly, selecting an unmapped SoC memory address causes the abstract command to fail, provided the SoC responds with a bus error, and the <em>cmderr</em> field of the <code class="docutils literal notranslate"><span class="pre">abstractcs</span></code> register to be set to ‘5’.</p>
 </div>
-<p>Accessing these registers while an abstract command is executing causes the <em>cmderr</em> field of the <code class="docutils literal notranslate"><span class="pre">abstractcs</span></code> register (see <a class="reference internal" href="#tab-abstractcs"><span class="std std-numref">Table 11.10</span></a>) to be set to ‘1’ (i.e., ‘busy’), if it was ‘0’.</p>
-<p>Attempts to write the <code class="docutils literal notranslate"><span class="pre">data0/1</span></code> registers while the <em>busy</em> bit of the abstractcs register (see <a class="reference internal" href="#tab-abstractcs"><span class="std std-numref">Table 11.10</span></a>) is set does not change their value.</p>
+<p>Accessing these registers while an abstract command is executing causes the <em>cmderr</em> field of the <code class="docutils literal notranslate"><span class="pre">abstractcs</span></code> register (see <a class="reference internal" href="#tab-abstractcs"><span class="std std-numref">Table 12.10</span></a>) to be set to ‘1’ (i.e., ‘busy’), if it was ‘0’.</p>
+<p>Attempts to write the <code class="docutils literal notranslate"><span class="pre">data0/1</span></code> registers while the <em>busy</em> bit of the abstractcs register (see <a class="reference internal" href="#tab-abstractcs"><span class="std std-numref">Table 12.10</span></a>) is set does not change their value.</p>
 <p>The values in these registers may not be preserved after an abstract command has been executed.
 The only guarantees on their contents are the ones offered by the executed abstract command.
 If the abstract command fails, no assumptions should be made about the contents of these registers.</p>
 <p>These registers are mapped to the Debug Module Interface address space.</p>
 <table class="docutils data align-default" id="tab-data-0-1">
-<caption><span class="caption-number">Table 11.13 </span><span class="caption-text">Abstract Data 0 / 1 Register (data0/1, at Debug Module Offset 0x04 / 0x05)</span><a class="headerlink" href="#tab-data-0-1" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.13 </span><span class="caption-text">Abstract Data 0 / 1 Register (data0/1, at Debug Module Offset 0x04 / 0x05)</span><a class="headerlink" href="#tab-data-0-1" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -1938,7 +1954,7 @@ If the abstract command fails, no assumptions should be made about the contents 
 </tr>
 </tbody>
 </table>
-<h4 id="system-bus-access-control-and-status-register-sbcs"><span class="section-number">11.1.5.1. </span>System Bus Access Control and Status Register (sbcs)<a class="headerlink" href="#system-bus-access-control-and-status-register-sbcs" title="Link to this heading">¶</a></h4>
+<h4 id="system-bus-access-control-and-status-register-sbcs"><span class="section-number">12.1.5.1. </span>System Bus Access Control and Status Register (sbcs)<a class="headerlink" href="#system-bus-access-control-and-status-register-sbcs" title="Link to this heading">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">sbcs</span></code> register provides controls and status information of the system bus access interface.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1950,7 +1966,7 @@ If the abstract command fails, no assumptions should be made about the contents 
 </div>
 <p>This register is mapped to the Debug Module Interface address space.</p>
 <table class="docutils data align-default" id="tab-sbcs">
-<caption><span class="caption-number">Table 11.14 </span><span class="caption-text">System Bus Access Control and Status Register (sbcs, at Debug Module Offset 0x38)</span><a class="headerlink" href="#tab-sbcs" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.14 </span><span class="caption-text">System Bus Access Control and Status Register (sbcs, at Debug Module Offset 0x38)</span><a class="headerlink" href="#tab-sbcs" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -2095,7 +2111,7 @@ If the abstract command fails, no assumptions should be made about the contents 
 </tr>
 </tbody>
 </table>
-<h4 id="system-bus-address-31-0-register-sbaddress0"><span class="section-number">11.1.5.2. </span>System Bus Address 31:0 Register (sbaddress0)<a class="headerlink" href="#system-bus-address-31-0-register-sbaddress0" title="Link to this heading">¶</a></h4>
+<h4 id="system-bus-address-31-0-register-sbaddress0"><span id="system-bus-address-310-register-sbaddress0"></span><span class="section-number">12.1.5.2. </span>System Bus Address 31:0 Register (sbaddress0)<a class="headerlink" href="#system-bus-address-31-0-register-sbaddress0" title="Link to this heading">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">sbaddress0</span></code> register provides the address of the system bus access.</p>
 <p>If the <em>sbreadonaddr</em> bit of the <code class="docutils literal notranslate"><span class="pre">sbcs</span></code> register is ‘1’, writing the <code class="docutils literal notranslate"><span class="pre">sbaddress0</span></code> register triggers a system bus read access from the new address.</p>
 <div class="admonition note">
@@ -2108,7 +2124,7 @@ If the abstract command fails, no assumptions should be made about the contents 
 </div>
 <p>This register is mapped to the Debug Module Interface address space.</p>
 <table class="docutils data align-default" id="tab-sbaddress0">
-<caption><span class="caption-number">Table 11.15 </span><span class="caption-text">System Bus Address 31:0 Register (sbaddress0, at Debug Module Offset 0x39)</span><a class="headerlink" href="#tab-sbaddress0" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.15 </span><span class="caption-text">System Bus Address 31:0 Register (sbaddress0, at Debug Module Offset 0x39)</span><a class="headerlink" href="#tab-sbaddress0" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -2126,7 +2142,7 @@ If the abstract command fails, no assumptions should be made about the contents 
 </tr>
 </tbody>
 </table>
-<h4 id="system-bus-data-31-0-register-sbdata0"><span class="section-number">11.1.5.3. </span>System Bus Data 31:0 Register (sbdata0)<a class="headerlink" href="#system-bus-data-31-0-register-sbdata0" title="Link to this heading">¶</a></h4>
+<h4 id="system-bus-data-31-0-register-sbdata0"><span id="system-bus-data-310-register-sbdata0"></span><span class="section-number">12.1.5.3. </span>System Bus Data 31:0 Register (sbdata0)<a class="headerlink" href="#system-bus-data-31-0-register-sbdata0" title="Link to this heading">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">sbdata0</span></code> register holds the right-justified lower bits for system bus read and write accesses.</p>
 <p>A successful system bus read updates the <code class="docutils literal notranslate"><span class="pre">sbdata0/1</span></code> registers with the value read from the system bus at the memory location addressed by the sbaddress0 register.
 If the width of the read access is less than 64 bits, the remaining high bits may take on any value.</p>
@@ -2148,7 +2164,7 @@ A debugger must access the <code class="docutils literal notranslate"><span clas
 </div>
 <p>This register is mapped to the Debug Module Interface address space.</p>
 <table class="docutils data align-default" id="tab-sbdata0">
-<caption><span class="caption-number">Table 11.16 </span><span class="caption-text">System Bus Data 31:0 Register (sbdata0, at Debug Module Offset 0x3C)</span><a class="headerlink" href="#tab-sbdata0" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.16 </span><span class="caption-text">System Bus Data 31:0 Register (sbdata0, at Debug Module Offset 0x3C)</span><a class="headerlink" href="#tab-sbdata0" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -2166,7 +2182,7 @@ A debugger must access the <code class="docutils literal notranslate"><span clas
 </tr>
 </tbody>
 </table>
-<h4 id="system-bus-data-63-32-register-sbdata1"><span class="section-number">11.1.5.4. </span>System Bus Data 63:32 Register (sbdata1)<a class="headerlink" href="#system-bus-data-63-32-register-sbdata1" title="Link to this heading">¶</a></h4>
+<h4 id="system-bus-data-63-32-register-sbdata1"><span id="system-bus-data-6332-register-sbdata1"></span><span class="section-number">12.1.5.4. </span>System Bus Data 63:32 Register (sbdata1)<a class="headerlink" href="#system-bus-data-63-32-register-sbdata1" title="Link to this heading">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">sbdata1</span></code> register holds the upper 32 bits of the 64-bit wide system bus for read and write accesses.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -2174,7 +2190,7 @@ A debugger must access the <code class="docutils literal notranslate"><span clas
 </div>
 <p>This register is mapped to the Debug Module Interface address space.</p>
 <table class="docutils data align-default" id="tab-sbdata1">
-<caption><span class="caption-number">Table 11.17 </span><span class="caption-text">System Bus Data 63:32 Register (sbdata1, at Debug Module Offset 0x3D)</span><a class="headerlink" href="#tab-sbdata1" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.17 </span><span class="caption-text">System Bus Data 63:32 Register (sbdata1, at Debug Module Offset 0x3D)</span><a class="headerlink" href="#tab-sbdata1" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -2192,14 +2208,14 @@ A debugger must access the <code class="docutils literal notranslate"><span clas
 </tr>
 </tbody>
 </table>
-<h4 id="dccm-write-readback-fault-status-register-dccm-wr-rdbk-status"><span class="section-number">11.1.5.5. </span>DCCM Write-Readback Fault Status Register (dccm_wr_rdbk_status)<a class="headerlink" href="#dccm-write-readback-fault-status-register-dccm-wr-rdbk-status" title="Link to this heading">¶</a></h4>
+<h4 id="dccm-write-readback-fault-status-register-dccm-wr-rdbk-status"><span id="dccm-write-readback-fault-status-register-dccm_wr_rdbk_status"></span><span class="section-number">12.1.5.5. </span>DCCM Write-Readback Fault Status Register (dccm_wr_rdbk_status)<a class="headerlink" href="#dccm-write-readback-fault-status-register-dccm-wr-rdbk-status" title="Link to this heading">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">dccm_wr_rdbk_status</span></code> register exposes the first-fault-wins sticky capture from the <a class="reference internal" href="error-protection.html#dccm-write-readback-check"><span class="std std-ref">DCCM write-readback check</span></a> (only meaningful when built with <code class="docutils literal notranslate"><span class="pre">RV_DCCM_WR_READBACK</span></code>, otherwise this register always reads 0).
 Together with <code class="docutils literal notranslate"><span class="pre">dccm_wr_rdbk_data</span></code> and <code class="docutils literal notranslate"><span class="pre">dccm_wr_rdbk_ecc</span></code>, it is intended for pentest and reliability debugging.</p>
 <p>The <em>valid</em> field is set the first time a write-readback fault occurs after being cleared.
 Subsequent faults are not captured while <em>valid</em> is still set, so a debugger always sees the earliest fault since the last clear.</p>
 <p>Writing ‘1’ to the <em>valid</em> field clears it, re-arming capture for the next fault.</p>
 <table class="docutils data align-default" id="tab-dccm-wr-rdbk-status">
-<caption><span class="caption-number">Table 11.18 </span><span class="caption-text">DCCM Write-Readback Fault Status Register (dccm_wr_rdbk_status, at Debug Module Offset 0x48)</span><a class="headerlink" href="#tab-dccm-wr-rdbk-status" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.18 </span><span class="caption-text">DCCM Write-Readback Fault Status Register (dccm_wr_rdbk_status, at Debug Module Offset 0x48)</span><a class="headerlink" href="#tab-dccm-wr-rdbk-status" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -2229,11 +2245,11 @@ Subsequent faults are not captured while <em>valid</em> is still set, so a debug
 </tr>
 </tbody>
 </table>
-<h4 id="dccm-write-readback-fault-data-register-dccm-wr-rdbk-data"><span class="section-number">11.1.5.6. </span>DCCM Write-Readback Fault Data Register (dccm_wr_rdbk_data)<a class="headerlink" href="#dccm-write-readback-fault-data-register-dccm-wr-rdbk-data" title="Link to this heading">¶</a></h4>
+<h4 id="dccm-write-readback-fault-data-register-dccm-wr-rdbk-data"><span id="dccm-write-readback-fault-data-register-dccm_wr_rdbk_data"></span><span class="section-number">12.1.5.6. </span>DCCM Write-Readback Fault Data Register (dccm_wr_rdbk_data)<a class="headerlink" href="#dccm-write-readback-fault-data-register-dccm-wr-rdbk-data" title="Link to this heading">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">dccm_wr_rdbk_data</span></code> register holds the actual data that was read back during the latched fault captured in <code class="docutils literal notranslate"><span class="pre">dccm_wr_rdbk_status</span></code>, i.e. the value that failed to match what was written.
 It is valid iff the <em>valid</em> field of <code class="docutils literal notranslate"><span class="pre">dccm_wr_rdbk_status</span></code> is set, and is cleared the same way (by writing ‘1’ to that field).</p>
 <table class="docutils data align-default" id="tab-dccm-wr-rdbk-data">
-<caption><span class="caption-number">Table 11.19 </span><span class="caption-text">DCCM Write-Readback Fault Data Register (dccm_wr_rdbk_data, at Debug Module Offset 0x49)</span><a class="headerlink" href="#tab-dccm-wr-rdbk-data" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.19 </span><span class="caption-text">DCCM Write-Readback Fault Data Register (dccm_wr_rdbk_data, at Debug Module Offset 0x49)</span><a class="headerlink" href="#tab-dccm-wr-rdbk-data" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -2251,12 +2267,12 @@ It is valid iff the <em>valid</em> field of <code class="docutils literal notran
 </tr>
 </tbody>
 </table>
-<h4 id="dccm-write-readback-fault-ecc-register-dccm-wr-rdbk-ecc"><span class="section-number">11.1.5.7. </span>DCCM Write-Readback Fault ECC Register (dccm_wr_rdbk_ecc)<a class="headerlink" href="#dccm-write-readback-fault-ecc-register-dccm-wr-rdbk-ecc" title="Link to this heading">¶</a></h4>
+<h4 id="dccm-write-readback-fault-ecc-register-dccm-wr-rdbk-ecc"><span id="dccm-write-readback-fault-ecc-register-dccm_wr_rdbk_ecc"></span><span class="section-number">12.1.5.7. </span>DCCM Write-Readback Fault ECC Register (dccm_wr_rdbk_ecc)<a class="headerlink" href="#dccm-write-readback-fault-ecc-register-dccm-wr-rdbk-ecc" title="Link to this heading">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">dccm_wr_rdbk_ecc</span></code> register holds the ECC bits associated with the data in <code class="docutils literal notranslate"><span class="pre">dccm_wr_rdbk_data</span></code>, i.e. the ECC bits that were read back alongside the actual data during the latched fault.
 Together, <code class="docutils literal notranslate"><span class="pre">dccm_wr_rdbk_data</span></code> and <code class="docutils literal notranslate"><span class="pre">dccm_wr_rdbk_ecc</span></code> form the complete, ECC-protected DCCM word at adjacent Debug Module offsets.
 It is valid iff the <em>valid</em> field of <code class="docutils literal notranslate"><span class="pre">dccm_wr_rdbk_status</span></code> is set, and is cleared the same way (by writing ‘1’ to that field).</p>
 <table class="docutils data align-default" id="tab-dccm-wr-rdbk-ecc">
-<caption><span class="caption-number">Table 11.20 </span><span class="caption-text">DCCM Write-Readback Fault ECC Register (dccm_wr_rdbk_ecc, at Debug Module Offset 0x4A)</span><a class="headerlink" href="#tab-dccm-wr-rdbk-ecc" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.20 </span><span class="caption-text">DCCM Write-Readback Fault ECC Register (dccm_wr_rdbk_ecc, at Debug Module Offset 0x4A)</span><a class="headerlink" href="#tab-dccm-wr-rdbk-ecc" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -2280,7 +2296,7 @@ It is valid iff the <em>valid</em> field of <code class="docutils literal notran
 </tr>
 </tbody>
 </table>
-<h3 id="control-status-registers-in-risc-v-csr-address-space"><span class="section-number">11.1.6. </span>Control/Status Registers in RISC-V CSR Address Space<a class="headerlink" href="#control-status-registers-in-risc-v-csr-address-space" title="Link to this heading">¶</a></h3>
+<h3 id="control-status-registers-in-risc-v-csr-address-space"><span id="controlstatus-registers-in-risc-v-csr-address-space"></span><span class="section-number">12.1.6. </span>Control/Status Registers in RISC-V CSR Address Space<a class="headerlink" href="#control-status-registers-in-risc-v-csr-address-space" title="Link to this heading">¶</a></h3>
 <p>A summary of standard RISC-V control/status registers with platform-specific adaptations in CSR space:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#trigger-select-register-tselect"><span class="std std-ref">Trigger Select Register (tselect)</span></a></p></li>
@@ -2292,14 +2308,14 @@ It is valid iff the <em>valid</em> field of <code class="docutils literal notran
 </ul>
 <p>All reserved and unused bits in these control/status registers must be hardwired to ‘0’.
 Unless otherwise noted, all read/write control/status registers must have WARL (Write Any value, Read Legal value) behavior.</p>
-<h4 id="trigger-select-register-tselect"><span class="section-number">11.1.6.1. </span>Trigger Select Register (tselect)<a class="headerlink" href="#trigger-select-register-tselect" title="Link to this heading">¶</a></h4>
+<h4 id="trigger-select-register-tselect"><span class="section-number">12.1.6.1. </span>Trigger Select Register (tselect)<a class="headerlink" href="#trigger-select-register-tselect" title="Link to this heading">¶</a></h4>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Since triggers can be used both by Debug Mode and M-mode, the debugger must restore this register if it modified it.</p>
 </div>
 <p>This register is mapped to the standard read/write CSR address space.</p>
 <table class="docutils data align-default" id="tab-tselect">
-<caption><span class="caption-number">Table 11.21 </span><span class="caption-text">Trigger Select Register (tselect, at CSR 0x7A0)</span><a class="headerlink" href="#tab-tselect" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.21 </span><span class="caption-text">Trigger Select Register (tselect, at CSR 0x7A0)</span><a class="headerlink" href="#tab-tselect" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -2325,10 +2341,10 @@ Unless otherwise noted, all read/write control/status registers must have WARL (
 </tr>
 </tbody>
 </table>
-<h4 id="trigger-data-1-register-tdata1"><span class="section-number">11.1.6.2. </span>Trigger Data 1 Register (tdata1)<a class="headerlink" href="#trigger-data-1-register-tdata1" title="Link to this heading">¶</a></h4>
+<h4 id="trigger-data-1-register-tdata1"><span class="section-number">12.1.6.2. </span>Trigger Data 1 Register (tdata1)<a class="headerlink" href="#trigger-data-1-register-tdata1" title="Link to this heading">¶</a></h4>
 <p>This register is mapped to the standard read/write CSR address space.</p>
 <table class="docutils data align-default" id="tab-tdata1">
-<caption><span class="caption-number">Table 11.22 </span><span class="caption-text">Trigger Data 1 Register (tdata1, at CSR 0x7A1)</span><a class="headerlink" href="#tab-tdata1" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.22 </span><span class="caption-text">Trigger Data 1 Register (tdata1, at CSR 0x7A1)</span><a class="headerlink" href="#tab-tdata1" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -2340,32 +2356,32 @@ Unless otherwise noted, all read/write control/status registers must have WARL (
 <tbody>
 <tr class="row-even"><td><p>type</p></td>
 <td><p>31:28</p></td>
-<td><p>See <a class="reference internal" href="#tab-mcontrol"><span class="std std-numref">Table 11.23</span></a> below.</p></td>
+<td><p>See <a class="reference internal" href="#tab-mcontrol"><span class="std std-numref">Table 12.23</span></a> below.</p></td>
 <td><p>R</p></td>
 <td><p>2</p></td>
 </tr>
 <tr class="row-odd"><td><p>dmode</p></td>
 <td><p>27</p></td>
-<td><p>See <a class="reference internal" href="#tab-mcontrol"><span class="std std-numref">Table 11.23</span></a> below.</p></td>
-<td><p>See <a class="reference internal" href="#tab-mcontrol"><span class="std std-numref">Table 11.23</span></a> below.</p></td>
-<td><p>See <a class="reference internal" href="#tab-mcontrol"><span class="std std-numref">Table 11.23</span></a> below.</p></td>
+<td><p>See <a class="reference internal" href="#tab-mcontrol"><span class="std std-numref">Table 12.23</span></a> below.</p></td>
+<td><p>See <a class="reference internal" href="#tab-mcontrol"><span class="std std-numref">Table 12.23</span></a> below.</p></td>
+<td><p>See <a class="reference internal" href="#tab-mcontrol"><span class="std std-numref">Table 12.23</span></a> below.</p></td>
 </tr>
 <tr class="row-even"><td><p>data</p></td>
 <td><p>26:0</p></td>
-<td><p>See <a class="reference internal" href="#tab-mcontrol"><span class="std std-numref">Table 11.23</span></a> below.</p></td>
-<td><p>See <a class="reference internal" href="#tab-mcontrol"><span class="std std-numref">Table 11.23</span></a> below.</p></td>
-<td><p>See <a class="reference internal" href="#tab-mcontrol"><span class="std std-numref">Table 11.23</span></a> below.</p></td>
+<td><p>See <a class="reference internal" href="#tab-mcontrol"><span class="std std-numref">Table 12.23</span></a> below.</p></td>
+<td><p>See <a class="reference internal" href="#tab-mcontrol"><span class="std std-numref">Table 12.23</span></a> below.</p></td>
+<td><p>See <a class="reference internal" href="#tab-mcontrol"><span class="std std-numref">Table 12.23</span></a> below.</p></td>
 </tr>
 </tbody>
 </table>
-<h4 id="match-control-register-mcontrol"><span class="section-number">11.1.6.3. </span>Match Control Register (mcontrol)<a class="headerlink" href="#match-control-register-mcontrol" title="Link to this heading">¶</a></h4>
+<h4 id="match-control-register-mcontrol"><span class="section-number">12.1.6.3. </span>Match Control Register (mcontrol)<a class="headerlink" href="#match-control-register-mcontrol" title="Link to this heading">¶</a></h4>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>VeeR EL2 does not support triggering on the data of a load or on the opcode of an executed instruction.</p>
 </div>
 <p>This register is mapped to the standard read/write CSR address space.</p>
 <table class="docutils data align-default" id="tab-mcontrol">
-<caption><span class="caption-number">Table 11.23 </span><span class="caption-text">Match Control Register (mcontrol, at CSR 0x7A1)</span><a class="headerlink" href="#tab-mcontrol" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.23 </span><span class="caption-text">Match Control Register (mcontrol, at CSR 0x7A1)</span><a class="headerlink" href="#tab-mcontrol" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -2530,10 +2546,10 @@ Unless otherwise noted, all read/write control/status registers must have WARL (
 </tr>
 </tbody>
 </table>
-<h4 id="trigger-data-2-register-tdata2"><span class="section-number">11.1.6.4. </span>Trigger Data 2 Register (tdata2)<a class="headerlink" href="#trigger-data-2-register-tdata2" title="Link to this heading">¶</a></h4>
+<h4 id="trigger-data-2-register-tdata2"><span class="section-number">12.1.6.4. </span>Trigger Data 2 Register (tdata2)<a class="headerlink" href="#trigger-data-2-register-tdata2" title="Link to this heading">¶</a></h4>
 <p>This register is mapped to the standard read/write CSR address space.</p>
 <table class="docutils data align-default" id="tab-tdata2">
-<caption><span class="caption-number">Table 11.24 </span><span class="caption-text">Trigger Data 2 Register (tdata2, at CSR 0x7A2)</span><a class="headerlink" href="#tab-tdata2" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.24 </span><span class="caption-text">Trigger Data 2 Register (tdata2, at CSR 0x7A2)</span><a class="headerlink" href="#tab-tdata2" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -2550,7 +2566,7 @@ Unless otherwise noted, all read/write control/status registers must have WARL (
 <li><p>Address or data value for match:</p></li>
 <li><p>Address of load, store, or executed instruction <a class="footnote-reference brackets" href="#fn-debugging-4" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a></p></li>
 <li><p>Data value of store</p></li>
-<li><p>Match mask (see <em>match</em> field of <code class="docutils literal notranslate"><span class="pre">mcontrol</span></code> register (<a class="reference internal" href="#tab-mcontrol"><span class="std std-numref">Table 11.23</span></a>) set to ‘1’)</p></li>
+<li><p>Match mask (see <em>match</em> field of <code class="docutils literal notranslate"><span class="pre">mcontrol</span></code> register (<a class="reference internal" href="#tab-mcontrol"><span class="std std-numref">Table 12.23</span></a>) set to ‘1’)</p></li>
 </ul>
 </td>
 <td><p>R/W</p></td>
@@ -2558,10 +2574,10 @@ Unless otherwise noted, all read/write control/status registers must have WARL (
 </tr>
 </tbody>
 </table>
-<h4 id="debug-control-and-status-register-dcsr"><span class="section-number">11.1.6.5. </span>Debug Control and Status Register (dcsr)<a class="headerlink" href="#debug-control-and-status-register-dcsr" title="Link to this heading">¶</a></h4>
+<h4 id="debug-control-and-status-register-dcsr"><span class="section-number">12.1.6.5. </span>Debug Control and Status Register (dcsr)<a class="headerlink" href="#debug-control-and-status-register-dcsr" title="Link to this heading">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">dcsr</span></code> register controls the behavior and provides status of the hart in Debug Mode.</p>
 <p>The RISC-V Debug specification <a class="reference internal" href="intro.html#ref-3"><span class="std std-ref">[3]</span></a>, Section 4.8.1 documents some required and several optional features.
-<a class="reference internal" href="#tab-dcsr"><span class="std std-numref">Table 11.25</span></a> describes the required features, the partial support of optional features in VeeR EL2, and indicates features not supported with “Not implemented”.</p>
+<a class="reference internal" href="#tab-dcsr"><span class="std std-numref">Table 12.25</span></a> describes the required features, the partial support of optional features in VeeR EL2, and indicates features not supported with “Not implemented”.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This register is accessible in <strong>Debug Mode only</strong>.
@@ -2569,7 +2585,7 @@ Attempting to access this register in machine mode raises an illegal instruction
 </div>
 <p>This register is mapped to the standard read/write CSR address space.</p>
 <table class="docutils data align-default" id="tab-dcsr">
-<caption><span class="caption-number">Table 11.25 </span><span class="caption-text">Debug Control and Status Register (dcsr, at CSR 0x7B0)</span><a class="headerlink" href="#tab-dcsr" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.25 </span><span class="caption-text">Debug Control and Status Register (dcsr, at CSR 0x7B0)</span><a class="headerlink" href="#tab-dcsr" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -2652,7 +2668,7 @@ Attempting to access this register in machine mode raises an illegal instruction
 <ul class="simple">
 <li><p>1: <code class="docutils literal notranslate"><span class="pre">ebreak</span></code> instruction was executed (<em>priority 3</em>)</p></li>
 <li><p>2: Trigger Module caused a breakpoint exception (<em>priority 4, highest</em>)</p></li>
-<li><p>3: Debugger or MPC interface (see <a class="reference internal" href="power.html#tab-veer-el2-multi-core-debug-ctrl-status-signals"><span class="std std-numref">Table 7.4</span></a>) requested entry to ebug Mode using haltreq (<em>priority 1</em>)</p></li>
+<li><p>3: Debugger or MPC interface (see <a class="reference internal" href="power.html#tab-veer-el2-multi-core-debug-ctrl-status-signals"><span class="std std-numref">Table 8.4</span></a>) requested entry to ebug Mode using haltreq (<em>priority 1</em>)</p></li>
 <li><p>4: Hart single-stepped because <em>step</em> was set (<em>priority 0, lowest</em>)</p></li>
 <li><p>5: Hart halted directly out of reset due to resethaltreq (also acceptable to report ‘3’) (<em>priority 2</em>) Other values reserved for future use.</p></li>
 </ul>
@@ -2696,10 +2712,10 @@ Attempting to access this register in machine mode raises an illegal instruction
 </tr>
 </tbody>
 </table>
-<h4 id="debug-pc-register-dpc"><span class="section-number">11.1.6.6. </span>Debug PC Register (dpc)<a class="headerlink" href="#debug-pc-register-dpc" title="Link to this heading">¶</a></h4>
+<h4 id="debug-pc-register-dpc"><span class="section-number">12.1.6.6. </span>Debug PC Register (dpc)<a class="headerlink" href="#debug-pc-register-dpc" title="Link to this heading">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">dpc</span></code> register provides the debugger information about the program counter (PC) when entering Debug Mode and control where to resume (RISC-V Debug specification <a class="reference internal" href="intro.html#ref-3"><span class="std std-ref">[3]</span></a>, Section 4.8.2).</p>
 <p>Upon entry to Debug Mode, the <code class="docutils literal notranslate"><span class="pre">dpc</span></code> register is updated with the address of the next instruction to be executed.
-The behavior is described in more detail in <a class="reference internal" href="#tab-dpc"><span class="std std-numref">Table 11.26</span></a> below.</p>
+The behavior is described in more detail in <a class="reference internal" href="#tab-dpc"><span class="std std-numref">Table 12.26</span></a> below.</p>
 <p>When resuming, the hart’s PC is updated to the address stored in the dpc register. A debugger may write the <code class="docutils literal notranslate"><span class="pre">dpc</span></code> register to change where the hart resumes.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -2707,7 +2723,7 @@ The behavior is described in more detail in <a class="reference internal" href="
 </div>
 <p>This register is mapped to the standard read/write CSR address space.</p>
 <table class="docutils data align-default" id="tab-dpc">
-<caption><span class="caption-number">Table 11.26 </span><span class="caption-text">Debug PC Register (dpc, at CSR 0x7B1)</span><a class="headerlink" href="#tab-dpc" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12.26 </span><span class="caption-text">Debug PC Register (dpc, at CSR 0x7B1)</span><a class="headerlink" href="#tab-dpc" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Field</strong></p></th>
 <th class="head"><p><strong>Bits</strong></p></th>
@@ -2729,7 +2745,7 @@ The behavior is described in more detail in <a class="reference internal" href="
 <li><p>Address of instruction which would be executed next if not in Debug Mode (i.e., PC + 4 for 32-bit instructions which don’t change program flow, destination PC on taken jumps/branches, etc.)</p></li>
 </ul>
 <p>Trigger module:</p>
-<p>If timing (see <em>timing</em> bit in <code class="docutils literal notranslate"><span class="pre">mcontrol</span></code> register in <a class="reference internal" href="#tab-mcontrol"><span class="std std-numref">Table 11.23</span></a>) is:</p>
+<p>If timing (see <em>timing</em> bit in <code class="docutils literal notranslate"><span class="pre">mcontrol</span></code> register in <a class="reference internal" href="#tab-mcontrol"><span class="std std-numref">Table 12.23</span></a>) is:</p>
 <ul class="simple">
 <li><p>0: Address of instruction which caused trigger to fire</p></li>
 <li><p>1: Address of next instruction to be executed when Debug Mode was entered</p></li>
@@ -2773,7 +2789,7 @@ However, the Debug Task Group community agreed in an email exchange on the group
   <small>
     
       Last update:
-      2026-10-29
+      2026-11-20
     
   </small>
 </div>
@@ -2797,7 +2813,7 @@ However, the Debug Task Group community agreed in an email exchange on the group
     <nav class="md-footer__inner md-grid" aria-label="Footer" >
       
         
-        <a href="cache.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 10. Cache Control" rel="prev">
+        <a href="cache.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 11. Cache Control" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
           </div>
@@ -2806,20 +2822,20 @@ However, the Debug Task Group community agreed in an email exchange on the group
               <span class="md-footer__direction">
                 Previous
               </span>
-              10. Cache Control
+              11. Cache Control
             </div>
           </div>
         </a>
       
       
         
-        <a href="core-control.html" class="md-footer__link md-footer__link--next" aria-label="Next: 12. Low-Level Core Control" rel="next">
+        <a href="core-control.html" class="md-footer__link md-footer__link--next" aria-label="Next: 13. Low-Level Core Control" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              12. Low-Level Core Control
+              13. Low-Level Core Control
             </div>
           </div>
           <div class="md-footer__button md-icon">
@@ -2841,7 +2857,7 @@ However, the Debug Task Group community agreed in an email exchange on the group
         
     </div>
   
-      <a href="https://github.com/chipsalliance/Cores-VeeR-EL2/tree/fa00c8aadc4a077d78b277129c1badf90d881255">fa00c8aa</a>
+      <a href="https://github.com/chipsalliance/Cores-VeeR-EL2/tree/642f1c8866fc21b01d8e115e985d87a185ae8bff">642f1c88</a>
         @ <a href="https://github.com/chipsalliance/Cores-VeeR-EL2/tree/main">main</a>
   
 </div>

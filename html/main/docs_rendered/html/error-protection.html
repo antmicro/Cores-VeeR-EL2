@@ -444,6 +444,22 @@
   
   
     <li class="md-nav__item">
+      <a href="triple-modular-redundancy.html" class="md-nav__link">
+        <span class="md-ellipsis">Triple Modular Redundancy <wbr>(TMR)</span>
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="timers.html" class="md-nav__link">
         <span class="md-ellipsis">Internal Timers</span>
       </a>
@@ -928,7 +944,7 @@ If the destroyed bits are covered by the same codeword, the data cannot be corre
 <td><p>Undetected</p></td>
 <td><ul class="simple">
 <li><p>Increment I- cache correctable error counter <a class="footnote-reference brackets" href="#fn-error-protection-2" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></li>
-<li><p>If error counter has reached threshold, signal correctable error local interrupt (see <a class="reference internal" href="#i-cache-error-counter-threshold-register-micect"><span class="std std-ref"></span></a>)</p></li>
+<li><p>If error counter has reached threshold, signal correctable error local interrupt (see <a class="reference internal" href="#i-cache-error-counter-threshold-register-micect"><span class="std std-ref">I-Cache Error Counter/Threshold Register (micect)</span></a>)</p></li>
 </ul>
 </td>
 <td><p>No action</p></td>
@@ -954,12 +970,12 @@ If the destroyed bits are covered by the same codeword, the data cannot be corre
 </td>
 <td><ul class="simple">
 <li><p>Increment I-cache correctable error counter <a class="footnote-reference brackets" href="#fn-error-protection-2" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></li>
-<li><p>If error counter has reached threshold, signal correctable error local interrupt (see <a class="reference internal" href="#i-cache-error-counter-threshold-register-micect"><span class="std std-ref"></span></a>)</p></li>
+<li><p>If error counter has reached threshold, signal correctable error local interrupt (see <a class="reference internal" href="#i-cache-error-counter-threshold-register-micect"><span class="std std-ref">I-Cache Error Counter/Threshold Register (micect)</span></a>)</p></li>
 </ul>
 </td>
 <td><ul class="simple">
 <li><p>Increment I-cache correctable error counter <a class="footnote-reference brackets" href="#fn-error-protection-2" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></li>
-<li><p>If error counter has reached threshold, signal correctable error local interrupt (see <a class="reference internal" href="#i-cache-error-counter-threshold-register-micect"><span class="std std-ref"></span></a>)</p></li>
+<li><p>If error counter has reached threshold, signal correctable error local interrupt (see <a class="reference internal" href="#i-cache-error-counter-threshold-register-micect"><span class="std std-ref">I-Cache Error Counter/Threshold Register (micect)</span></a>)</p></li>
 </ul>
 </td>
 </tr>
@@ -987,7 +1003,7 @@ If the destroyed bits are covered by the same codeword, the data cannot be corre
 <td><p>Fatal error <a class="footnote-reference brackets" href="#fn-error-protection-5" id="id9" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a> (uncorrectable)</p></td>
 <td><ul class="simple">
 <li><p>Increment <a class="footnote-reference brackets" href="#fn-error-protection-4" id="id10" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a> ICCM single- bit error counter</p></li>
-<li><p>If error counter has reached threshold, signal correctable error local interrupt (see <a class="reference internal" href="#iccm-correctable-error-counter-threshold-register-miccmect"><span class="std std-ref"></span></a>)</p></li>
+<li><p>If error counter has reached threshold, signal correctable error local interrupt (see <a class="reference internal" href="#iccm-correctable-error-counter-threshold-register-miccmect"><span class="std std-ref">ICCM Correctable Error Counter/Threshold Register (miccmect)</span></a>)</p></li>
 </ul>
 </td>
 <td><ul class="simple">
@@ -1018,7 +1034,7 @@ If the destroyed bits are covered by the same codeword, the data cannot be corre
 <td><p>Fatal error <a class="footnote-reference brackets" href="#fn-error-protection-7" id="id13" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a> (uncorrectable)</p></td>
 <td><ul class="simple">
 <li><p>Increment <a class="footnote-reference brackets" href="#fn-error-protection-6" id="id14" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a> DCCM single- bit error counter</p></li>
-<li><p>If error counter has reached threshold, signal correctable error local interrupt (see <a class="reference internal" href="#dccm-correctable-error-counter-threshold-register-mdccmect"><span class="std std-ref"></span></a>)</p></li>
+<li><p>If error counter has reached threshold, signal correctable error local interrupt (see <a class="reference internal" href="#dccm-correctable-error-counter-threshold-register-mdccmect"><span class="std std-ref">DCCM Correctable Error Counter/Threshold Register (mdccmect)</span></a>)</p></li>
 </ul>
 </td>
 <td><ul class="simple">
@@ -1136,7 +1152,7 @@ As after the read XOR the ECC check happens, the mismatch is detected by an ECC 
 In addition, as the data is garbled, the instruction is corrupted as well.</p>
 <p>Note that the XOR happens within the <a class="reference internal" href="dual-core-lock-step.html"><span class="std std-doc">Dual-Core Lock-Step</span></a> domain.
 Firmware or backdoor loaders that write the ICCM directly must apply the same address XOR.</p>
-<h2 id="core-error-counter-threshold-registers"><span class="section-number">4.9. </span>Core Error Counter/Threshold Registers<a class="headerlink" href="#core-error-counter-threshold-registers" title="Link to this heading">¶</a></h2>
+<h2 id="core-error-counter-threshold-registers"><span id="core-error-counterthreshold-registers"></span><span class="section-number">4.9. </span>Core Error Counter/Threshold Registers<a class="headerlink" href="#core-error-counter-threshold-registers" title="Link to this heading">¶</a></h2>
 <p>A summary of platform-specific core error counter/threshold control/status registers in CSR space:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#i-cache-error-counter-threshold-register-micect"><span class="std std-ref">I-Cache Error Counter/Threshold Register (micect)</span></a></p></li>
@@ -1144,7 +1160,7 @@ Firmware or backdoor loaders that write the ICCM directly must apply the same ad
 <li><p><a class="reference internal" href="#dccm-correctable-error-counter-threshold-register-mdccmect"><span class="std std-ref">DCCM Correctable Error Counter/Threshold Register (mdccmect)</span></a></p></li>
 </ul>
 <p>All read/write control/status registers must have WARL (Write Any value, Read Legal value) behavior.</p>
-<h3 id="i-cache-error-counter-threshold-register-micect"><span class="section-number">4.9.1. </span>I-Cache Error Counter/Threshold Register (micect)<a class="headerlink" href="#i-cache-error-counter-threshold-register-micect" title="Link to this heading">¶</a></h3>
+<h3 id="i-cache-error-counter-threshold-register-micect"><span id="i-cache-error-counterthreshold-register-micect"></span><span class="section-number">4.9.1. </span>I-Cache Error Counter/Threshold Register (micect)<a class="headerlink" href="#i-cache-error-counter-threshold-register-micect" title="Link to this heading">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">micect</span></code> register holds the I-cache error counter and its threshold.
 The <em>count</em> field of the <code class="docutils literal notranslate"><span class="pre">micect</span></code> register is incremented, if a parity/ECC error is detected on any of the cache line tags of the set or the instructions fetched from the I-cache.
 The <em>thresh</em> field of the <code class="docutils literal notranslate"><span class="pre">micect</span></code> register holds a pointer to a bit position of the <em>count</em> field.
@@ -1192,7 +1208,7 @@ Firmware can non-destructively read the current <em>count</em> and <em>thresh</e
 </tr>
 </tbody>
 </table>
-<h3 id="iccm-correctable-error-counter-threshold-register-miccmect"><span class="section-number">4.9.2. </span>ICCM Correctable Error Counter/Threshold Register (miccmect)<a class="headerlink" href="#iccm-correctable-error-counter-threshold-register-miccmect" title="Link to this heading">¶</a></h3>
+<h3 id="iccm-correctable-error-counter-threshold-register-miccmect"><span id="iccm-correctable-error-counterthreshold-register-miccmect"></span><span class="section-number">4.9.2. </span>ICCM Correctable Error Counter/Threshold Register (miccmect)<a class="headerlink" href="#iccm-correctable-error-counter-threshold-register-miccmect" title="Link to this heading">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">miccmect</span></code> register holds the ICCM correctable error counter and its threshold.
 The <em>count</em> field of the <code class="docutils literal notranslate"><span class="pre">miccmect</span></code> register is incremented, if a correctable ECC error is detected on either an instruction fetch or a DMA read from the ICCM.
 The <em>thresh</em> field of the <code class="docutils literal notranslate"><span class="pre">miccmect</span></code> register holds a pointer to a bit position of the <em>count</em> field.
@@ -1248,7 +1264,7 @@ Firmware can non-destructively read the current count and <em>thresh</em> values
 </tr>
 </tbody>
 </table>
-<h3 id="dccm-correctable-error-counter-threshold-register-mdccmect"><span class="section-number">4.9.3. </span>DCCM Correctable Error Counter/Threshold Register (mdccmect)<a class="headerlink" href="#dccm-correctable-error-counter-threshold-register-mdccmect" title="Link to this heading">¶</a></h3>
+<h3 id="dccm-correctable-error-counter-threshold-register-mdccmect"><span id="dccm-correctable-error-counterthreshold-register-mdccmect"></span><span class="section-number">4.9.3. </span>DCCM Correctable Error Counter/Threshold Register (mdccmect)<a class="headerlink" href="#dccm-correctable-error-counter-threshold-register-mdccmect" title="Link to this heading">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">mdccmect</span></code> register holds the DCCM correctable error counter and its threshold.
 The <em>count</em> field of the <code class="docutils literal notranslate"><span class="pre">mdccmect</span></code> register is incremented, if a correctable ECC error is detected on either a retired load/store instruction or a DMA read access to the DCCM.
 The <em>thresh</em> field of the <code class="docutils literal notranslate"><span class="pre">mdccmect</span></code> register holds a pointer to a bit position of the <em>count</em> field.
@@ -1348,7 +1364,7 @@ Note that the I-cache area increases significantly if ECC protection is used.</p
   <small>
     
       Last update:
-      2026-10-29
+      2026-11-20
     
   </small>
 </div>
@@ -1416,7 +1432,7 @@ Note that the I-cache area increases significantly if ECC protection is used.</p
         
     </div>
   
-      <a href="https://github.com/chipsalliance/Cores-VeeR-EL2/tree/fa00c8aadc4a077d78b277129c1badf90d881255">fa00c8aa</a>
+      <a href="https://github.com/chipsalliance/Cores-VeeR-EL2/tree/642f1c8866fc21b01d8e115e985d87a185ae8bff">642f1c88</a>
         @ <a href="https://github.com/chipsalliance/Cores-VeeR-EL2/tree/main">main</a>
   
 </div>

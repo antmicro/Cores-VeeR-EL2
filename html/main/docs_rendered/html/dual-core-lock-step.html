@@ -423,6 +423,22 @@
   
   
     <li class="md-nav__item">
+      <a href="triple-modular-redundancy.html" class="md-nav__link">
+        <span class="md-ellipsis">Triple Modular Redundancy <wbr>(TMR)</span>
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="timers.html" class="md-nav__link">
         <span class="md-ellipsis">Internal Timers</span>
       </a>
@@ -2007,14 +2023,6 @@ Refer to <a class="reference internal" href="#tab-shadow-core-tracked-signals"><
 <td></td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><p>ic_rd_addr_lo</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>ic_rd_bank_check_en</p></td>
-<td></td>
-<td></td>
-</tr>
 <tr class="row-odd"><td><p>ic_rd_data</p></td>
 <td></td>
 <td></td>
@@ -2287,7 +2295,7 @@ There are three configuration options:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">-set</span> <span class="pre">lockstep_regfile_read_enable=1</span></code> - compare the register file read output ports (covering all registers) instead of the fixed subset. Requires <code class="docutils literal notranslate"><span class="pre">lockstep_regfile_enable=1</span></code>.</p></li>
 </ul>
 <p>The configuration options are ignored and their macros are not generated if the Dual Core Lockstep feature is disabled.</p>
-<h2 id="synthesis-optimization-barriers-el2-prim-buf"><span class="section-number">5.5. </span>Synthesis: optimization barriers (<code class="docutils literal notranslate"><span class="pre">el2_prim_buf</span></code>)<a class="headerlink" href="#synthesis-optimization-barriers-el2-prim-buf" title="Link to this heading">¶</a></h2>
+<h2 id="synthesis-optimization-barriers-el2-prim-buf"><span id="synthesis-optimization-barriers-el2_prim_buf"></span><span class="section-number">5.5. </span>Synthesis: optimization barriers (<code class="docutils literal notranslate"><span class="pre">el2_prim_buf</span></code>)<a class="headerlink" href="#synthesis-optimization-barriers-el2-prim-buf" title="Link to this heading">¶</a></h2>
 <p>For the DCLS to be effective, the Shadow Core and the Main/Shadow comparison logic must <em>not</em> be merged or removed by synthesis.
 Logic-equivalence-aware tools can otherwise recognize the Shadow Core as redundant duplicate logic and optimize it away.</p>
 <p>To prevent this, <code class="docutils literal notranslate"><span class="pre">el2_veer_lockstep</span></code> inserts optimization barriers (<code class="docutils literal notranslate"><span class="pre">el2_prim_buf</span></code>) on the IOs of the Shadow Core:</p>
@@ -2308,10 +2316,11 @@ With the generic buffer alone, a synthesis tool is free to optimize the barrier 
 </ul>
 <p>Failing to do either leaves the DCLS protection unverified against logic-optimization removal.</p>
 <h2 id="validation-plan"><span class="section-number">5.6. </span>Validation Plan<a class="headerlink" href="#validation-plan" title="Link to this heading">¶</a></h2>
-<p>The DCLS feature will be tested within:</p>
+<p>The DCLS feature and its associated memory integrity countermeasures are verified across:</p>
 <ul class="simple">
-<li><p>Software DCLS <a class="reference external" href="https://github.com/chipsalliance/Cores-VeeR-EL2/tree/main/testbench/tests/dcls">smoke tests</a> - cover VeeR CPU core with the Shadow Core execution flow.</p></li>
-<li><p>RTL <code class="docutils literal notranslate"><span class="pre">el2_veer_lockstep</span></code> <a class="reference external" href="https://github.com/chipsalliance/Cores-VeeR-EL2/tree/main/verification/block/dcls">module tests</a> - covers the Shadow Core by itself.</p></li>
+<li><p>Software DCLS <a class="reference external" href="https://github.com/chipsalliance/Cores-VeeR-EL2/tree/main/testbench/tests/dcls">directed and fault-injection tests</a> (<code class="docutils literal notranslate"><span class="pre">dcls</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_skipped_signals</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_io_sweep</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_debug</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_error_ctrl</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_mubi_sweep</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_internal_state</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_regfile_read</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_ecc_asymmetric</span></code>) - cover the Main Core and Shadow Core lockstep execution flow, I/O boundary fault-injection sweeps, internal register/CSR comparison, and multi-bit boolean control signaling.</p></li>
+<li><p>Software memory integrity <a class="reference external" href="https://github.com/chipsalliance/Cores-VeeR-EL2/tree/main/testbench/tests">countermeasure tests</a> (<code class="docutils literal notranslate"><span class="pre">iccm_addr_xor</span></code>, <code class="docutils literal notranslate"><span class="pre">dccm_addr_xor</span></code>, <code class="docutils literal notranslate"><span class="pre">icache_infection</span></code>, <code class="docutils literal notranslate"><span class="pre">dccm_wr_readback</span></code>, <code class="docutils literal notranslate"><span class="pre">dccm_wr_readback_hazards</span></code>, <code class="docutils literal notranslate"><span class="pre">dccm_wr_readback_random</span></code>, <code class="docutils literal notranslate"><span class="pre">dccm_wr_readback_fault_dmi</span></code>, <code class="docutils literal notranslate"><span class="pre">dccm_wr_readback_sys_integ</span></code>) - cover address-XOR infection across ICCM, DCCM, and ICache as well as DCCM write-readback verification under DCLS.</p></li>
+<li><p>RTL <code class="docutils literal notranslate"><span class="pre">el2_veer_lockstep</span></code> <a class="reference external" href="https://github.com/chipsalliance/Cores-VeeR-EL2/tree/main/verification/block/dcls">module tests</a> (<code class="docutils literal notranslate"><span class="pre">test_lockstep.py</span></code>) - cover the Shadow Core wrapper, reset sequencing, and multi-bit boolean control logic standalone.</p></li>
 </ul>
 <table class="docutils data align-center" id="vp-block-name-list-table">
 <caption><span class="caption-number">Table 5.5 </span><span class="caption-text">Validation Plan</span><a class="headerlink" href="#vp-block-name-list-table" title="Link to this table">¶</a></caption>
@@ -2320,22 +2329,22 @@ With the generic buffer alone, a synthesis tool is free to optimize the barrier 
 <td><p><strong>VeeR EL2 CPU core input corruption detection</strong></p></td>
 </tr>
 <tr class="row-even"><td><p>Reference Document</p></td>
-<td></td>
+<td><p><a class="reference internal" href="#monitored-ios">Monitored IOs</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>Check description</p></td>
 <td><p>Verify the panic signal is raised only upon core states’ mismatch. Introduce corruption via VeeR EL2 CPU core inputs directed to the Shadow Core.</p></td>
 </tr>
 <tr class="row-even"><td><p>Coverage groups</p></td>
-<td><p>Each output of the VeeR EL2 CPU Core is reached when detecting the mismatch by <code class="docutils literal notranslate"><span class="pre">Equivalence</span> <span class="pre">Checker</span></code>. All bounds of configurable delay are reached.</p></td>
+<td><p>Each CPU-exercisable input of the VeeR EL2 CPU Core routed to the Main Core and Shadow Core is stimulated under fault injection to trigger a mismatch at the <code class="docutils literal notranslate"><span class="pre">Equivalence</span> <span class="pre">Checker</span></code>. All bounds of configurable delay (<code class="docutils literal notranslate"><span class="pre">DCLS_DELAY</span></code> = <code class="docutils literal notranslate"><span class="pre">0..4</span></code>) and both bus interfaces (<code class="docutils literal notranslate"><span class="pre">AXI4</span></code> and <code class="docutils literal notranslate"><span class="pre">AHB-Lite</span></code>) are reached.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Assertions</p></td>
-<td><p>Detection bit is asserted upon encountered corruption. Error behavior follows the error handling policy. No action is taken if no corruption was introduced.</p></td>
+<td><p>Detection bit (<code class="docutils literal notranslate"><span class="pre">corruption_detected_o</span></code>) is asserted upon encountered corruption. Error behavior follows the error handling policy. No action is taken if no corruption was introduced.</p></td>
 </tr>
 <tr class="row-even"><td><p>Comments</p></td>
-<td></td>
+<td><p>Injects faults onto Shadow Core and Main Core input ports (signal IDs <code class="docutils literal notranslate"><span class="pre">0..31</span></code>, AXI <code class="docutils literal notranslate"><span class="pre">48..99</span></code>, AHB <code class="docutils literal notranslate"><span class="pre">48..66</span></code>) via testbench mailbox commands <code class="docutils literal notranslate"><span class="pre">CMD_INJ_LOCKSTEP</span></code> (<code class="docutils literal notranslate"><span class="pre">0x92</span></code>) and <code class="docutils literal notranslate"><span class="pre">CMD_INJ_VEER</span></code> (<code class="docutils literal notranslate"><span class="pre">0x91</span></code>) in <code class="docutils literal notranslate"><span class="pre">tb_top.sv</span></code>. <code class="docutils literal notranslate"><span class="pre">dcls_skipped_signals</span></code> and <code class="docutils literal notranslate"><span class="pre">dcls_io_sweep</span></code> relocate fault-injection and stackless trap recovery to ICCM while actively stimulating memory, ICache, interrupt, and bus input channels that were skipped in baseline <code class="docutils literal notranslate"><span class="pre">dcls</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Test Name</p></td>
-<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dcls</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_skipped_signals</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_io_sweep</span></code></p></td>
 </tr>
 <tr class="row-even"><td></td>
 <td></td>
@@ -2344,22 +2353,22 @@ With the generic buffer alone, a synthesis tool is free to optimize the barrier 
 <td><p><strong>VeeR EL2 CPU core output corruption detection</strong></p></td>
 </tr>
 <tr class="row-even"><td><p>Reference Document</p></td>
-<td></td>
+<td><p><a class="reference internal" href="#monitored-ios">Monitored IOs</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>Check description</p></td>
 <td><p>Verify the panic signal is raised only upon core states’ mismatch. Introduce corruption via the outputs of the main VeeR CPU core directed to <code class="docutils literal notranslate"><span class="pre">Equivalence</span> <span class="pre">Checker</span></code> in the Shadow Core.</p></td>
 </tr>
 <tr class="row-even"><td><p>Coverage groups</p></td>
-<td><p>Each output of the VeeR EL2 CPU Core is reached when detecting the mismatch by <code class="docutils literal notranslate"><span class="pre">Equivalence</span> <span class="pre">Checker</span></code>. All bounds of configurable delay are reached.</p></td>
+<td><p>Each output of the VeeR EL2 CPU Core is reached when detecting the mismatch by <code class="docutils literal notranslate"><span class="pre">Equivalence</span> <span class="pre">Checker</span></code>. All bounds of configurable delay (<code class="docutils literal notranslate"><span class="pre">DCLS_DELAY</span></code> = <code class="docutils literal notranslate"><span class="pre">0..4</span></code>) and both bus interfaces (<code class="docutils literal notranslate"><span class="pre">AXI4</span></code> and <code class="docutils literal notranslate"><span class="pre">AHB-Lite</span></code>) are reached.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Assertions</p></td>
-<td><p>Detection bit is asserted upon encountered corruption. Error behavior follows the relevant error handling policy. No action is taken if no corruption was introduced.</p></td>
+<td><p>Detection bit (<code class="docutils literal notranslate"><span class="pre">corruption_detected_o</span></code>) is asserted upon encountered corruption. Error behavior follows the relevant error handling policy. No action is taken if no corruption was introduced.</p></td>
 </tr>
 <tr class="row-even"><td><p>Comments</p></td>
-<td></td>
+<td><p>Injects faults directly onto core output signals compared by the <code class="docutils literal notranslate"><span class="pre">Equivalence</span> <span class="pre">Checker</span></code> (signal IDs <code class="docutils literal notranslate"><span class="pre">32..47</span></code>, AXI <code class="docutils literal notranslate"><span class="pre">100..194</span></code>, AHB <code class="docutils literal notranslate"><span class="pre">67..92</span></code>) via <code class="docutils literal notranslate"><span class="pre">CMD_INJ_LOCKSTEP</span></code> (<code class="docutils literal notranslate"><span class="pre">0x92</span></code>) and <code class="docutils literal notranslate"><span class="pre">CMD_INJ_VEER</span></code> (<code class="docutils literal notranslate"><span class="pre">0x91</span></code>) in <code class="docutils literal notranslate"><span class="pre">tb_top.sv</span></code>, with <code class="docutils literal notranslate"><span class="pre">dcls_skipped_signals</span></code> and <code class="docutils literal notranslate"><span class="pre">dcls_io_sweep</span></code> covering the Main Core bus outputs skipped in baseline <code class="docutils literal notranslate"><span class="pre">dcls</span></code> using ICCM-isolated trap recovery and per-signal trap verification.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Test Name</p></td>
-<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dcls</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_skipped_signals</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_io_sweep</span></code></p></td>
 </tr>
 <tr class="row-even"><td></td>
 <td></td>
@@ -2368,22 +2377,22 @@ With the generic buffer alone, a synthesis tool is free to optimize the barrier 
 <td><p><strong>Internal state corruption detection</strong></p></td>
 </tr>
 <tr class="row-even"><td><p>Reference Document</p></td>
-<td></td>
+<td><p><a class="reference internal" href="#monitored-registers">Monitored Registers</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>Check description</p></td>
 <td><p>Verify the panic signal is raised only upon core states’ mismatch. Introduce corruption via exposed registers of the Shadow Core.</p></td>
 </tr>
 <tr class="row-even"><td><p>Coverage groups</p></td>
-<td><p>Each <a class="reference internal" href="#monitored-registers">monitored register</a> is detected by the <code class="docutils literal notranslate"><span class="pre">Equivalence</span> <span class="pre">Checker</span></code>. All bounds of configurable delay are reached.</p></td>
+<td><p>Each <a class="reference internal" href="#monitored-registers">monitored register</a> group (GPRs, fetch PC, and architectural CSRs) is detected by the <code class="docutils literal notranslate"><span class="pre">Equivalence</span> <span class="pre">Checker</span></code>. All bounds of configurable delay (<code class="docutils literal notranslate"><span class="pre">DCLS_DELAY</span></code> = <code class="docutils literal notranslate"><span class="pre">0..4</span></code>) are reached.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Assertions</p></td>
-<td><p>Detection bit is asserted upon encountered corruption. Error behavior follows the relevant error handling policy. No action is taken if no corruption was introduced.</p></td>
+<td><p>Detection bit (<code class="docutils literal notranslate"><span class="pre">corruption_detected_o</span></code>) is asserted upon encountered corruption. Error behavior follows the relevant error handling policy. No action is taken if no corruption was introduced.</p></td>
 </tr>
 <tr class="row-even"><td><p>Comments</p></td>
-<td><p>The default path will likely be more easily testable with the help of the software testbench. It should be possible to simulate a fault injection via mailbox see: <a class="reference external" href="https://github.com/chipsalliance/Cores-VeeR-EL2/blob/795eb588e34b6815033b769d54fcf7cfac4aae3a/testbench/tb_top.sv#L727">top_tb.sv</a>.</p></td>
+<td><p>Simulates fault injection via mailbox (<code class="docutils literal notranslate"><span class="pre">CMD_INJ_LOCKSTEP</span></code> cases <code class="docutils literal notranslate"><span class="pre">200..202</span></code> in <a class="reference external" href="https://github.com/chipsalliance/Cores-VeeR-EL2/blob/main/testbench/tb_top.sv">tb_top.sv</a>) targeting Shadow Core GPR (<code class="docutils literal notranslate"><span class="pre">x15</span></code>), fetch Program Counter (<code class="docutils literal notranslate"><span class="pre">q0pcff</span></code>), and CSR (<code class="docutils literal notranslate"><span class="pre">mtvec</span></code>), as well as asymmetric RAS ECC threshold CSRs (<code class="docutils literal notranslate"><span class="pre">mdccmect</span></code>, <code class="docutils literal notranslate"><span class="pre">miccmect</span></code>, <code class="docutils literal notranslate"><span class="pre">micect</span></code> via cases <code class="docutils literal notranslate"><span class="pre">203..205</span></code>).</p></td>
 </tr>
 <tr class="row-odd"><td><p>Test Name</p></td>
-<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dcls_internal_state</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_ecc_asymmetric</span></code></p></td>
 </tr>
 <tr class="row-even"><td></td>
 <td></td>
@@ -2392,22 +2401,22 @@ With the generic buffer alone, a synthesis tool is free to optimize the barrier 
 <td><p><strong>DCLS default execution</strong></p></td>
 </tr>
 <tr class="row-even"><td><p>Reference Document</p></td>
-<td></td>
+<td><p><a class="reference internal" href="#veer-el2-dcls-overview">VeeR EL2 DCLS Overview</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>Check description</p></td>
 <td><p>Verify the DCLS feature behavior during non-obstructed execution.</p></td>
 </tr>
 <tr class="row-even"><td><p>Coverage groups</p></td>
-<td></td>
+<td><p>Standard instruction streams, CSR accesses, ECC paths, caches, and privilege modes executed across <code class="docutils literal notranslate"><span class="pre">DCLS_DELAY</span></code> = <code class="docutils literal notranslate"><span class="pre">0..4</span></code> on both <code class="docutils literal notranslate"><span class="pre">AXI4</span></code> and <code class="docutils literal notranslate"><span class="pre">AHB-Lite</span></code> builds.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Assertions</p></td>
 <td><p>Detection bit is not raised. Detection interrupt is not asserted. The test provides the same results as the VeeR EL2 CPU core without the DCLS feature enabled.</p></td>
 </tr>
 <tr class="row-even"><td><p>Comments</p></td>
-<td><p>It might be beneficial to use a software test with a program that will produce a result that can by easily compared to an alternative flow and also engage the VeeR EL2 core. Consider matrix multiplication.</p></td>
+<td><p>Standard benchmark and functional workloads run with <code class="docutils literal notranslate"><span class="pre">DCLS_ENABLE=1</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Test Name</p></td>
-<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dhry</span></code>, <code class="docutils literal notranslate"><span class="pre">hello_world</span></code>, <code class="docutils literal notranslate"><span class="pre">hello_world_dccm</span></code>, <code class="docutils literal notranslate"><span class="pre">hello_world_iccm</span></code>, <code class="docutils literal notranslate"><span class="pre">ecc</span></code>, <code class="docutils literal notranslate"><span class="pre">csr_misa</span></code>, <code class="docutils literal notranslate"><span class="pre">csr_access</span></code>, <code class="docutils literal notranslate"><span class="pre">csr_mstatus</span></code>, <code class="docutils literal notranslate"><span class="pre">csr_mseccfg</span></code>, <code class="docutils literal notranslate"><span class="pre">perf_counters</span></code>, <code class="docutils literal notranslate"><span class="pre">icache</span></code>, <code class="docutils literal notranslate"><span class="pre">bitmanip</span></code></p></td>
 </tr>
 <tr class="row-even"><td></td>
 <td></td>
@@ -2416,22 +2425,22 @@ With the generic buffer alone, a synthesis tool is free to optimize the barrier 
 <td><p><strong>Error reporting</strong></p></td>
 </tr>
 <tr class="row-even"><td><p>Reference Document</p></td>
-<td></td>
+<td><p><a class="reference internal" href="#error-policy">Error Policy</a>, <a class="reference internal" href="#shadow-core-control">Shadow Core Control</a>, <a class="reference internal" href="#multibit-boolean-logic">Multibit boolean logic</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>Check description</p></td>
-<td><p>Verify error reporting policy upon detected corruption.</p></td>
+<td><p>Verify error reporting policy upon detected corruption, artificial error injection, and error detection suppression across multi-bit boolean (<code class="docutils literal notranslate"><span class="pre">el2_mubi_t</span></code>) encodings.</p></td>
 </tr>
 <tr class="row-even"><td><p>Coverage groups</p></td>
-<td><p>Each error policy is covered.</p></td>
+<td><p>Each error policy and control port (<code class="docutils literal notranslate"><span class="pre">disable_corruption_detection_i</span></code>, <code class="docutils literal notranslate"><span class="pre">lockstep_err_injection_en_i</span></code>, <code class="docutils literal notranslate"><span class="pre">corruption_detected_o</span></code>) is covered across <code class="docutils literal notranslate"><span class="pre">mubi_width</span></code> = <code class="docutils literal notranslate"><span class="pre">{2,</span> <span class="pre">4,</span> <span class="pre">8,</span> <span class="pre">16,</span> <span class="pre">32}</span></code> and <code class="docutils literal notranslate"><span class="pre">DCLS_DELAY</span></code> = <code class="docutils literal notranslate"><span class="pre">0..4</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Assertions</p></td>
-<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">corruption_detected_o</span></code> asserts (<code class="docutils literal notranslate"><span class="pre">El2MuBiTrue</span></code>) when core mismatch occurs or <code class="docutils literal notranslate"><span class="pre">lockstep_err_injection_en_i</span> <span class="pre">!=</span> <span class="pre">El2MuBiFalse</span></code>, unless <code class="docutils literal notranslate"><span class="pre">disable_corruption_detection_i</span> <span class="pre">==</span> <span class="pre">El2MuBiTrue</span></code>. Invalid multi-bit encodings on <code class="docutils literal notranslate"><span class="pre">disable_corruption_detection_i</span></code> fail secure and assert <code class="docutils literal notranslate"><span class="pre">corruption_detected_o</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p>Comments</p></td>
-<td></td>
+<td><p>Verified at both the top-level SoC testbench (<code class="docutils literal notranslate"><span class="pre">CMD_INJ_EXT</span> <span class="pre">=</span> <span class="pre">0x93</span></code>, <code class="docutils literal notranslate"><span class="pre">CMD_INJ_CTRL</span> <span class="pre">=</span> <span class="pre">0x94</span></code>) and standalone pyUVM block verification (<code class="docutils literal notranslate"><span class="pre">verification/block/dcls/test_lockstep.py</span></code>).</p></td>
 </tr>
 <tr class="row-odd"><td><p>Test Name</p></td>
-<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dcls_error_ctrl</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_mubi_sweep</span></code>, <code class="docutils literal notranslate"><span class="pre">test_lockstep.py</span></code> (<code class="docutils literal notranslate"><span class="pre">TestErrorInjection</span></code>, <code class="docutils literal notranslate"><span class="pre">TestInvalidErrorInjection</span></code>, <code class="docutils literal notranslate"><span class="pre">TestInvalidDisableCorruptionDetection</span></code>)</p></td>
 </tr>
 <tr class="row-even"><td></td>
 <td></td>
@@ -2440,22 +2449,22 @@ With the generic buffer alone, a synthesis tool is free to optimize the barrier 
 <td><p><strong>Reset</strong></p></td>
 </tr>
 <tr class="row-even"><td><p>Reference Document</p></td>
-<td></td>
+<td><p><a class="reference internal" href="#error-policy">Error Policy</a>, <a class="reference internal" href="#monitored-ios">Monitored IOs</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>Check description</p></td>
 <td><p>Verify the behavior in reset. Ensure normal execution upon leaving reset.</p></td>
 </tr>
 <tr class="row-even"><td><p>Coverage groups</p></td>
-<td></td>
+<td><p>Cold reset and warm reset (<code class="docutils literal notranslate"><span class="pre">CMD_RST</span> <span class="pre">=</span> <span class="pre">0x96</span></code>) across all configurable <code class="docutils literal notranslate"><span class="pre">DCLS_DELAY</span></code> values (<code class="docutils literal notranslate"><span class="pre">0..4</span></code>).</p></td>
 </tr>
 <tr class="row-odd"><td><p>Assertions</p></td>
 <td><p>Shadow Core enters reset at the same time the main VeeR core does. Shadow Core exits reset after a predefined delay following the main core. Detected corruption and interrupts are deasserted upon entering the reset.</p></td>
 </tr>
 <tr class="row-even"><td><p>Comments</p></td>
-<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TestReset</span></code> in <code class="docutils literal notranslate"><span class="pre">test_lockstep.py</span></code> verifies cycle-accurate <code class="docutils literal notranslate"><span class="pre">shadow_reset</span></code> and <code class="docutils literal notranslate"><span class="pre">shadow_dbg_reset</span></code> staggering and <code class="docutils literal notranslate"><span class="pre">corruption_detected_o</span> <span class="pre">==</span> <span class="pre">El2MuBiFalse</span></code>. Software DCLS tests repeatedly issue warm resets from <code class="docutils literal notranslate"><span class="pre">trap_handler()</span></code> to verify corruption clearing and lockstep resynchronization.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Test Name</p></td>
-<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">test_lockstep.py</span></code> (<code class="docutils literal notranslate"><span class="pre">TestReset</span></code>), <code class="docutils literal notranslate"><span class="pre">dcls</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_skipped_signals</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_io_sweep</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_internal_state</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_ecc_asymmetric</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_error_ctrl</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_mubi_sweep</span></code></p></td>
 </tr>
 <tr class="row-even"><td></td>
 <td></td>
@@ -2464,19 +2473,19 @@ With the generic buffer alone, a synthesis tool is free to optimize the barrier 
 <td><p><strong>Disable error detection after entering debug state</strong></p></td>
 </tr>
 <tr class="row-even"><td><p>Reference Document</p></td>
-<td></td>
+<td><p><a class="reference internal" href="#configuration">Configuration</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>Check description</p></td>
 <td><p>Verify the DCLS feature behavior after entering debug state.</p></td>
 </tr>
 <tr class="row-even"><td><p>Coverage groups</p></td>
-<td></td>
+<td><p>Error injection before Debug Mode entry, Debug Mode halt/run transition (<code class="docutils literal notranslate"><span class="pre">CMD_ENT_DBG</span> <span class="pre">=</span> <span class="pre">0xA0</span></code>), and error injection after Debug Mode exit prior to reset.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Assertions</p></td>
-<td><p>Corruption detection is disabled when Main Core enters debug mode. It is not disabled until core resets.</p></td>
+<td><p>Corruption detection is disabled when Main Core enters debug mode. It remains disabled until the core resets.</p></td>
 </tr>
 <tr class="row-even"><td><p>Comments</p></td>
-<td></td>
+<td><p>Verified across <code class="docutils literal notranslate"><span class="pre">DCLS_DELAY</span></code> = <code class="docutils literal notranslate"><span class="pre">0..4</span></code> on <code class="docutils literal notranslate"><span class="pre">AXI4</span></code> and <code class="docutils literal notranslate"><span class="pre">AHB-Lite</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Test Name</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">dcls_debug</span></code></p></td>
@@ -2488,25 +2497,118 @@ With the generic buffer alone, a synthesis tool is free to optimize the barrier 
 <td><p><strong>Register file fault injection detection</strong></p></td>
 </tr>
 <tr class="row-even"><td><p>Reference Document</p></td>
-<td></td>
+<td><p><a class="reference internal" href="#register-file">Register File</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>Check description</p></td>
 <td><p>Inject a fault into the register file or the register file output ports of the main or the shadow core.</p></td>
 </tr>
 <tr class="row-even"><td><p>Coverage groups</p></td>
-<td></td>
+<td><p>Fixed monitored GPR subset (<code class="docutils literal notranslate"><span class="pre">x1</span></code>, <code class="docutils literal notranslate"><span class="pre">x2</span></code>, <code class="docutils literal notranslate"><span class="pre">x8</span></code>, <code class="docutils literal notranslate"><span class="pre">x10..x17</span></code>) with <code class="docutils literal notranslate"><span class="pre">lockstep_regfile_read_enable=0</span></code> and full GPR file (<code class="docutils literal notranslate"><span class="pre">x1..x31</span></code>) read output ports (<code class="docutils literal notranslate"><span class="pre">rd0</span></code>/<code class="docutils literal notranslate"><span class="pre">rd1</span></code>) with <code class="docutils literal notranslate"><span class="pre">lockstep_regfile_read_enable=1</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Assertions</p></td>
-<td><p>Detection bit is asserted upon encountered corruption. Error behavior follows the relevant error handling policy. No action is taken if no corruption was introduced.</p></td>
+<td><p>Detection bit (<code class="docutils literal notranslate"><span class="pre">corruption_detected_o</span></code>) is asserted upon encountered corruption when the register is compared or read. Error behavior follows the relevant error handling policy. No action is taken if no corruption was introduced.</p></td>
 </tr>
 <tr class="row-even"><td><p>Comments</p></td>
-<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dcls_regfile_read</span></code> sweeps fault injection across monitored GPRs (<code class="docutils literal notranslate"><span class="pre">lockstep_regfile_read_enable=0</span></code>) and all GPR read ports (<code class="docutils literal notranslate"><span class="pre">lockstep_regfile_read_enable=1</span></code>). <code class="docutils literal notranslate"><span class="pre">dcls_internal_state</span></code> (Scenario 1, Case <code class="docutils literal notranslate"><span class="pre">200</span></code>) also injects a bit-flip into Shadow Core GPR <code class="docutils literal notranslate"><span class="pre">a5</span></code> (<code class="docutils literal notranslate"><span class="pre">x15</span></code>) under both modes.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Test Name</p></td>
-<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dcls_regfile_read</span></code>, <code class="docutils literal notranslate"><span class="pre">dcls_internal_state</span></code></p></td>
 </tr>
 <tr class="row-even"><td></td>
 <td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Function</strong></p></td>
+<td><p><strong>Multi-memory asymmetric ECC threshold alert detection</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Reference Document</p></td>
+<td><p><a class="reference internal" href="#control-and-status-registers">Control and Status Registers</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Check description</p></td>
+<td><p>Verify DCLS divergence detection when an asymmetric single-bit ECC/parity error threshold alert occurs on only one core across DCCM (<code class="docutils literal notranslate"><span class="pre">mdccmect</span></code>), ICCM (<code class="docutils literal notranslate"><span class="pre">miccmect</span></code>), or ICache (<code class="docutils literal notranslate"><span class="pre">micect</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p>Coverage groups</p></td>
+<td><p>All 3 internal memory error counter CSRs (<code class="docutils literal notranslate"><span class="pre">0x7F0</span></code>, <code class="docutils literal notranslate"><span class="pre">0x7F1</span></code>, <code class="docutils literal notranslate"><span class="pre">0x7F2</span></code>) across <code class="docutils literal notranslate"><span class="pre">DCLS_DELAY</span></code> = <code class="docutils literal notranslate"><span class="pre">0..4</span></code> and <code class="docutils literal notranslate"><span class="pre">icache_ecc</span></code> = <code class="docutils literal notranslate"><span class="pre">{0,</span> <span class="pre">1}</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Assertions</p></td>
+<td><p>Detection bit (<code class="docutils literal notranslate"><span class="pre">corruption_detected_o</span></code>) is asserted upon asymmetric threshold alert divergence between Main Core and Shadow Core.</p></td>
+</tr>
+<tr class="row-even"><td><p>Comments</p></td>
+<td><p>Injects asymmetric threshold counter state onto the Shadow Core via mailbox cases <code class="docutils literal notranslate"><span class="pre">203..205</span></code> in <code class="docutils literal notranslate"><span class="pre">tb_top.sv</span></code> and verifies warm-reset recovery after each trap.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Test Name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dcls_ecc_asymmetric</span></code>, <code class="docutils literal notranslate"><span class="pre">ecc_threshold</span></code>, <code class="docutils literal notranslate"><span class="pre">icache_ecc</span></code></p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Function</strong></p></td>
+<td><p><strong>ICCM and DCCM address-XOR infection detection</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Reference Document</p></td>
+<td><p><a class="reference internal" href="#veer-el2-dcls-overview">VeeR EL2 DCLS Overview</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Check description</p></td>
+<td><p>Verify that address-XOR ECC encoding (<code class="docutils literal notranslate"><span class="pre">iccm_addr_xor=1</span></code>, <code class="docutils literal notranslate"><span class="pre">dccm_addr_xor=1</span></code>) detects address-path, write-enable, and memory-access faults on non-duplicated ICCM and DCCM memories outside the lockstep domain.</p></td>
+</tr>
+<tr class="row-even"><td><p>Coverage groups</p></td>
+<td><p>Clean read/write cancellation, read address fault (<code class="docutils literal notranslate"><span class="pre">0xE5</span></code>/<code class="docutils literal notranslate"><span class="pre">0xE9</span></code>), write address fault (<code class="docutils literal notranslate"><span class="pre">0xE5</span></code>/<code class="docutils literal notranslate"><span class="pre">0xE9</span></code>), write-enable suppression fault (<code class="docutils literal notranslate"><span class="pre">0xE6</span></code>/<code class="docutils literal notranslate"><span class="pre">0xEA</span></code>), and memory access/clock-enable fault (<code class="docutils literal notranslate"><span class="pre">0xE7</span></code>/<code class="docutils literal notranslate"><span class="pre">0xEB</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p>Assertions</p></td>
+<td><p>Address or control faults on ICCM/DCCM yield an uncorrectable ECC mismatch and raise the corresponding precise instruction (<code class="docutils literal notranslate"><span class="pre">mcause=0x1</span></code>) or load (<code class="docutils literal notranslate"><span class="pre">mcause=0x5</span></code>) access fault trap (<code class="docutils literal notranslate"><span class="pre">mscause=0x1</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p>Comments</p></td>
+<td><p>Executed with <code class="docutils literal notranslate"><span class="pre">DCLS_ENABLE=1</span></code> and <code class="docutils literal notranslate"><span class="pre">ICCM_ADDR_XOR=1</span></code> / <code class="docutils literal notranslate"><span class="pre">DCCM_ADDR_XOR=1</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Test Name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">iccm_addr_xor</span></code>, <code class="docutils literal notranslate"><span class="pre">dccm_addr_xor</span></code></p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Function</strong></p></td>
+<td><p><strong>ICache address-XOR infection detection</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Reference Document</p></td>
+<td><p><a class="reference internal" href="#veer-el2-dcls-overview">VeeR EL2 DCLS Overview</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Check description</p></td>
+<td><p>Verify that ICache address infection (<code class="docutils literal notranslate"><span class="pre">icache_addr_xor=1</span></code> / <code class="docutils literal notranslate"><span class="pre">RV_ICACHE_ADDR_XOR</span></code>) detects address-path, data array, and hit/way-selection faults on the non-duplicated instruction cache under DCLS.</p></td>
+</tr>
+<tr class="row-even"><td><p>Coverage groups</p></td>
+<td><p>ICache warmup, data array read fault (<code class="docutils literal notranslate"><span class="pre">0x89</span></code>), address infection fault (<code class="docutils literal notranslate"><span class="pre">0x8A</span></code> on <code class="docutils literal notranslate"><span class="pre">ic_rd_addr_infect</span></code>) with positive (<code class="docutils literal notranslate"><span class="pre">icache_addr_xor=1</span></code>) and negative (<code class="docutils literal notranslate"><span class="pre">icache_addr_xor=0</span></code>) checks, and hit/way selection fault (<code class="docutils literal notranslate"><span class="pre">0x8B</span></code>) across <code class="docutils literal notranslate"><span class="pre">AXI4</span></code>/<code class="docutils literal notranslate"><span class="pre">AHB-Lite</span></code> and <code class="docutils literal notranslate"><span class="pre">icache_ecc</span></code> = <code class="docutils literal notranslate"><span class="pre">{0,</span> <span class="pre">1}</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Assertions</p></td>
+<td><p>When <code class="docutils literal notranslate"><span class="pre">icache_addr_xor=1</span></code>, an infected address fault triggers an ICache parity/ECC error (<code class="docutils literal notranslate"><span class="pre">ic_perr_r</span></code>), flushes the pipeline, refetches cleanly from the SoC bus, and increments <code class="docutils literal notranslate"><span class="pre">micect</span></code> (<code class="docutils literal notranslate"><span class="pre">0x7F0</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p>Comments</p></td>
+<td><p>Executed with <code class="docutils literal notranslate"><span class="pre">DCLS_ENABLE=1</span></code> and <code class="docutils literal notranslate"><span class="pre">ICACHE_ADDR_XOR=1</span></code> / <code class="docutils literal notranslate"><span class="pre">ICACHE_ADDR_XOR=0</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Test Name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">icache_infection</span></code></p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Function</strong></p></td>
+<td><p><strong>DCCM write-readback countermeasure verification</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Reference Document</p></td>
+<td><p><a class="reference internal" href="#veer-el2-dcls-overview">VeeR EL2 DCLS Overview</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Check description</p></td>
+<td><p>Verify the DCCM write-readback countermeasure (<code class="docutils literal notranslate"><span class="pre">dccm_wr_readback=1</span></code> / <code class="docutils literal notranslate"><span class="pre">RV_DCCM_WR_READBACK</span></code>) detects dropped or corrupted DCCM writes and operates transparently across pipeline hazards, DMA collisions, ECC corrections, and runtime <code class="docutils literal notranslate"><span class="pre">MFDC.dwrd</span></code> toggling under DCLS.</p></td>
+</tr>
+<tr class="row-even"><td><p>Coverage groups</p></td>
+<td><p>Immediate port-steal and load-snoop paths, store buffer saturation backpressure, runtime <code class="docutils literal notranslate"><span class="pre">MFDC.dwrd</span></code> (bit 7) enable/disable, randomized RMW/bank interleaving stress, DMI diagnostic capture (<code class="docutils literal notranslate"><span class="pre">0x48..0x4A</span></code>) with dropped-write fault injection and asymmetric DCLS mismatch detection, and DMA/ECC 1-bit correction collision arbitration.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Assertions</p></td>
+<td><p>Non-faulty stores and snooped/stolen readbacks complete without deadlock or false errors. Injected write-skip faults are captured in DMI diagnostic registers (<code class="docutils literal notranslate"><span class="pre">0x48..0x4A</span></code>) and trigger lockstep mismatch detection when asymmetric.</p></td>
+</tr>
+<tr class="row-even"><td><p>Comments</p></td>
+<td><p>Executed with <code class="docutils literal notranslate"><span class="pre">DCLS_ENABLE=1</span></code> and <code class="docutils literal notranslate"><span class="pre">DCCM_WR_READBACK=1</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Test Name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dccm_wr_readback</span></code>, <code class="docutils literal notranslate"><span class="pre">dccm_wr_readback_hazards</span></code>, <code class="docutils literal notranslate"><span class="pre">dccm_wr_readback_random</span></code>, <code class="docutils literal notranslate"><span class="pre">dccm_wr_readback_fault_dmi</span></code>, <code class="docutils literal notranslate"><span class="pre">dccm_wr_readback_sys_integ</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -2517,7 +2619,7 @@ With the generic buffer alone, a synthesis tool is free to optimize the barrier 
   <small>
     
       Last update:
-      2026-10-29
+      2026-11-20
     
   </small>
 </div>
@@ -2557,13 +2659,13 @@ With the generic buffer alone, a synthesis tool is free to optimize the barrier 
       
       
         
-        <a href="timers.html" class="md-footer__link md-footer__link--next" aria-label="Next: 6. Internal Timers" rel="next">
+        <a href="triple-modular-redundancy.html" class="md-footer__link md-footer__link--next" aria-label="Next: 6. Triple Modular Redundancy (TMR)" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              6. Internal Timers
+              6. Triple Modular Redundancy (TMR)
             </div>
           </div>
           <div class="md-footer__button md-icon">
@@ -2585,7 +2687,7 @@ With the generic buffer alone, a synthesis tool is free to optimize the barrier 
         
     </div>
   
-      <a href="https://github.com/chipsalliance/Cores-VeeR-EL2/tree/fa00c8aadc4a077d78b277129c1badf90d881255">fa00c8aa</a>
+      <a href="https://github.com/chipsalliance/Cores-VeeR-EL2/tree/642f1c8866fc21b01d8e115e985d87a185ae8bff">642f1c88</a>
         @ <a href="https://github.com/chipsalliance/Cores-VeeR-EL2/tree/main">main</a>
   
 </div>

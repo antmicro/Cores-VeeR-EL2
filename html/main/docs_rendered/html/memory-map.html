@@ -765,6 +765,22 @@
   
   
     <li class="md-nav__item">
+      <a href="triple-modular-redundancy.html" class="md-nav__link">
+        <span class="md-ellipsis">Triple Modular Redundancy <wbr>(TMR)</span>
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="timers.html" class="md-nav__link">
         <span class="md-ellipsis">Internal Timers</span>
       </a>
@@ -1114,7 +1130,7 @@ Note that stores with potential side effects (i.e., to non-idempotent addresses)
 <p>Two dedicated memories, one for instruction and the other for data, are tightly coupled to the core.
 These memories provide low-latency access and SECDED ECC protection.
 Their respective sizes (4, 8, 16, 32, 48 <a class="footnote-reference brackets" href="#fn-iccm-dccm-1" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, 64, 128, 256, or 512KB) are set as arguments at build time of the core.</p>
-<h4 id="local-memory-mapped-control-status-registers"><span class="section-number">3.3.1.2. </span>Local Memory-Mapped Control/Status Registers<a class="headerlink" href="#local-memory-mapped-control-status-registers" title="Link to this heading">¶</a></h4>
+<h4 id="local-memory-mapped-control-status-registers"><span id="local-memory-mapped-controlstatus-registers"></span><span class="section-number">3.3.1.2. </span>Local Memory-Mapped Control/Status Registers<a class="headerlink" href="#local-memory-mapped-control-status-registers" title="Link to this heading">¶</a></h4>
 <p>To provide control for regular operation, the core requires a number of memory-mapped control/status registers.
 For example, some external interrupt functions are controlled and serviced with accesses to various registers while the system is running.</p>
 <h3 id="accessed-via-system-bus"><span class="section-number">3.3.2. </span>Accessed via System Bus<a class="headerlink" href="#accessed-via-system-bus" title="Link to this heading">¶</a></h3>
@@ -1123,7 +1139,7 @@ For example, some external interrupt functions are controlled and serviced with 
 Both instruction and data accesses are supported to system ROMs.</p>
 <h4 id="system-srams"><span class="section-number">3.3.2.2. </span>System SRAMs<a class="headerlink" href="#system-srams" title="Link to this heading">¶</a></h4>
 <p>The SoC hosts a variety of SRAMs which are mapped to the core’s memory address range and accessed via the system bus.</p>
-<h4 id="system-memory-mapped-i-o"><span class="section-number">3.3.2.3. </span>System Memory-Mapped I/O<a class="headerlink" href="#system-memory-mapped-i-o" title="Link to this heading">¶</a></h4>
+<h4 id="system-memory-mapped-i-o"><span id="system-memory-mapped-io"></span><span class="section-number">3.3.2.3. </span>System Memory-Mapped I/O<a class="headerlink" href="#system-memory-mapped-i-o" title="Link to this heading">¶</a></h4>
 <p>The SoC hosts a variety of I/O device interfaces which are mapped to the core’s memory address range and accessed via the system bus.</p>
 <h3 id="mapping-restrictions"><span class="section-number">3.3.3. </span>Mapping Restrictions<a class="headerlink" href="#mapping-restrictions" title="Link to this heading">¶</a></h3>
 <p>Core-local memories and system bus-attached memories must be mapped to different regions. Mapping both classes of memory types to the same region is not allowed.</p>
@@ -1190,12 +1206,12 @@ Both instruction and data accesses are supported to system ROMs.</p>
 The buffer is implemented as a FIFO.</p>
 <h3 id="load-to-load-and-store-to-store-ordering"><span class="section-number">3.5.1. </span>Load-To-Load and Store-To-Store Ordering<a class="headerlink" href="#load-to-load-and-store-to-store-ordering" title="Link to this heading">¶</a></h3>
 <p>All loads are sent to the system bus interface in program order. Also, all stores are sent to the system bus interface in program order.</p>
-<h3 id="load-store-ordering"><span class="section-number">3.5.2. </span>Load/Store Ordering<a class="headerlink" href="#load-store-ordering" title="Link to this heading">¶</a></h3>
-<h4 id="accesses-with-potential-side-effects-i-e-non-idempotent"><span class="section-number">3.5.2.1. </span>Accesses with Potential Side Effects (i.e., Non-Idempotent)<a class="headerlink" href="#accesses-with-potential-side-effects-i-e-non-idempotent" title="Link to this heading">¶</a></h4>
+<h3 id="load-store-ordering"><span id="loadstore-ordering"></span><span class="section-number">3.5.2. </span>Load/Store Ordering<a class="headerlink" href="#load-store-ordering" title="Link to this heading">¶</a></h3>
+<h4 id="accesses-with-potential-side-effects-i-e-non-idempotent"><span id="accesses-with-potential-side-effects-ie-non-idempotent"></span><span class="section-number">3.5.2.1. </span>Accesses with Potential Side Effects (i.e., Non-Idempotent)<a class="headerlink" href="#accesses-with-potential-side-effects-i-e-non-idempotent" title="Link to this heading">¶</a></h4>
 <p>When a load with potential side effects (i.e., non-idempotent) enters the buffer, the entire unified buffer is emptied, i.e., both stores with no side effects (i.e., idempotent) and with potential side effects (i.e., non-idempotent) are drained out.
 Loads with potential side effects (i.e., non-idempotent) are sent out to the system bus with their exact size.</p>
 <p>Stores with potential side effects (i.e., non-idempotent) are neither coalesced nor forwarded to a load.</p>
-<h4 id="accesses-with-no-side-effects-i-e-idempotent"><span class="section-number">3.5.2.2. </span>Accesses with No Side Effects (i.e., Idempotent)<a class="headerlink" href="#accesses-with-no-side-effects-i-e-idempotent" title="Link to this heading">¶</a></h4>
+<h4 id="accesses-with-no-side-effects-i-e-idempotent"><span id="accesses-with-no-side-effects-ie-idempotent"></span><span class="section-number">3.5.2.2. </span>Accesses with No Side Effects (i.e., Idempotent)<a class="headerlink" href="#accesses-with-no-side-effects-i-e-idempotent" title="Link to this heading">¶</a></h4>
 <p>Loads with no side effects (i.e., idempotent) are always issued as double-words and check the contents of the unified buffer:</p>
 <ol class="arabic simple">
 <li><p><strong>Full address match</strong> (all load bytes present in the unified buffer): Data is forwarded from the unified buffer.
@@ -1203,7 +1219,7 @@ The load does not go out to the system bus.</p></li>
 <li><p><strong>Partial address match</strong> (some of the load bytes are in the unified buffer): The entire unified buffer is emptied, then the load request goes to the system bus.</p></li>
 <li><p><strong>No match</strong> (none of the bytes are in the unified buffer): The load is presented to the system bus interface without waiting for the stores to drain.</p></li>
 </ol>
-<h4 id="ordering-of-store-load-with-no-side-effects-i-e-idempotent"><span class="section-number">3.5.2.3. </span>Ordering of Store - Load with No Side Effects (i.e., Idempotent)<a class="headerlink" href="#ordering-of-store-load-with-no-side-effects-i-e-idempotent" title="Link to this heading">¶</a></h4>
+<h4 id="ordering-of-store-load-with-no-side-effects-i-e-idempotent"><span id="ordering-of-store---load-with-no-side-effects-ie-idempotent"></span><span class="section-number">3.5.2.3. </span>Ordering of Store - Load with No Side Effects (i.e., Idempotent)<a class="headerlink" href="#ordering-of-store-load-with-no-side-effects-i-e-idempotent" title="Link to this heading">¶</a></h4>
 <p>A <code class="docutils literal notranslate"><span class="pre">fence</span></code> instruction is required to order an older store before a younger load with no side effects (i.e., idempotent).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1277,9 +1293,9 @@ If store and non-blocking load bus errors are reported in the same clock cycle, 
 Each counter also has its separate programmable error threshold.
 If any of these counters has reached its threshold, a correctable error local interrupt is signaled.
 Firmware should determine which of the counters has reached the threshold and reset that counter.</p>
-<p>A local-to-the-core interrupt for correctable errors has pending (<em>mceip</em>) and enable (<em>mceie</em>) bits in bit position 30 of the standard RISC-V <code class="docutils literal notranslate"><span class="pre">mip</span></code> (see <a class="reference internal" href="adaptations.html#tab-machine-interrupt-pending-register"><span class="std std-numref">Table 13.2</span></a>) and <code class="docutils literal notranslate"><span class="pre">mie</span></code> (see <a class="reference internal" href="adaptations.html#tab-machine-interrupt-enable-register"><span class="std std-numref">Table 13.1</span></a>) registers, respectively.
-The priority is lower than the RISC-V External interrupt, but higher than the RISC-V Software and Timer interrupts, (see <a class="reference internal" href="interrupt-priority.html#tab-veer-el2-platform-specific-and-std-risc-v-interrupt-priorities"><span class="std std-numref">Table 15.1</span></a>).
-The correctable error local interrupt has an <code class="docutils literal notranslate"><span class="pre">mcause</span></code> value of 0x8000_001E (see <a class="reference internal" href="adaptations.html#tab-machine-cause-register"><span class="std std-numref">Table 13.3</span></a>).</p>
+<p>A local-to-the-core interrupt for correctable errors has pending (<em>mceip</em>) and enable (<em>mceie</em>) bits in bit position 30 of the standard RISC-V <code class="docutils literal notranslate"><span class="pre">mip</span></code> (see <a class="reference internal" href="adaptations.html#tab-machine-interrupt-pending-register"><span class="std std-numref">Table 14.2</span></a>) and <code class="docutils literal notranslate"><span class="pre">mie</span></code> (see <a class="reference internal" href="adaptations.html#tab-machine-interrupt-enable-register"><span class="std std-numref">Table 14.1</span></a>) registers, respectively.
+The priority is lower than the RISC-V External interrupt, but higher than the RISC-V Software and Timer interrupts, (see <a class="reference internal" href="interrupt-priority.html#tab-veer-el2-platform-specific-and-std-risc-v-interrupt-priorities"><span class="std std-numref">Table 16.1</span></a>).
+The correctable error local interrupt has an <code class="docutils literal notranslate"><span class="pre">mcause</span></code> value of 0x8000_001E (see <a class="reference internal" href="adaptations.html#tab-machine-cause-register"><span class="std std-numref">Table 14.3</span></a>).</p>
 <h3 id="rules-for-core-local-memory-accesses"><span class="section-number">3.7.3. </span>Rules for Core-Local Memory Accesses<a class="headerlink" href="#rules-for-core-local-memory-accesses" title="Link to this heading">¶</a></h3>
 <p>The rules for instruction fetch and load/store accesses to core-local memories are:</p>
 <ol class="arabic">
@@ -1314,7 +1330,7 @@ The correctable error local interrupt has an <code class="docutils literal notra
 </ol>
 </li>
 </ol>
-<h3 id="core-local-d-bus-access-prediction"><span class="section-number">3.7.4. </span>Core-Local / D-Bus Access Prediction<a class="headerlink" href="#core-local-d-bus-access-prediction" title="Link to this heading">¶</a></h3>
+<h3 id="core-local-d-bus-access-prediction"><span id="core-local--d-bus-access-prediction"></span><span class="section-number">3.7.4. </span>Core-Local / D-Bus Access Prediction<a class="headerlink" href="#core-local-d-bus-access-prediction" title="Link to this heading">¶</a></h3>
 <p>In VeeR EL2, a prediction is made early in the pipeline if the access is to a core-local address (i.e., DCCM or PIC memory-mapped register) or to the D-bus (i.e., a memory or register address of the SoC).
 The prediction is based on the base address (i.e., value of register <em>rs1</em>) of the load/store instruction.
 Later in the pipeline, the actual address is calculated also taking the offset into account (i.e., value of register <em>rs1 + offset</em>).
@@ -1620,7 +1636,7 @@ A mismatch of the predicted and the actual destination (i.e., a core-local or a 
 <p>DMA write accesses to the ICCM or DCCM always overwrite entire 32-bit words and their corresponding ECC bits.
 Therefore, ECC bits are never checked and errors not detected on DMA writes.</p>
 </div>
-<h3 id="correctable-ecc-parity-errors"><span class="section-number">3.7.8. </span>Correctable Ecc/Parity Errors<a class="headerlink" href="#correctable-ecc-parity-errors" title="Link to this heading">¶</a></h3>
+<h3 id="correctable-ecc-parity-errors"><span id="correctable-eccparity-errors"></span><span class="section-number">3.7.8. </span>Correctable Ecc/Parity Errors<a class="headerlink" href="#correctable-ecc-parity-errors" title="Link to this heading">¶</a></h3>
 <table class="docutils data align-default" id="tab-handling-correctable-ecc-errors">
 <caption><span class="caption-number">Table 3.5 </span><span class="caption-text">Handling of Correctable ECC/Parity Errors Access Core/Bus Side Effect Action</span><a class="headerlink" href="#tab-handling-correctable-ecc-errors" title="Link to this table">¶</a></caption>
 <thead>
@@ -1820,7 +1836,7 @@ Therefore, ECC bits are never checked and errors not detected on DMA writes.</p>
 <p>DMA write accesses to the ICCM or DCCM always overwrite entire 32-bit words and their corresponding ECC bits.
 Therefore, ECC bits are never checked and errors not detected on DMA writes.</p>
 </div>
-<h2 id="control-status-registers"><span class="section-number">3.8. </span>Control/Status Registers<a class="headerlink" href="#control-status-registers" title="Link to this heading">¶</a></h2>
+<h2 id="control-status-registers"><span id="controlstatus-registers"></span><span class="section-number">3.8. </span>Control/Status Registers<a class="headerlink" href="#control-status-registers" title="Link to this heading">¶</a></h2>
 <p>A summary of platform-specific control/status registers in CSR space:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#region-access-control-register-mrac"><span class="std std-ref">Region Access Control Register (mrac)</span></a></p></li>
@@ -2374,7 +2390,7 @@ If the SoC does not respond to every single bus transaction, the core may hang.<
 <p>Deep core pipelines require a certain degree of speculation to maximize performance.
 The sections below describe instruction and data speculation in the VeeR EL2 core.
 Note that speculative accesses to memory addresses with side effects may be entirely avoided by adding the buildargument-selected and -configured memory protection mechanism described in <a class="reference internal" href="#memory-protection"><span class="std std-ref">Memory Protection</span></a>.</p>
-<h3 id="id26"><span class="section-number">3.13.1. </span>Instructions<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h3>
+<h3 id="id26"><span id="instructions-1"></span><span class="section-number">3.13.1. </span>Instructions<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h3>
 <p>Instruction cache misses on VeeR EL2 are speculative in nature.
 The core may issue speculatively fetch accesses on the IFU bus interface for an instruction cache miss in the following cases:</p>
 <ul class="simple">
@@ -2386,8 +2402,8 @@ The core may issue speculatively fetch accesses on the IFU bus interface for an 
 <p>Issuing speculative accesses on the IFU bus interface is benign as long as the platform is able to handle accesses to unimplemented memory and to prevent accesses to SoC components with read side effects by returning random data and/or a bus error condition.
 The decision of which addresses are unimplemented and which addresses with potential side effects need to be protected is left to the platform.</p>
 <p>Instruction fetch speculation can be limited, though not entirely avoided, by turning off the core’s branch predictor including the return address stack.
-Writing a ‘1’ to the <em>bpd</em> bit in the <code class="docutils literal notranslate"><span class="pre">mfdc</span></code> register (see <a class="reference internal" href="core-control.html#tab-feature-disable-cr"><span class="std std-numref">Table 12.1</span></a>) disables branch prediction including RAS.</p>
-<h3 id="id27"><span class="section-number">3.13.2. </span>Data<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h3>
+Writing a ‘1’ to the <em>bpd</em> bit in the <code class="docutils literal notranslate"><span class="pre">mfdc</span></code> register (see <a class="reference internal" href="core-control.html#tab-feature-disable-cr"><span class="std std-numref">Table 13.1</span></a>) disables branch prediction including RAS.</p>
+<h3 id="id27"><span id="data-1"></span><span class="section-number">3.13.2. </span>Data<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h3>
 <p>The VeeR EL2 core does not issue any speculative data accesses on the LSU bus interface.</p>
 <h2 id="dma-slave-port"><span class="section-number">3.14. </span>DMA Slave Port<a class="headerlink" href="#dma-slave-port" title="Link to this heading">¶</a></h2>
 <p>The Direct Memory Access (DMA) slave port is used for read/write accesses to core-local memories initiated by external masters.
@@ -2402,7 +2418,7 @@ The only write byte enable values allowed for AXI4 are 0x0F, 0xF0, and 0xFF.</p>
 <h3 id="quality-of-service"><span class="section-number">3.14.3. </span>Quality Of Service<a class="headerlink" href="#quality-of-service" title="Link to this heading">¶</a></h3>
 <p>Accesses to the ICCM and DCCM by the core have higher priority if the DMA FIFO is not full.
 However, to avoid starvation, the DMA slave port’s DMA controller may periodically request a stall to get access to the pipe if a DMA request is continuously blocked.</p>
-<p>The <em>dqc</em> field in the <code class="docutils literal notranslate"><span class="pre">mfdc</span></code> register (see <a class="reference internal" href="core-control.html#tab-feature-disable-cr"><span class="std std-numref">Table 12.1</span></a>) specifies the maximum number of clock cycles a DMA access request waits at the head of the DMA FIFO before requesting a bubble to access the pipe.
+<p>The <em>dqc</em> field in the <code class="docutils literal notranslate"><span class="pre">mfdc</span></code> register (see <a class="reference internal" href="core-control.html#tab-feature-disable-cr"><span class="std std-numref">Table 13.1</span></a>) specifies the maximum number of clock cycles a DMA access request waits at the head of the DMA FIFO before requesting a bubble to access the pipe.
 For example, if <em>dqc</em> is 0, a DMA access requests a bubble immediately (i.e., in the same cycle); if <em>dqc</em> is 7 (the default value), a waiting DMA access requests a bubble on the 8th cycle.
 For a DMA access to the ICCM, it may take up to 3 additional cycles25 before the access is granted.
 Similarly, for a DMA access to the DCCM, it may take up to 4 additional cycles before the access is granted.</p>
@@ -2473,9 +2489,9 @@ The reason for the NMI request is reported in the <code class="docutils literal 
 <p>NMIs are typically fatal! Section 3.4 of the RISC-V Privileged specification <a class="reference internal" href="intro.html#ref-2"><span class="std std-ref">[2]</span></a> states that NMIs are only used for hardware error conditions and cause an immediate jump to the address at the NMI vector running in M-mode regardless of the state of a hart’s interrupt enable bits. The NMI can thus overwrite state in an active M-mode interrupt handler and normal program execution cannot resume. Unlike resets, NMIs do not reset hart state, enabling diagnosis, reporting, and possible containment of the hardware error. Because NMIs are not maskable, the NMI handling routine performing diagnosis and reporting is itself susceptible to further NMIs, possibly making any such activity meaningless and erroneous in the face of error storms.</p>
 </div>
 <h2 id="software-interrupts"><span class="section-number">3.17. </span>Software Interrupts<a class="headerlink" href="#software-interrupts" title="Link to this heading">¶</a></h2>
-<p>The VeeR EL2 core provides a software-interrupt input signal for its hart (see <code class="docutils literal notranslate"><span class="pre">soft_int</span></code> in <a class="reference internal" href="complex-ports.html#tab-core-complex-signals"><span class="std std-numref">Table 17.1</span></a>).
-The <code class="docutils literal notranslate"><span class="pre">soft_int</span></code> signal is an active-high, level-sensitive, asynchronous input signal which feeds the <em>msip</em> (machine software-interrupt pending) bit of the standard RISC-V <code class="docutils literal notranslate"><span class="pre">mip</span></code> register (see <a class="reference internal" href="adaptations.html#tab-machine-interrupt-pending-register"><span class="std std-numref">Table 13.2</span></a>).
-When the <em>msie</em> (machine software-interrupt enable) bit of the standard RISC-V <code class="docutils literal notranslate"><span class="pre">mie</span></code> register (see <a class="reference internal" href="adaptations.html#tab-machine-interrupt-enable-register"><span class="std std-numref">Table 13.1</span></a>) is set, a machine software interrupt occurs if the <em>msip</em> bit of the <code class="docutils literal notranslate"><span class="pre">mip</span></code> register is asserted.</p>
+<p>The VeeR EL2 core provides a software-interrupt input signal for its hart (see <code class="docutils literal notranslate"><span class="pre">soft_int</span></code> in <a class="reference internal" href="complex-ports.html#tab-core-complex-signals"><span class="std std-numref">Table 18.1</span></a>).
+The <code class="docutils literal notranslate"><span class="pre">soft_int</span></code> signal is an active-high, level-sensitive, asynchronous input signal which feeds the <em>msip</em> (machine software-interrupt pending) bit of the standard RISC-V <code class="docutils literal notranslate"><span class="pre">mip</span></code> register (see <a class="reference internal" href="adaptations.html#tab-machine-interrupt-pending-register"><span class="std std-numref">Table 14.2</span></a>).
+When the <em>msie</em> (machine software-interrupt enable) bit of the standard RISC-V <code class="docutils literal notranslate"><span class="pre">mie</span></code> register (see <a class="reference internal" href="adaptations.html#tab-machine-interrupt-enable-register"><span class="std std-numref">Table 14.1</span></a>) is set, a machine software interrupt occurs if the <em>msip</em> bit of the <code class="docutils literal notranslate"><span class="pre">mip</span></code> register is asserted.</p>
 <p>The SoC must implement Machine Software Interrupt (MSI) memory-mapped I/O registers.
 These registers provide interrupt control bits which are directly connected to the respective <code class="docutils literal notranslate"><span class="pre">soft_int</span></code> pins of each core.
 Writing to the corresponding bit of one of these registers enables remote harts to trigger machine-mode interprocessor interrupts.</p>
@@ -2534,7 +2550,7 @@ In this manner, an interrupt service routine can reset the corresponding memory-
 </aside>
 <aside class="footnote brackets" id="fn-mscause-register-3" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id18">12</a><span class="fn-bracket">]</span></span>
-<p>Trigger hit can also be observed in <em>hit</em> bit of mcontrol register (see <a class="reference internal" href="debugging.html#tab-mcontrol"><span class="std std-numref">Table 11.23</span></a>).</p>
+<p>Trigger hit can also be observed in <em>hit</em> bit of mcontrol register (see <a class="reference internal" href="debugging.html#tab-mcontrol"><span class="std std-numref">Table 12.23</span></a>).</p>
 </aside>
 <aside class="footnote brackets" id="fn-mscause-register-4" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span>13<span class="fn-bracket">]</span></span>
@@ -2563,7 +2579,7 @@ In this manner, an interrupt service routine can reset the corresponding memory-
   <small>
     
       Last update:
-      2026-10-29
+      2026-11-20
     
   </small>
 </div>
@@ -2631,7 +2647,7 @@ In this manner, an interrupt service routine can reset the corresponding memory-
         
     </div>
   
-      <a href="https://github.com/chipsalliance/Cores-VeeR-EL2/tree/fa00c8aadc4a077d78b277129c1badf90d881255">fa00c8aa</a>
+      <a href="https://github.com/chipsalliance/Cores-VeeR-EL2/tree/642f1c8866fc21b01d8e115e985d87a185ae8bff">642f1c88</a>
         @ <a href="https://github.com/chipsalliance/Cores-VeeR-EL2/tree/main">main</a>
   
 </div>

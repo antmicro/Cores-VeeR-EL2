@@ -1,0 +1,15 @@
+{
+  "is_pr": true,
+  "current_commit": "e2de178",
+  "configuration": "axi4",
+  "commit_message": "DNM: Disable all but PnR and metrics dashboard jobs\n\nSigned-off-by: Wiktoria Kuna <wkuna@antmicro.com>",
+  "source_branch": "108149-metrics-dashboard",
+  "source_repository": "antmicro/Cores-VeeR-EL2",
+  "date": "2026-11-23 12:12",
+  "pipeline_status": "passed",
+  "url": "https://github.com/chipsalliance/Cores-VeeR-EL2/actions/runs/45156780551",
+  "pr_number": 603,
+  "pr_title": "Add metrics dashboard",
+  "target_branch": "main",
+  "target_repository": "chipsalliance/Cores-VeeR-EL2"
+}
